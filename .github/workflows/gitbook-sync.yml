@@ -1,0 +1,39 @@
+# Sync inferoute-docs content to GitBook via Git Import API (no GitHub Sync app).
+# On push to main, triggers GitBook to import this repo into the configured space.
+name: Sync to GitBook
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - '**.md'
+      - '.github/workflows/gitbook-sync.yml'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger GitBook Git import
+        env:
+          GITBOOK_TOKEN: ${{ secrets.GITBOOK_TOKEN }}
+          GITBOOK_SPACE_ID: ${{ vars.GITBOOK_SPACE_ID }}
+        run: |
+          if [ -z "$GITBOOK_SPACE_ID" ]; then
+            echo "::error::GITBOOK_SPACE_ID is not set. Add it in repo Settings → Secrets and variables → Actions → Variables. Find it in GitBook: URL is app.gitbook.com/o/ORG/s/SPACE_ID — use the SPACE_ID part."
+            exit 1
+          fi
+          if [ -z "$GITBOOK_TOKEN" ]; then
+            echo "::error::GITBOOK_TOKEN is not set. Add it in repo Settings → Secrets and variables → Actions → Secrets (create token at app.gitbook.com/account/developer)."
+            exit 1
+          fi
+          REPO_URL="${{ github.server_url }}/${{ github.repository }}"
+          REF="${GITHUB_REF:-refs/heads/main}"
+          echo "Importing $REPO_URL ($REF) into GitBook space $GITBOOK_SPACE_ID"
+          curl -sSf -X POST \
+            -H "Authorization: Bearer $GITBOOK_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"url\": \"$REPO_URL\", \"ref\": \"$REF\"}" \
+            "https://api.gitbook.com/v1/spaces/$GITBOOK_SPACE_ID/git/import"
+          echo ""
+          echo "GitBook import triggered successfully (import runs asynchronously)."
