@@ -1,6 +1,8 @@
 # Summary
 
 - [Overview](overview.md)
+- [Consumer](consumer/monthly-spending-caps.md)
+  - [Monthly spending caps](consumer/monthly-spending-caps.md)
 - [Provider client](provider-client/introduction.md)
   - [Introduction](provider-client/introduction.md)
   - [How it works](provider-client/how-it-works.md)

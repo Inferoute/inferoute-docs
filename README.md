@@ -8,6 +8,7 @@ This repository contains the source for the **Inferoute documentation** publishe
 ## Structure
 
 - `overview.md` — What is Inferoute
+- `consumer/` — Consumer docs (API usage, spending caps)
 - `provider-client/` — Provider client docs (introduction, installation, configuration, setup guides, FAQ, REST API)
 
 ## Sync to GitBook (API, no GitHub Sync app)
