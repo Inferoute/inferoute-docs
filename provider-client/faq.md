@@ -15,6 +15,10 @@ A lightweight Go service that runs on Ollama or vLLM provider machines. It monit
 
 The client reads a YAML config file (server, provider, Cloudflare tunnel, logging). A default config is used if the file is missing. See [Configuration](configuration.md).
 
+### How do I delete a cluster from my account?
+
+Use the dashboard: **Clusters** → select your cluster → **Settings** → **Delete cluster** (Danger zone). That stops inference and revokes API keys; it does not uninstall the client on your machine. See [Deleting and managing clusters](../provider/deleting-clusters.md).
+
 ## Model management
 
 ### When I add new models to Ollama, does the client pick them up?
