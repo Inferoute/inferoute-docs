@@ -5,6 +5,7 @@
   - [Monthly spending caps](consumer/monthly-spending-caps.md)
 - [Provider (dashboard)](provider/deleting-clusters.md)
   - [Deleting and managing clusters](provider/deleting-clusters.md)
+  - [Model pricing](provider/model-pricing.md)
 - [Provider client](provider-client/introduction.md)
   - [Introduction](provider-client/introduction.md)
   - [How it works](provider-client/how-it-works.md)
