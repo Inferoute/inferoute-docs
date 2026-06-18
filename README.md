@@ -5,6 +5,10 @@ This repository contains the source for the **Inferoute documentation** publishe
 - **GitBook:** Content can be synced via GitBook’s GitHub Sync or via the **Sync to GitBook** workflow (Git Import API; see below).
 - **API Reference:** Generated from the OpenAPI 3 spec published by the [inferoute-node](https://github.com/sentnl/inferoute-node) CI; add the “OpenAPI Reference” block in GitBook and point it at that spec.
 
+## Style
+
+User-facing pages should use generic examples (**inferoute-cluster1**, not real cluster names) and a guide tone — see [documentation-style.md](documentation-style.md).
+
 ## Structure
 
 - `overview.md` — What is Inferoute

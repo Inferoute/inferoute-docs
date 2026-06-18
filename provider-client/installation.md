@@ -43,7 +43,7 @@ inferoute-client --config /path/to/config.yaml
 
 The official image is **inferoute/inferoute-client** on Docker Hub.
 
-If the client runs in Docker but Ollama/vLLM runs on the host, set `LLM_URL` so the container can reach the host (e.g. `http://host.docker.internal:11434`). See [Setup: Ollama](setup-ollama.md) for making Ollama listen on `0.0.0.0`.
+If the client runs in Docker but Ollama/vLLM runs on the host, set `LLM_URL` so the container can reach the host (for example `http://host.docker.internal:11434`). See [Setup: Ollama](setup-ollama.md) for making Ollama listen on `0.0.0.0`.
 
 ### Docker quick start
 
@@ -82,4 +82,10 @@ docker run -d --name inferoute-client -p 8080:8080 -e PROVIDER_API_KEY="your-key
 
 ## After first run
 
-When the client starts, it publishes your available models with default costs. Log in to [Inferoute](https://core.inferoute.com) and adjust model pricing if needed.
+When the client starts, it publishes your available models with default costs. Log in to [Inferoute](https://core.inferoute.com), open your cluster’s **Models** tab, and adjust pricing if needed — see [Model pricing](../provider/model-pricing.md).
+
+## Related
+
+- [Configuration](configuration.md)
+- [Setup: Ollama](setup-ollama.md)
+- [Setup: vLLM](setup-vllm.md)

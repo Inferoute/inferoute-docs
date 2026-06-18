@@ -39,10 +39,14 @@ Because of that, if many requests are sent at the same time right as you approac
 
 ## Example
 
-You set a **$100** monthly cap on your production API key.
+For example, you set a **$100** monthly cap on your production API key.
 
 - On March 15, the key has spent **$97** — requests still work.
 - By March 28, spend reaches **$100** — new requests with that key are blocked.
 - On April 1, the counter resets — the key can spend up to **$100** again in April.
 
 If you need a higher limit mid-month, raise the cap in Settings and click **Save cap**.
+
+## Related
+
+- [Overview](../overview.md)

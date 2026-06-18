@@ -1,13 +1,13 @@
 # Configuration
 
-The client reads a YAML config file. Default path is platform-specific (e.g. `~/.config/inferoute/config.yaml`). Override with `--config /path/to/config.yaml`.
+The client reads a YAML config file. Default path is platform-specific (for example `~/.config/inferoute/config.yaml`). Override with `--config /path/to/config.yaml`.
 
 ## Sections
 
 - **server** — HTTP server (port, host) for the local REST API.
 - **provider** — Connection to the Inferoute platform.
   - **provider_type** — `ollama`, `vllm`, or (future) `exo-labs`, `llama.cpp`. Default: `ollama`.
-  - **llm_url** — Local LLM API URL (e.g. `http://localhost:11434` for Ollama, `http://localhost:8000` for vLLM). Default: `http://localhost:11434`.
+  - **llm_url** — Local LLM API URL. For example, `http://localhost:11434` for Ollama or `http://localhost:8000` for vLLM. Default: `http://localhost:11434`.
 - **cloudflare** — Tunnel configuration.
   - **service_url** — Local URL to expose via the tunnel. Defaults to the provider’s `llm_url` if not set.
 - **logging**
@@ -26,7 +26,7 @@ Under `log_dir` (default `~/.local/state/inferoute/log`):
 
 ## Overriding defaults
 
-Defaults (e.g. provider type, LLM URL, server port) can be overridden without editing the config file.
+Defaults (for example provider type, LLM URL, server port) can be overridden without editing the config file.
 
 **Install script (Linux/macOS):**
 
@@ -51,3 +51,8 @@ docker run -e PROVIDER_API_KEY="your-key" \
   -p 9090:9090 \
   inferoute/inferoute-client:latest
 ```
+
+## Related
+
+- [How it works](how-it-works.md)
+- [FAQ](faq.md)

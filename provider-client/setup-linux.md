@@ -26,3 +26,8 @@
 
 - Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on `PATH`.
 - The client uses `nvidia-smi` for GPU monitoring and busy-state detection. The install script does not install the driver.
+
+## Related
+
+- [Installation](installation.md)
+- [Configuration](configuration.md)

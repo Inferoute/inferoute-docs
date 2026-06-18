@@ -4,7 +4,7 @@
 
 ### What is the Inferoute Provider Client?
 
-A lightweight Go service that runs on Ollama or vLLM provider machines. It monitors GPU resources, reports health to the central Inferoute system, and handles inference requests by forwarding them to your local Ollama or vLLM instance.
+A lightweight service that runs on Ollama or vLLM provider machines. It monitors GPU resources, reports health to Inferoute, and handles inference requests by forwarding them to your local Ollama or vLLM instance.
 
 ### What platforms are supported?
 
@@ -27,11 +27,17 @@ Yes. New models are detected on each health check (every 5 minutes) and automati
 
 ### How does model pricing work?
 
-At startup the client discovers local models, fetches pricing from the central API, and registers each model (model-specific or default pricing). New models added later are registered during the next health cycle.
+Pricing is **per cluster**, not account-wide. At startup the client discovers local models, applies default prices from Inferoute, and registers each model for **that cluster only**. For example, **inferoute-cluster1** and **inferoute-cluster2** can charge different prices for the same model name.
+
+New models added later are registered during the next health cycle (every 5 minutes).
+
+See [Model pricing](../provider/model-pricing.md) for editing prices in the dashboard.
 
 ### Can I change model pricing after registration?
 
-Yes. Use the provider API (e.g. `/api/provider/models/{model_id}`) or update pricing in your account on the Inferoute platform.
+Yes. Open **Clusters** → select a cluster → **Models** tab to edit prices for that cluster only. You can also use the provider API with that cluster’s API key (see the OpenAPI reference in this GitBook space).
+
+Changing prices on one cluster does not change another. See [Model pricing](../provider/model-pricing.md).
 
 ### What are GGUF models?
 
@@ -39,9 +45,9 @@ GGUF (GPT-Generated Unified Format) is a model format used by Ollama:
 
 - More memory-efficient than FP16 via quantization.
 - Often faster on consumer hardware.
-- Various quantization levels (e.g. Q4_K_M, Q5_K_M) trade size for quality.
+- Various quantization levels (for example Q4_K_M, Q5_K_M) trade size for quality.
 
-When using the Inferoute API, Ollama models use the **gguf/** prefix (e.g. `gguf/llama2`).
+When using the Inferoute API, Ollama models use the **gguf/** prefix. For example, `gguf/llama2`.
 
 ## Cloudflare Tunnel
 
@@ -80,7 +86,7 @@ Every **5 minutes**. It also exposes **GET /api/health** (or /health) for on-dem
 ### How are inference requests handled?
 
 1. If the GPU is busy → **503 Service Unavailable** (orchestrator can try another provider).
-2. If present, HMAC in `X-Request-Id` is validated via the central `/api/provider/validate_hmac` endpoint; invalid → **401**.
+2. If present, the request signature in `X-Request-Id` is validated with Inferoute; invalid requests get **401**.
 3. Valid requests are proxied to the local Ollama or vLLM server.
 
 ### What endpoints does the client expose for inference?
@@ -99,3 +105,9 @@ In `config.yaml`, under **logging:** set level (`debug`, `info`, `warn`, `error`
 ### What if GPU monitoring isn’t available?
 
 The client still runs: health reports omit or null out GPU data and the GPU is reported as not busy. You can monitor activity via the console UI and log files.
+
+## Related
+
+- [How it works](how-it-works.md)
+- [Model pricing](../provider/model-pricing.md)
+- [Deleting and managing clusters](../provider/deleting-clusters.md)

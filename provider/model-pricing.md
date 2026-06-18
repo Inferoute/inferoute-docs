@@ -1,65 +1,62 @@
 # Model pricing
 
-Set per-model token pricing from the cluster **Models** tab in the dashboard, or via the provider API with your cluster API key.
+Each **cluster** has its own model list and prices. Changing prices on one cluster does **not** change prices on your other clusters, even when they run the same model name.
 
-## Pricing scope (per cluster)
+For example, if **inferoute-cluster1** and **inferoute-cluster2** both serve `Qwen/Qwen2.5-7B-Instruct`, you can set different input and output prices on each cluster. Buyers see the price for the cluster that actually runs their request.
 
-**Each cluster has its own model prices.** A cluster is a `provider` row in the database. Model prices live in `provider_models`, one row per `(cluster, model_name)`.
+## Where to edit prices
 
-- Changing pricing on **Home cluster 42** does **not** change pricing on **Charles London Cluster**, even if both run the same model name (e.g. `Qwen/Qwen2.5-7B-Instruct`).
-- The account **Models & Prices** tab is a read-only view across all clusters; edit prices in each cluster’s **Models** tab.
-- Billing uses the price on the cluster that served the request.
+1. Open **Clusters** in the dashboard.
+2. Select a cluster (for example **inferoute-cluster1**).
+3. Open the **Models** tab.
+4. Edit **Input price** and **Output price** (shown as **$/1M tokens**).
+5. Click **Save** on that row.
 
-## Storage units
+The **Market avg** column is a reference from public pricing data. It does not change your prices until you edit and save, or use **Apply market averages to all**.
 
-| Layer | Unit | Example |
-|-------|------|---------|
-| Database (`provider_models.input_price_tokens`) | **$/token** | `0.00004014` |
-| Dashboard Models tab & JWT `PATCH` body | **$/1M tokens** | `40.14` |
-| Provider API `POST` / `PUT` body | **$/token** | `0.00004014` |
+## Pricing is per cluster, not global
 
-Conversion: `per_1m = per_token × 1_000_000`, `per_token = per_1m ÷ 1_000_000`.
+| What you do | Effect |
+|-------------|--------|
+| Change prices on **inferoute-cluster1** | Only that cluster’s listed prices change |
+| Same model name on **inferoute-cluster2** | Unchanged unless you edit that cluster too |
+| **Models & Prices** (account-wide tab) | Read-only overview across clusters — not where you edit |
 
-## Dashboard (JWT)
+Use the cluster **Models** tab when you want different prices per machine, region, or GPU tier. Set the same numbers on each cluster if you want uniform pricing everywhere.
 
-1. Open **Clusters** → select a cluster → **Models** tab.
-2. Each registered model shows **Active** or **Inactive** status.
-3. Edit input/output price per 1M tokens (shown with `$`) and click **Save**.
-4. **Market avg** fills one row from market averages; **Apply market averages to all** fills every row (still requires **Save** per row).
-5. If a price is more than 100% away from the market average, a confirmation dialog appears before saving.
+## Units in the dashboard
 
-Inactive models remain listed so you can adjust pricing for models you previously ran.
+All editable prices in the cluster **Models** tab are **per 1 million tokens** ($/1M):
 
-### Dashboard API (session cookie / JWT)
+- **Input price** — prompt / input tokens  
+- **Output price** — completion / output tokens  
 
-- `GET /api/auth/me/provider-models?provider_id=…` — list models for one cluster (optional `include_inactive=true`)
-- `GET /api/auth/me/provider-models/market-prices?models=…` — market averages (response in **$/1M**)
-- `PATCH /api/auth/me/providers/:provider_id/models/:model_id` — update prices (body in **$/1M**)
+That matches how **Models & Prices** displays prices elsewhere in the dashboard.
 
-## Provider API (cluster API key)
+## Apply market averages
 
-Use your cluster API key (`Authorization: Bearer sk-…`). The key is scoped to **one cluster**; updates only affect that cluster’s models.
+**Apply market averages to all** fills every row on that cluster’s Models tab with the **Market avg** values. It does not save automatically — review each row and click **Save**, or save rows individually after applying.
 
-- `GET /api/provider/models` — list models and current **per-token** prices
-- `POST /api/provider/models` — register a new model with initial **per-token** prices
-- `PUT /api/provider/models/:model_id` — update name, service type, and **per-token** prices
-- `DELETE /api/provider/models/:model_id` — soft-deactivate the model (`is_active = false`); pricing and history are preserved
+If your prices differ a lot from market averages, you may see a confirmation before saving a single row.
 
-Example `PUT` body (per-token):
+## Deploy wizard
 
-```json
-{
-  "model_name": "Qwen/Qwen2.5-7B-Instruct",
-  "service_type": "vllm",
-  "input_price_tokens": 0.00004,
-  "output_price_tokens": 0.00004
-}
-```
+When you deploy a new cluster, step 3 is **GPU selection** only. You set model prices **after** the cluster is running, on that cluster’s **Models** tab (once health reports which models are available).
 
-That is **$40 / 1M** on the dashboard (`0.00004 × 1_000_000`).
+## Provider API (automation)
 
-## How models get initial pricing
+If you automate with a **provider API key**, prices are still **per cluster** (one key per cluster). The HTTP API uses **per-token** decimals, not $/1M:
 
-- **inferoute-client** registers models at startup via `POST /api/provider/models`, using prices from the model-pricing service (returned as **per-token** after server normalization).
-- **Health pushes** can add new models when the client reports them; default prices come from `model_pricing_data`, normalized to per-token before insert.
-- Models missing from a health payload are **soft-deactivated** (`is_active = false`), not deleted, so pricing can be edited when they return.
+| Dashboard (Models tab) | Provider API (`POST` / `PUT` model) |
+|------------------------|-------------------------------------|
+| $0.15 / 1M input | `0.00000015` per input token |
+| $0.60 / 1M output | `0.0000006` per output token |
+
+Divide your $/1M value by **1,000,000** to get the API value. Updating a model via the API on **inferoute-cluster1** does not change pricing on **inferoute-cluster2**.
+
+See [Local REST API](../provider-client/rest-api.md) for endpoints.
+
+## Related
+
+- [Deleting and managing clusters](deleting-clusters.md)
+- [Provider client FAQ](../provider-client/faq.md)

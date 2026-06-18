@@ -43,7 +43,7 @@ When you confirm deletion:
 1. **The cluster is removed from your dashboard** — it no longer appears under **Clusters**.
 2. **Inference stops** — the cluster is paused, marked unavailable, and health is set to red so the orchestrator will not route requests to it.
 3. **All active API keys for that cluster are revoked** — your provider client can no longer authenticate with those keys.
-4. **Historical data is kept** — past earnings and transactions remain in our systems for billing and audit. We do not hard-delete the underlying provider record because it is tied to transaction history.
+4. **Historical data is kept** — past earnings and transactions stay in your account history for billing and audit. The cluster no longer appears in the dashboard, but we retain records tied to past payouts.
 
 ### What delete does not do
 
@@ -68,3 +68,8 @@ Deletion is **not reversible** from the dashboard today. If you deleted a cluste
 | Earnings history | Kept | Kept |
 
 Use **pause** for temporary downtime. Use **delete** when you are done with that cluster for good.
+
+## Related
+
+- [Model pricing](model-pricing.md)
+- [Provider client introduction](../provider-client/introduction.md)

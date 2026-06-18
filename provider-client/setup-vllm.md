@@ -7,6 +7,11 @@ Install and run vLLM according to the official docs:
 Configure the Provider Client with:
 
 - **provider_type:** `vllm`
-- **llm_url:** Your vLLM server URL (e.g. `http://localhost:8000`)
+- **llm_url:** Your vLLM server URL (for example `http://localhost:8000`)
 
 If the client runs in Docker and vLLM runs on the host, use `http://host.docker.internal:8000` for `LLM_URL`.
+
+## Related
+
+- [Configuration](configuration.md)
+- [Installation](installation.md)

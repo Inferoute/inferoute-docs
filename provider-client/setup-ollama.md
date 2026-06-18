@@ -2,7 +2,7 @@
 
 ## Listening on all interfaces (for Docker / remote access)
 
-The client (or another container on the same host) must be able to reach Ollama. If Ollama runs on the host and the client runs in Docker, Ollama should listen on `0.0.0.0` so the container can connect (e.g. via `host.docker.internal`).
+The client (or another container on the same host) must be able to reach Ollama. If Ollama runs on the host and the client runs in Docker, Ollama should listen on `0.0.0.0` so the container can connect (for example via `host.docker.internal`).
 
 ### Linux (systemd)
 
@@ -78,7 +78,7 @@ Allow Ollama through the firewall if prompted.
 
 ## Using Ollama models via Inferoute
 
-When calling the Inferoute API (orchestrator), use the **gguf/** prefix for Ollama models so the platform routes to Ollama providers:
+For example, when calling the Inferoute API, use the **gguf/** prefix for Ollama models so Inferoute routes to Ollama providers:
 
 ```json
 {
@@ -90,3 +90,8 @@ When calling the Inferoute API (orchestrator), use the **gguf/** prefix for Olla
 ```
 
 Examples: `gguf/llama2`, `gguf/mistral`, `gguf/codellama`, `gguf/neural-chat`. The client strips the prefix when talking to the local Ollama server.
+
+## Related
+
+- [Configuration](configuration.md)
+- [Installation](installation.md)

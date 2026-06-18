@@ -1,0 +1,50 @@
+---
+description: Style and conventions for Inferoute user documentation (GitBook)
+globs: "**/*.md"
+alwaysApply: true
+---
+
+# Inferoute docs — user guide conventions
+
+Content in this repo is published on **GitBook** for customers and providers. Write for readers using the dashboard or provider client, not for internal engineering notes.
+
+## Audience
+
+| Path | Reader | Tone |
+|------|--------|------|
+| `consumer/` | API consumers | Plain language, dashboard steps |
+| `provider/` | Dashboard providers | Plain language, cluster/settings flows |
+| `provider-client/` | People running the client | Install, config, troubleshooting |
+| `overview.md` | Everyone | Short product context |
+
+Do **not** put table names, service names, or implementation details in user guides unless the page is explicitly for operators (this repo has no internal-only tree — keep jargon out).
+
+## Examples must be generic
+
+- Use fictional cluster names: **inferoute-cluster1**, **inferoute-cluster2** — not real cluster names from an account.
+- Use fictional model IDs where needed, e.g. `Qwen/Qwen2.5-7B-Instruct`.
+- Introduce examples with **“For example,”** or **“for example”** in running text.
+- Never use real emails, API keys, or customer identifiers in docs.
+
+## Voice and structure
+
+- Second person (**you**), active voice — match `provider/deleting-clusters.md` and `consumer/monthly-spending-caps.md`.
+- Lead with what the reader can **do**, then edge cases.
+- Dashboard paths: bold UI labels (**Clusters**, **Models** tab, **Save**).
+- Use tables for comparisons (per-cluster vs global, dashboard vs API units).
+
+## When adding or changing pages
+
+1. Update `SUMMARY.md` if the page is new or moved.
+2. Cross-link related pages (FAQ, REST API, sibling provider pages).
+3. Keep one topic per page; link instead of duplicating long explanations.
+
+## API and units
+
+When documenting provider automation, state clearly when units differ from the dashboard (e.g. per-token in REST vs $/1M in UI). Give a conversion example with round numbers.
+
+## What not to do
+
+- Don’t document unreleased features as shipped.
+- Don’t paste secrets or live credentials.
+- Don’t use “Home cluster 42”-style real environment names in user-facing examples.
