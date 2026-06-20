@@ -89,3 +89,5 @@ When the client starts, it publishes your available models with default costs. L
 - [Configuration](configuration.md)
 - [Setup: Ollama](setup-ollama.md)
 - [Setup: vLLM](setup-vllm.md)
+- [Setup: Linux](setup-linux.md)
+- [Setup: macOS](setup-mac.md)

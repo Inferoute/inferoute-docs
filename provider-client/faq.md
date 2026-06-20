@@ -8,8 +8,8 @@ A lightweight service that runs on Ollama or vLLM provider machines. It monitors
 
 ### What platforms are supported?
 
-- **Linux with NVIDIA GPU:** Full GPU monitoring and busy status from utilization.
-- **macOS with Apple GPU:** Basic GPU info (model, core count); busy is always reported as false.
+- **Linux with NVIDIA GPU:** Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
+- **macOS with Apple GPU:** Basic GPU info (model, core count); busy is always reported as false. See [Setup: macOS](setup-mac.md).
 
 ### How do I configure the client?
 

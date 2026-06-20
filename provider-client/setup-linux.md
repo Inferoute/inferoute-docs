@@ -31,3 +31,4 @@
 
 - [Installation](installation.md)
 - [Configuration](configuration.md)
+- [Setup: macOS](setup-mac.md)

@@ -14,5 +14,6 @@
   - [Setup: Ollama](provider-client/setup-ollama.md)
   - [Setup: vLLM](provider-client/setup-vllm.md)
   - [Setup: Linux](provider-client/setup-linux.md)
+  - [Setup: macOS](provider-client/setup-mac.md)
   - [FAQ](provider-client/faq.md)
   - [Local REST API](provider-client/rest-api.md)

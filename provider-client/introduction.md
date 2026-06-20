@@ -14,8 +14,9 @@ Future support is planned for exo-labs and llama.cpp.
 ## Requirements
 
 - A user and provider set up on [Inferoute](https://core.inferoute.com). See [How to add a provider](https://github.com/inferoute/inferoute-client/blob/main/docs/provider.md).
-- Ollama or vLLM running locally.
-- **Linux with NVIDIA GPU:** `nvidia-smi` must be installed and on `PATH` (for GPU monitoring and busy-state detection). Install the [NVIDIA driver](https://www.nvidia.com/drivers) for your system; the install script does not install it.
+- Ollama or vLLM running locally (Ollama is typical on macOS).
+- **Linux with NVIDIA GPU:** `nvidia-smi` must be installed and on `PATH` (for GPU monitoring and busy-state detection). Install the [NVIDIA driver](https://www.nvidia.com/drivers) for your system; the install script does not install it. See [Setup: Linux](setup-linux.md).
+- **macOS with Apple GPU:** Ollama running locally. Intel and Apple Silicon are supported. See [Setup: macOS](setup-mac.md).
 - **After first run:** The client publishes your available models and sets initial costs from platform averages. Log in to the dashboard and adjust model pricing per cluster if needed — see [Model pricing](../provider/model-pricing.md).
 
 ## Exposing your machine via Cloudflare Tunnel (secure HTTPS)
