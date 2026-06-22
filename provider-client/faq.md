@@ -49,6 +49,10 @@ GGUF (GPT-Generated Unified Format) is a model format used by Ollama:
 
 When using the Inferoute API, Ollama models use the **gguf/** prefix. For example, `gguf/llama2`.
 
+### Which models are approved on the marketplace?
+
+See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the live list (aliases, Ollama digests, vLLM `hf_revision` pins).
+
 ## Cloudflare Tunnel
 
 ### How does the tunnel URL get set?
@@ -109,5 +113,6 @@ The client still runs: health reports omit or null out GPU data and the GPU is r
 ## Related
 
 - [How it works](how-it-works.md)
+- [Approved model builds](approved-models.md)
 - [Model pricing](../provider/model-pricing.md)
 - [Deleting and managing clusters](../provider/deleting-clusters.md)

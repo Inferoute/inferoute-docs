@@ -16,4 +16,5 @@
   - [Setup: Linux](provider-client/setup-linux.md)
   - [Setup: macOS](provider-client/setup-mac.md)
   - [FAQ](provider-client/faq.md)
+  - [Approved model builds](provider-client/approved-models.md)
   - [Local REST API](provider-client/rest-api.md)

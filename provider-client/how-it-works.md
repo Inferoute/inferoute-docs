@@ -34,6 +34,8 @@ On Linux with NVIDIA, utilization above **20%** is treated as busy. On macOS, bu
 
 Initial prices come from platform averages. You set your own prices **per cluster** in the dashboard — see [Model pricing](../provider/model-pricing.md).
 
+Approved marketplace models must match a platform [approved model build](approved-models.md). The client will use that allowlist for integrity verification as the feature rolls out.
+
 ## Inference requests
 
 When Inferoute sends a request to your cluster:
