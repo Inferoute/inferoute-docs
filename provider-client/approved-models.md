@@ -87,15 +87,24 @@ curl -s "http://localhost/api/models/approved-builds?service_type=vllm" | jq .
 For each build:
 
 1. Download **`hf_repo`** at the pinned **`hf_revision`** (commit SHA — not floating `main`).
-2. Serve with **`alias`** as the model id (for example `--served-model-name Qwen/Qwen3-0.6B`).
-3. Point **`model_path`** in the Provider Client config at that directory.
+2. Serve with **`alias`** as the model id (for example `vllm serve Qwen/Qwen3-0.6B` or `--served-model-name Qwen/Qwen3-0.6B`).
 
-For example:
+The Provider Client discovers weights automatically from the HuggingFace hub cache (`~/.cache/huggingface/hub/models--Org--Name/snapshots/<hf_revision>/`) using the model id vLLM reports. You only need **`model_path`** in config if you use a flat directory from `hf download --local-dir`.
+
+For example, hub cache (no extra client config):
+
+```bash
+vllm serve Qwen/Qwen3-0.6B
+```
+
+For example, explicit directory:
 
 ```bash
 hf download Qwen/Qwen3-0.6B --revision <hf_revision from API> --local-dir ~/models/Qwen3-0.6B
 vllm serve ~/models/Qwen3-0.6B --served-model-name Qwen/Qwen3-0.6B
 ```
+
+Set **`model_path`** to `~/models/Qwen3-0.6B` in that case.
 
 ## Ollama vs vLLM — different builds
 
@@ -109,7 +118,7 @@ The same model family on Ollama and HuggingFace are **separate** approved builds
 
 ## Provider Client (automatic)
 
-When verification is enabled, the Provider Client fetches this list on startup and compares your local models against it. You do not need to call the API manually for day-to-day operation — use it to **look up** approved aliases, revisions, and download instructions.
+The Provider Client fetches this list on startup and compares your local models against it. For **Ollama**, it uses digests from `/api/tags`. For **vLLM**, it uses the served model id plus the approved `hf_revision` to find weights in the HuggingFace hub cache (or **`model_path`** if you use `hf download --local-dir`). You do not need to call the API manually for day-to-day operation — use it to **look up** approved aliases, revisions, and download instructions.
 
 
 ## Related

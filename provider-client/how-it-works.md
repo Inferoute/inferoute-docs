@@ -34,7 +34,11 @@ On Linux with NVIDIA, utilization above **20%** is treated as busy. On macOS, bu
 
 Initial prices come from platform averages. You set your own prices **per cluster** in the dashboard — see [Model pricing](../provider/model-pricing.md).
 
-Approved marketplace models must match a platform [approved model build](approved-models.md). The client will use that allowlist for integrity verification as the feature rolls out.
+Approved marketplace models must match a platform [approved model build](approved-models.md). The client verifies Ollama digests and vLLM weight fingerprints against that allowlist before registration, health reporting, and inference.
+
+**Ollama** — no extra config; digests come from `/api/tags`.
+
+**vLLM** — the client reads the served model id from vLLM and finds weights in the HuggingFace hub cache using the approved `hf_revision`. Optional **`hf_hub_cache`** or **`model_path`** only if your layout is non-standard.
 
 ## Inference requests
 

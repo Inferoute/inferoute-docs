@@ -8,6 +8,8 @@ The client reads a YAML config file. Default path is platform-specific (for exam
 - **provider** — Connection to the Inferoute platform.
   - **provider_type** — `ollama`, `vllm`, or (future) `exo-labs`, `llama.cpp`. Default: `ollama`.
   - **llm_url** — Local LLM API URL. For example, `http://localhost:11434` for Ollama or `http://localhost:8000` for vLLM. Default: `http://localhost:11434`.
+  - **hf_hub_cache** — (vLLM, optional) HuggingFace hub cache directory. Default: `~/.cache/huggingface/hub`. The client uses this to find weights for the model vLLM is serving.
+  - **model_path** — (vLLM, optional) Flat directory override when you use `hf download --local-dir` instead of the hub cache layout.
 - **cloudflare** — Tunnel configuration.
   - **service_url** — Local URL to expose via the tunnel. Defaults to the provider’s `llm_url` if not set.
 - **logging**
