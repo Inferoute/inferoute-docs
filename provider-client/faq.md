@@ -51,7 +51,7 @@ When using the Inferoute API, Ollama models use the **gguf/** prefix. For exampl
 
 ### Which models are approved on the marketplace?
 
-See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the live list (aliases, Ollama digests, vLLM `hf_revision` pins).
+See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the public catalog (aliases and HuggingFace locations; no hashes).
 
 ## Cloudflare Tunnel
 

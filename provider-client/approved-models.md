@@ -1,14 +1,14 @@
 # Approved model builds
 
-Inferoute maintains a platform allowlist of **approved model builds** — the exact Ollama digests and vLLM weight fingerprints that marketplace providers are expected to match. The Provider Client uses this list for model integrity verification (see rollout in platform updates).
+Inferoute maintains a platform allowlist of **approved model builds**. The Provider Client uses this list to know which models can be offered on the marketplace and verifies your local weights against platform records.
 
-You can read the allowlist yourself to see which models are approved and which HuggingFace revision to download for vLLM.
+Verification secrets (digests, fingerprints, manifests) are **not** published. The client measures your local model and the platform returns **verified** or **failed**.
 
-## List approved builds
+## Public catalog
 
 **GET** `/api/models/approved-builds`
 
-No authentication. Returns only **active** builds.
+No authentication. Returns only **active** builds and **no hashes**.
 
 Optional query:
 
@@ -16,19 +16,12 @@ Optional query:
 |-----------|--------|---------|
 | `service_type` | `ollama` or `vllm` | Filter by backend |
 
-### Example: all approved builds
+### Example
 
 ```bash
 curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 ```
-
-Local development (via Traefik):
-
-```bash
-curl -s http://localhost/api/models/approved-builds | jq .
-```
-
-### Example response (mixed backends)
+### Example response
 
 ```json
 {
@@ -38,88 +31,72 @@ curl -s http://localhost/api/models/approved-builds | jq .
       "id": "41a99b3a-d928-4580-9656-3508c0529148",
       "alias": "gguf/qwen3:0.6b",
       "service_type": "ollama",
-      "expected_digest": "7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435",
-      "min_size_bytes": 522653767,
       "is_active": true
     },
     {
       "id": "b2c8e1f0-1234-5678-9abc-def012345678",
       "alias": "Qwen/Qwen3-0.6B",
       "service_type": "vllm",
-      "weight_fingerprint": "a1b2c3d4e5f6...",
-      "min_size_bytes": 1520000000,
       "hf_repo": "Qwen/Qwen3-0.6B",
-      "hf_revision": "abc123def456...",
-      "manifest": [
-        {
-          "name": "config.json",
-          "sha256": "...",
-          "hash_method": "full",
-          "size": 1200
-        },
-        {
-          "name": "model.safetensors",
-          "sha256": "...",
-          "hash_method": "safetensors_header",
-          "size": 1500000000
-        }
-      ],
+      "hf_ref": "main",
       "is_active": true
     }
   ]
 }
 ```
 
-### Ollama only
+| Field | Meaning |
+|-------|---------|
+| `alias` | Model id to use with Inferoute and your LLM server |
+| `hf_repo` | HuggingFace repo id (`org/name`) for vLLM downloads |
+| `hf_ref` | Branch or tag to download (for example `main`) |
+
+## Ollama setup
 
 ```bash
-curl -s "http://localhost/api/models/approved-builds?service_type=ollama" | jq .
+curl -s "http://core.inferoute.com/api/models/approved-builds?service_type=ollama" | jq .
 ```
 
-Use the **`alias`** when registering or calling Inferoute (for example `gguf/qwen3:0.6b`). Pull the model locally with Ollama, then verify the digest from `GET /api/tags` matches `expected_digest`.
+Use the **`alias`** when registering or calling Inferoute (for example `gguf/qwen3:0.6b`). Pull the model with Ollama, then start the Provider Client — it verifies the digest with the platform automatically.
 
-### vLLM only
+## vLLM setup
 
 ```bash
-curl -s "http://localhost/api/models/approved-builds?service_type=vllm" | jq .
+curl -s "http://core.inferoute.com/api/models/approved-builds?service_type=vllm" | jq .
 ```
 
-For each build:
+For each catalog entry:
 
-1. Download **`hf_repo`** at the pinned **`hf_revision`** (commit SHA — not floating `main`).
-2. Serve with **`alias`** as the model id (for example `vllm serve Qwen/Qwen3-0.6B` or `--served-model-name Qwen/Qwen3-0.6B`).
+1. Download **`hf_repo`** at **`hf_ref`** (for example `hf download Qwen/Qwen3-0.6B`).
+2. Serve with **`alias`** as the model id.
 
-The Provider Client discovers weights automatically from the HuggingFace hub cache (`~/.cache/huggingface/hub/models--Org--Name/snapshots/<hf_revision>/`) using the model id vLLM reports. You only need **`model_path`** in config if you use a flat directory from `hf download --local-dir`.
-
-For example, hub cache (no extra client config):
+For example:
 
 ```bash
 vllm serve Qwen/Qwen3-0.6B
 ```
 
-For example, explicit directory:
+The Provider Client discovers weights from the HuggingFace hub cache using `hf_repo` and `hf_ref`. Optional **`model_path`** in config is only needed for flat directories from `hf download --local-dir`.
 
-```bash
-hf download Qwen/Qwen3-0.6B --revision <hf_revision from API> --local-dir ~/models/Qwen3-0.6B
-vllm serve ~/models/Qwen3-0.6B --served-model-name Qwen/Qwen3-0.6B
-```
+## How verification works
 
-Set **`model_path`** to `~/models/Qwen3-0.6B` in that case.
+1. Client fetches the **public catalog** (names and HuggingFace location only).
+2. Client hashes local model files (Ollama digest or vLLM weight files).
+3. Client calls **POST** `/api/provider/verify-model` with your **provider API key**.
+4. Platform compares measurements to internal records and returns `verification_status`.
+5. Health reports include the verified status; the platform re-checks on ingest.
 
-## Ollama vs vLLM — different builds
+You do not need to call the verify API manually for day-to-day operation.
 
-The same model family on Ollama and HuggingFace are **separate** approved builds: different `alias`, size, and hash. Consumers pick the backend by model name (`gguf/...` → Ollama providers; bare HF id → vLLM).
+## Ollama vs vLLM
+
+The same model family on Ollama and HuggingFace are **separate** catalog entries. Consumers pick the backend by model name (`gguf/...` → Ollama; bare HF id → vLLM).
 
 | | Ollama | vLLM |
 |---|--------|------|
 | Example alias | `gguf/qwen3:0.6b` | `Qwen/Qwen3-0.6B` |
-| Pin field | `expected_digest` | `weight_fingerprint` + `manifest` |
-| Download | `ollama pull qwen3:0.6b` | `hf download` at `hf_revision` |
-
-## Provider Client (automatic)
-
-The Provider Client fetches this list on startup and compares your local models against it. For **Ollama**, it uses digests from `/api/tags`. For **vLLM**, it uses the served model id plus the approved `hf_revision` to find weights in the HuggingFace hub cache (or **`model_path`** if you use `hf download --local-dir`). You do not need to call the API manually for day-to-day operation — use it to **look up** approved aliases, revisions, and download instructions.
-
+| Catalog fields | `alias` | `alias`, `hf_repo`, `hf_ref` |
+| Download | `ollama pull qwen3:0.6b` | `hf download` at `hf_repo` |
 
 ## Related
 

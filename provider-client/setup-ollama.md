@@ -91,7 +91,7 @@ For example, when calling the Inferoute API, use the **gguf/** prefix for Ollama
 
 Examples: `gguf/llama2`, `gguf/mistral`, `gguf/codellama`, `gguf/neural-chat`. The client strips the prefix when talking to the local Ollama server.
 
-Only aliases on the [approved model builds](approved-models.md) list are verified for marketplace integrity. Use **GET** `/api/models/approved-builds` to see approved Ollama aliases and expected digests.
+Only aliases on the [approved model builds](approved-models.md) list are verified for marketplace integrity. Use **GET** `/api/models/approved-builds` to see approved Ollama aliases.
 
 ## Related
 

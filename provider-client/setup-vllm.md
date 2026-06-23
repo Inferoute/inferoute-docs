@@ -23,9 +23,7 @@ For example, if vLLM downloads into the standard cache when you serve by repo id
 vllm serve Qwen/Qwen3-0.6B
 ```
 
-The Provider Client **does not need a weight path** in config. It reads the model id from vLLM (`GET /v1/models`), looks up the approved `hf_revision`, and fingerprints weights under:
-
-`~/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B/snapshots/<hf_revision>/`
+The Provider Client reads the model id from vLLM (`GET /v1/models`), looks up the approved `hf_revision`, and fingerprints weights for models located in the default vLLM folder  (`~/.cache/huggingface/hub/`)
 
 You can keep many models in the same hub folder; verification only runs for the model vLLM is serving.
 
