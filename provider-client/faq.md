@@ -23,13 +23,13 @@ Use the dashboard: **Clusters** → select your cluster → **Settings** → **D
 
 ### When I add new models to Ollama, does the client pick them up?
 
-Yes. New models are detected on each health check (every 5 minutes) and automatically registered with pricing from the Inferoute API.
+Yes. New models are detected on each health check (every **3 minutes**) and automatically registered with pricing from the Inferoute API.
 
 ### How does model pricing work?
 
 Pricing is **per cluster**, not account-wide. At startup the client discovers local models, applies default prices from Inferoute, and registers each model for **that cluster only**. For example, **inferoute-cluster1** and **inferoute-cluster2** can charge different prices for the same model name.
 
-New models added later are registered during the next health cycle (every 5 minutes).
+New models added later are registered during the next health cycle (every **3 minutes**).
 
 See [Model pricing](../provider/model-pricing.md) for editing prices in the dashboard.
 
@@ -71,13 +71,15 @@ The client supervises cloudflared and will restart it if it exits, with exponent
 
 ### How often does the client report health?
 
-Every **5 minutes**. It also exposes **GET /api/health** (or /health) for on-demand status.
+Every **3 minutes**. It also exposes **GET /api/health** (or **GET /health**) for on-demand status.
 
 ### What is in a health report?
 
 - GPU info (type, driver, CUDA, memory, utilization where available).
 - Available models from the local LLM server.
 - Current Cloudflare tunnel URL (when configured).
+
+Cluster **country** is not part of the health payload. Inferoute resolves it from your tunnel connection. See [Cluster location](../provider/cluster-location.md).
 
 ### How is “GPU busy” determined?
 

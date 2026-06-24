@@ -86,6 +86,8 @@ The Provider Client discovers weights from the HuggingFace hub cache using `hf_r
 4. Platform compares measurements to internal records and returns `verification_status`.
 5. Health reports include the verified status; the platform re-checks on ingest.
 
+The client **caches** verify results for about **10 minutes** and only re-verifies when the catalog changes or your local model files change. The console UI reads the last health snapshot — it does not call verify on every refresh.
+
 You do not need to call the verify API manually for day-to-day operation.
 
 ## Ollama vs vLLM

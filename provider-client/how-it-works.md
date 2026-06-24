@@ -13,11 +13,13 @@ The client runs alongside Ollama or vLLM on your machine. It:
 
 ## Health monitoring
 
-Every **5 minutes**, the client sends a health report to Inferoute. The report includes:
+Every **3 minutes**, the client sends a health report to Inferoute. The report includes:
 
 - GPU type, memory, and utilization (on Linux with NVIDIA).
 - Which models your local server exposes.
 - Your current tunnel URL, when active.
+
+Inferoute detects **cluster country** from your Cloudflare Tunnel connection on the platform side. You do not send location from the client. See [Cluster location](../provider/cluster-location.md).
 
 You can also check status locally anytime:
 
