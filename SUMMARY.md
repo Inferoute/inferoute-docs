@@ -4,6 +4,8 @@
 - [Consumer](consumer/monthly-spending-caps.md)
   - [Monthly spending caps](consumer/monthly-spending-caps.md)
   - [Max price limits](consumer/max-price-limits.md)
+  - [Prefer own providers](consumer/prefer-own-providers.md)
+  - [Request routing options](consumer/request-routing-options.md)
 - [Provider (dashboard)](provider/deleting-clusters.md)
   - [Deleting and managing clusters](provider/deleting-clusters.md)
   - [Cluster location](provider/cluster-location.md)

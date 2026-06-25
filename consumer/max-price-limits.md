@@ -22,6 +22,12 @@ Each API key can have its own max price. This is useful when one app needs cheap
 
 When you **create** a key, it adopts your profile default. You can optionally set a custom max price for that key during creation.
 
+## Per Request
+
+You can override an API key's max price for one request by sending Inferoute routing options in the API request. Request overrides cannot exceed your profile default.
+
+See [Request routing options](request-routing-options.md).
+
 ## Higher than your profile default
 
 A key cannot be saved with a max price above your profile default unless you also update the profile.
@@ -39,4 +45,6 @@ Dashboard prices are **per 1 million tokens** ($/1M), the same style as provider
 
 ## Related
 
+- [Prefer own providers](prefer-own-providers.md)
+- [Request routing options](request-routing-options.md)
 - [Monthly spending caps](monthly-spending-caps.md)
