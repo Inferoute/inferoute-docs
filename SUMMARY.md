@@ -1,6 +1,7 @@
 # Summary
 
 - [Overview](overview.md)
+- [Email notifications](email-notifications.md)
 - [Consumer](consumer/monthly-spending-caps.md)
   - [Monthly spending caps](consumer/monthly-spending-caps.md)
   - [Max price limits](consumer/max-price-limits.md)

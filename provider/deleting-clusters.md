@@ -32,6 +32,8 @@ Re-generating or creating a key does **not** delete the cluster. It only rotates
 
 Use pause when you want to go idle temporarily without removing the cluster from your account.
 
+If email notifications for **Cluster paused** are enabled, you can get an email when a cluster is paused, with a link to that cluster. See [Email notifications](../email-notifications.md).
+
 ## Delete cluster
 
 **Delete cluster** is in the **Danger zone** on Settings. It is meant when you want to remove a cluster from your account and stop inference immediately.
@@ -71,6 +73,7 @@ Use **pause** for temporary downtime. Use **delete** when you are done with that
 
 ## Related
 
+- [Email notifications](../email-notifications.md)
 - [Cluster location](cluster-location.md)
 - [Model pricing](model-pricing.md)
 - [Provider client introduction](../provider-client/introduction.md)

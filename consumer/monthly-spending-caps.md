@@ -31,7 +31,7 @@ Because of that, if many requests are sent at the same time right as you approac
 
 **Each key has its own cap.** If you use several API keys, set a cap on each one you want to limit. There is no single account-wide cap in the dashboard today.
 
-**You still need balance in your account.** The monthly cap is an extra limit on top of your wallet. If your balance is too low, requests can fail for that reason even when you are under the cap.
+**You still need balance in your account.** The monthly cap is an extra limit on top of your wallet. If your balance is too low, requests can fail for that reason even when you are under the cap. You can also turn on a [low balance email](../email-notifications.md) in Account Settings.
 
 **Uncapped keys are unchanged.** Keys with the cap turned off behave as before; only keys with the cap enabled are limited.
 
@@ -49,4 +49,5 @@ If you need a higher limit mid-month, raise the cap in Settings and click **Save
 
 ## Related
 
+- [Email notifications](../email-notifications.md)
 - [Overview](../overview.md)
