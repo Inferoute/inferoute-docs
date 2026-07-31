@@ -8,7 +8,7 @@ Verification secrets (digests, fingerprints, manifests) are **not** published. T
 
 **GET** `/api/models/approved-builds`
 
-No authentication. Returns only **active** builds and **no hashes**.
+No authentication. Returns only **active** builds and **no hashes**. Safe sizing metadata such as `min_size_bytes` may be included so the client can run a local [compatibility check](compatibility.md). Digests, fingerprints, and manifests are never returned.
 
 Optional query:
 
@@ -31,6 +31,7 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
       "id": "41a99b3a-d928-4580-9656-3508c0529148",
       "alias": "gguf/qwen3:0.6b",
       "service_type": "ollama",
+      "min_size_bytes": 523456789,
       "is_active": true
     },
     {
@@ -39,6 +40,7 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
       "service_type": "vllm",
       "hf_repo": "Qwen/Qwen3-0.6B",
       "hf_ref": "main",
+      "min_size_bytes": 1200000000,
       "is_active": true
     }
   ]
@@ -50,6 +52,7 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 | `alias` | Model id to use with Inferoute and your LLM server |
 | `hf_repo` | HuggingFace repo id (`org/name`) for vLLM downloads |
 | `hf_ref` | Branch or tag to download (for example `main`) |
+| `min_size_bytes` | Measured minimum model weight size used by the local compatibility check |
 
 ## Ollama setup
 
