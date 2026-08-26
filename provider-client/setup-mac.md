@@ -5,7 +5,7 @@ Use this guide when you run the provider client natively on a Mac with an Apple 
 ## Quick install (recommended)
 
 1. Install [Ollama](https://ollama.com) and pull at least one model.
-2. Get your provider API key from the [Inferoute platform](https://core.inferoute.com).
+2. Get your provider API key — see [Sign up and create a cluster](../getting-started/signup.md).
 3. Run the install script:
 
    ```bash
@@ -58,7 +58,7 @@ The client requests a Cloudflare tunnel from the platform and runs **cloudflared
 
 ## Related
 
-- [Installation](installation.md)
+- [Installation](../getting-started/installation.md)
 - [Configuration](configuration.md)
 - [Setup: Ollama](setup-ollama.md)
 - [Setup: Linux](setup-linux.md)

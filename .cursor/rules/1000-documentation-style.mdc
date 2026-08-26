@@ -12,6 +12,7 @@ Content in this repo is published on **GitBook** for customers and providers. Wr
 
 | Path | Reader | Tone |
 |------|--------|------|
+| `getting-started/` | New providers | Plain language, onboarding steps |
 | `consumer/` | API consumers | Plain language, dashboard steps |
 | `provider/` | Dashboard providers | Plain language, cluster/settings flows |
 | `provider-client/` | People running the client | Install, config, troubleshooting |

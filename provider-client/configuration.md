@@ -66,6 +66,7 @@ docker run -e PROVIDER_API_KEY="your-key" \
 
 ## Related
 
+- [Installation](../getting-started/installation.md)
 - [How it works](how-it-works.md)
 - [Setup: Windows](setup-windows.md)
 - [FAQ](faq.md)

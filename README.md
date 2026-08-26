@@ -12,9 +12,10 @@ User-facing pages should use generic examples (**inferoute-cluster1**, not real 
 ## Structure
 
 - `overview.md` — What is Inferoute
+- `getting-started/` — Requirements, sign up / cluster / API key, client install
 - `consumer/` — Consumer docs (API usage, spending caps)
 - `provider/` — Provider dashboard docs (cluster settings, deletion)
-- `provider-client/` — Provider client docs (introduction, installation, configuration, setup guides, FAQ, REST API)
+- `provider-client/` — Provider client reference (how it works, configuration, setup guides, FAQ, REST API)
 
 ## Sync to GitBook (API, no GitHub Sync app)
 

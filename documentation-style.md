@@ -22,6 +22,7 @@ Do not use real cluster names, emails, or API keys in published docs.
 
 | Folder | Purpose |
 |--------|---------|
+| `getting-started/` | Provider onboarding (requirements, signup, install) |
 | `consumer/` | Spending caps, consumer API usage |
 | `provider/` | Provider dashboard (clusters, pricing, settings) |
 | `provider-client/` | Installing and running the provider client |

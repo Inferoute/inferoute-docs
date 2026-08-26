@@ -2,6 +2,12 @@
 
 ## General
 
+### How do I get started as a provider?
+
+1. Check [Software and hardware requirements](../getting-started/requirements.md) — you need Ollama or vLLM already running.
+2. [Sign up and create a cluster](../getting-started/signup.md) to copy a provider API key.
+3. [Install the client](../getting-started/installation.md).
+
 ### What is the Inferoute Provider Client?
 
 A lightweight service that runs on Ollama or vLLM provider machines. It monitors GPU resources, reports health to Inferoute, and handles inference requests by forwarding them to your local Ollama or vLLM instance.
@@ -115,6 +121,7 @@ The client still runs: health reports omit or null out GPU data and the GPU is r
 
 ## Related
 
+- [Installation](../getting-started/installation.md)
 - [How it works](how-it-works.md)
 - [Approved model builds](approved-models.md)
 - [Model pricing](../provider/model-pricing.md)

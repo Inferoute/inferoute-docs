@@ -96,4 +96,4 @@ Only aliases on the [approved model builds](approved-models.md) list are verifie
 ## Related
 
 - [Configuration](configuration.md)
-- [Installation](installation.md)
+- [Installation](../getting-started/installation.md)

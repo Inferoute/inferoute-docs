@@ -44,4 +44,4 @@ Set **`model_path`** in the Provider Client config to that same directory (`~/mo
 
 - [Approved model builds](approved-models.md)
 - [Configuration](configuration.md)
-- [Installation](installation.md)
+- [Installation](../getting-started/installation.md)

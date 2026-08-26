@@ -14,7 +14,7 @@
    go build -o inferoute-client ./cmd
    ```
 
-3. **Exposure:** The client uses **Cloudflare Tunnel** to expose your machine. No need to install or configure ngrok or open firewall ports. Get your provider API key from the [Inferoute platform](https://core.inferoute.com); the client will request a tunnel from the platform and run cloudflared for you.
+3. **Exposure:** The client uses **Cloudflare Tunnel** to expose your machine. No need to install or configure ngrok or open firewall ports. Get your provider API key from [Sign up and create a cluster](../getting-started/signup.md); the client will request a tunnel from the platform and run cloudflared for you.
 
 4. **Run:**
 
@@ -29,7 +29,7 @@
 
 ## Related
 
-- [Installation](installation.md)
+- [Installation](../getting-started/installation.md)
 - [Configuration](configuration.md)
 - [Setup: macOS](setup-mac.md)
 - [Setup: Windows](setup-windows.md)

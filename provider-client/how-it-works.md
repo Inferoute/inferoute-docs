@@ -1,6 +1,6 @@
 # How It Works
 
-This page explains what the Provider Client does on your machine and how it talks to Inferoute. For install steps, see [Installation](installation.md).
+This page explains what the Provider Client does on your machine and how it talks to Inferoute. For install steps, see [Installation](../getting-started/installation.md).
 
 ## Overview
 

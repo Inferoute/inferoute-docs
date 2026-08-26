@@ -1,7 +1,10 @@
 # Summary
 
 - [Overview](overview.md)
-- [Email notifications](email-notifications.md)
+- [Getting started](getting-started/requirements.md)
+  - [Software and hardware requirements](getting-started/requirements.md)
+  - [Sign up and create a cluster](getting-started/signup.md)
+  - [Installation](getting-started/installation.md)
 - [Consumer](consumer/monthly-spending-caps.md)
   - [Monthly spending caps](consumer/monthly-spending-caps.md)
   - [Max price limits](consumer/max-price-limits.md)
@@ -14,7 +17,6 @@
 - [Provider client](provider-client/introduction.md)
   - [Introduction](provider-client/introduction.md)
   - [How it works](provider-client/how-it-works.md)
-  - [Installation](provider-client/installation.md)
   - [Configuration](provider-client/configuration.md)
   - [Setup: Ollama](provider-client/setup-ollama.md)
   - [Setup: vLLM](provider-client/setup-vllm.md)
@@ -25,3 +27,4 @@
   - [FAQ](provider-client/faq.md)
   - [Approved model builds](provider-client/approved-models.md)
   - [Local REST API](provider-client/rest-api.md)
+- [Email notifications](email-notifications.md)

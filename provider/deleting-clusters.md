@@ -1,6 +1,6 @@
 # Deleting and managing clusters
 
-This page covers **dashboard** actions for a provider cluster: API keys, pause/resume, and deletion. For installing and running the provider client on your machine, see the [Provider client](provider-client/introduction.md) docs.
+This page covers **dashboard** actions for a provider cluster: API keys, pause/resume, and deletion. To create a cluster and copy a key, see [Sign up and create a cluster](../getting-started/signup.md). For installing the client, see [Installation](../getting-started/installation.md).
 
 ## Where to find cluster settings
 
@@ -73,6 +73,8 @@ Use **pause** for temporary downtime. Use **delete** when you are done with that
 
 ## Related
 
+- [Sign up and create a cluster](../getting-started/signup.md)
+- [Installation](../getting-started/installation.md)
 - [Email notifications](../email-notifications.md)
 - [Cluster location](cluster-location.md)
 - [Model pricing](model-pricing.md)
