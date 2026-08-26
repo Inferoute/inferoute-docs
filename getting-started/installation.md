@@ -27,7 +27,7 @@ $env:PROVIDER_API_KEY="your-key"; irm https://raw.githubusercontent.com/inferout
 
 Optional: `$env:PROVIDER_TYPE="ollama"`, `$env:LLM_URL="http://localhost:11434"`, `$env:SERVER_PORT="8080"`.
 
-The script does not need Administrator. It installs `cloudflared` and `inferoute-client` to `%LOCALAPPDATA%\inferoute\bin`, writes `%USERPROFILE%\.config\inferoute\config.yaml`, and adds a **Start Menu → Inferoute → Inferoute Client** shortcut that runs with `--tray`. See [Setup: Windows](../provider-client/setup-windows.md).
+The script does not need Administrator. It installs `cloudflared` and `inferoute-client` to `%LOCALAPPDATA%\inferoute\bin`, writes `%USERPROFILE%\.config\inferoute\config.yaml`, and adds a **Start Menu → Inferoute → Inferoute Client** shortcut. On Windows the client runs in the notification area by default — closing the terminal does not stop it. See [Setup: Windows](../provider-client/setup-windows.md).
 
 You can also download `scripts/windows-install.bat` from the [inferoute-client](https://github.com/inferoute/inferoute-client) repo and double-click it (no administrator prompt).
 
@@ -58,7 +58,7 @@ inferoute-client
 inferoute-client --config ~/.config/inferoute/config.yaml
 ```
 
-On Windows, start from **Start Menu → Inferoute → Inferoute Client**, or run `inferoute-client --tray` to hide the console and use the notification area.
+On Windows, start from **Start Menu → Inferoute → Inferoute Client**, or run `inferoute-client`. The client stays in the notification area; right-click the icon and choose **Open dashboard** for live status. Use `inferoute-client --console` if you want the terminal UI.
 
 ## Docker
 

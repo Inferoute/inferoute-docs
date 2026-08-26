@@ -23,6 +23,8 @@ Inferoute detects **cluster country** from your Cloudflare Tunnel connection on 
 
 You can also check status locally anytime:
 
+- Open **http://localhost:8080/** in a browser (or whatever port you configured) for a live status page.
+- **GET /api/status** — JSON snapshot of that page.
 - **GET /api/health** (or **GET /health**) — full health snapshot.
 - **GET /api/busy** (or **GET /busy**) — whether the GPU is considered busy.
 

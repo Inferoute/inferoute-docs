@@ -14,17 +14,21 @@ Use this guide when you run the provider client natively on 64-bit Windows with 
 
 The script installs **cloudflared** and **inferoute-client** to `%LOCALAPPDATA%\inferoute\bin`, writes config to `%USERPROFILE%\.config\inferoute\config.yaml`, and adds that folder to your user **PATH**. It does **not** require Administrator.
 
-4. Start the client from **Start Menu → Inferoute → Inferoute Client** (runs in the notification area) or from a **new** terminal:
+4. Start the client from **Start Menu → Inferoute → Inferoute Client**, or from a **new** terminal:
 
    ```powershell
    inferoute-client
    ```
 
-   To hide the console and use the notification area:
+On Windows the client runs in the **notification area** by default. The terminal prompt returns; closing that window does **not** stop the client.
 
-   ```powershell
-   inferoute-client --tray
-   ```
+Right-click the Inferoute icon and choose **Open dashboard** to see live status in your browser — session, models, GPU, and recent requests. Choose **Quit** on that menu when you want to stop the client.
+
+To use the terminal dashboard instead:
+
+```powershell
+inferoute-client --console
+```
 
 Default config: `%USERPROFILE%\.config\inferoute\config.yaml`. Logs: `%USERPROFILE%\.local\state\inferoute\log`.
 
@@ -50,7 +54,7 @@ Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is o
 2. Install **cloudflared**: download `cloudflared-windows-amd64.exe` from [Cloudflare releases](https://github.com/cloudflare/cloudflared/releases), or run `winget install Cloudflare.cloudflared`.
 3. Place both executables on **PATH**.
 4. Copy `config.yaml.example` to `%USERPROFILE%\.config\inferoute\config.yaml` and set **api_key**, **provider_type** to `ollama`, and **llm_url**.
-5. Run `inferoute-client` or `inferoute-client --tray`.
+5. Run `inferoute-client`.
 
 The client requests a Cloudflare tunnel from the platform and runs **cloudflared** for you — no ngrok or open firewall ports required.
 
