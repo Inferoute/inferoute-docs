@@ -20,6 +20,7 @@
   - [Setup: vLLM](provider-client/setup-vllm.md)
   - [Setup: Linux](provider-client/setup-linux.md)
   - [Setup: macOS](provider-client/setup-mac.md)
+  - [Setup: Windows](provider-client/setup-windows.md)
   - [Model compatibility check](provider-client/compatibility.md)
   - [FAQ](provider-client/faq.md)
   - [Approved model builds](provider-client/approved-models.md)

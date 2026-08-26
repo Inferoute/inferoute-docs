@@ -12,6 +12,18 @@
 PROVIDER_API_KEY="your-key" curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
 ```
 
+### Windows (PowerShell)
+
+Requires 64-bit Windows and [Ollama](https://ollama.com). vLLM is not supported on native Windows.
+
+```powershell
+$env:PROVIDER_API_KEY="your-key"; irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
+```
+
+Optional: `$env:PROVIDER_TYPE="ollama"`, `$env:LLM_URL="http://localhost:11434"`, `$env:SERVER_PORT="8080"`.
+
+The script does not need Administrator. It installs binaries to `%LOCALAPPDATA%\inferoute\bin` and writes `%USERPROFILE%\.config\inferoute\config.yaml`. Start from **Start Menu → Inferoute → Inferoute Client** (notification area) or run `inferoute-client` in a new terminal. See [Setup: Windows](setup-windows.md).
+
 ### Manual environment variables
 
 ```bash
@@ -38,6 +50,8 @@ inferoute-client
 ```bash
 inferoute-client --config /path/to/config.yaml
 ```
+
+On Windows, `inferoute-client --tray` hides the console and runs in the notification area.
 
 ## Docker
 
@@ -91,3 +105,4 @@ When the client starts, it publishes your available models with default costs. L
 - [Setup: vLLM](setup-vllm.md)
 - [Setup: Linux](setup-linux.md)
 - [Setup: macOS](setup-mac.md)
+- [Setup: Windows](setup-windows.md)

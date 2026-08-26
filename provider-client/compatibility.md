@@ -11,8 +11,9 @@ It reads the public approved-model catalog from `https://core.inferoute.com` by 
 | Platform | What it uses |
 |----------|----------------|
 | **Linux + NVIDIA** | `nvidia-smi` for GPU name, driver, CUDA, VRAM total/free |
+| **Windows + NVIDIA** | `nvidia-smi` (same as Linux) when the NVIDIA driver is on `PATH` |
 | **macOS (Apple Silicon)** | `system_profiler` for GPU name; unified memory from system RAM |
-| **macOS (Intel) / CPU-only** | System RAM with a slow/CPU warning |
+| **macOS (Intel) / CPU-only / Windows without NVIDIA** | System RAM with a slow/CPU warning |
 
 ## Commands
 
@@ -49,7 +50,7 @@ inferoute-client compatibility --catalog-url https://api.example.com
 | `too_large` | Unlikely to fit |
 | `unknown` | Missing size or usable memory |
 
-Scoring uses each build’s public `min_size_bytes` plus a conservative runtime overhead (higher for vLLM). On Apple Silicon, only a fraction of unified memory is treated as usable so the OS still has headroom. On multi-GPU Linux hosts, v1 scores against the **largest single GPU**.
+Scoring uses each build’s public `min_size_bytes` plus a conservative runtime overhead (higher for vLLM). On Apple Silicon, only a fraction of unified memory is treated as usable so the OS still has headroom. On multi-GPU Linux or Windows hosts, v1 scores against the **largest single GPU**.
 
 This is a fit check only — it does not estimate tokens/sec.
 
@@ -63,7 +64,7 @@ If every row shows `0 B` and `model size unavailable in catalog`, the API respon
 
 An HTTP `522` response means the API origin timed out behind Cloudflare. It is not caused by a missing provider client configuration file. Retry after the API is available, pass another deployment with `--catalog-url`, or use `--offline-catalog`.
 
-### Linux GPU is not detected
+### Linux or Windows GPU is not detected
 
 Run `nvidia-smi` directly. If it is unavailable, install the NVIDIA driver and ensure the command is on `PATH`. In containers, expose the GPU with the NVIDIA container runtime.
 
@@ -72,3 +73,4 @@ Run `nvidia-smi` directly. If it is unavailable, install the NVIDIA driver and e
 - [Approved model builds](approved-models.md)
 - [Setup: Linux](setup-linux.md)
 - [Setup: macOS](setup-mac.md)
+- [Setup: Windows](setup-windows.md)

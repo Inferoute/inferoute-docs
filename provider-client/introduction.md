@@ -17,6 +17,7 @@ Future support is planned for exo-labs and llama.cpp.
 - Ollama or vLLM running locally (Ollama is typical on macOS).
 - **Linux with NVIDIA GPU:** `nvidia-smi` must be installed and on `PATH` (for GPU monitoring and busy-state detection). Install the [NVIDIA driver](https://www.nvidia.com/drivers) for your system; the install script does not install it. See [Setup: Linux](setup-linux.md).
 - **macOS with Apple GPU:** Ollama running locally. Intel and Apple Silicon are supported. See [Setup: macOS](setup-mac.md).
+- **Windows amd64:** [Ollama for Windows](https://ollama.com). See [Setup: Windows](setup-windows.md). vLLM is not supported on native Windows. GPU monitoring needs `nvidia-smi` on **PATH** (install the [NVIDIA driver](https://www.nvidia.com/drivers)); the client still runs without it.
 - **After first run:** The client publishes your available models and sets initial costs from platform averages. Log in to the dashboard and adjust model pricing per cluster if needed — see [Model pricing](../provider/model-pricing.md).
 
 ## Exposing your machine via Cloudflare Tunnel (secure HTTPS)

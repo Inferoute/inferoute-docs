@@ -32,3 +32,4 @@
 - [Installation](installation.md)
 - [Configuration](configuration.md)
 - [Setup: macOS](setup-mac.md)
+- [Setup: Windows](setup-windows.md)

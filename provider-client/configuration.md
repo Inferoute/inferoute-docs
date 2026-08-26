@@ -39,6 +39,18 @@ curl -fsSL https://raw.githubusercontent.com/Inferoute/inferoute-client/main/scr
   bash
 ```
 
+**Install script (Windows):**
+
+```powershell
+$env:PROVIDER_API_KEY="your-key"
+$env:PROVIDER_TYPE="ollama"
+$env:LLM_URL="http://localhost:11434"
+$env:SERVER_PORT="9090"
+irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
+```
+
+Windows providers should use Ollama. See [Setup: Windows](setup-windows.md).
+
 **Docker:**
 
 Use `host.docker.internal` when the LLM runs on the host:
@@ -55,4 +67,5 @@ docker run -e PROVIDER_API_KEY="your-key" \
 ## Related
 
 - [How it works](how-it-works.md)
+- [Setup: Windows](setup-windows.md)
 - [FAQ](faq.md)

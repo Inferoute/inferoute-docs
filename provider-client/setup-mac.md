@@ -62,4 +62,5 @@ The client requests a Cloudflare tunnel from the platform and runs **cloudflared
 - [Configuration](configuration.md)
 - [Setup: Ollama](setup-ollama.md)
 - [Setup: Linux](setup-linux.md)
+- [Setup: Windows](setup-windows.md)
 - [FAQ](faq.md)

@@ -26,7 +26,7 @@ You can also check status locally anytime:
 - **GET /api/health** (or **GET /health**) — full health snapshot.
 - **GET /api/busy** (or **GET /busy**) — whether the GPU is considered busy.
 
-On Linux with NVIDIA, utilization above **20%** is treated as busy. On macOS, busy is always reported as false.
+On Linux with NVIDIA, utilization above **20%** is treated as busy. On Windows with NVIDIA the same rule applies when `nvidia-smi` is available. On macOS, busy is always reported as false.
 
 ## Model pricing and registration
 
