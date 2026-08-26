@@ -20,7 +20,7 @@ The script installs **cloudflared** and **inferoute-client** to `%LOCALAPPDATA%\
    inferoute-client
    ```
 
-On Windows the client runs in the **notification area** by default. The terminal prompt returns; closing that window does **not** stop the client.
+On Windows the client runs in the **notification area** by default. The terminal prompt returns; closing that window does **not** stop the client. A notification appears when the client starts.
 
 Right-click the Inferoute icon and choose **Open dashboard** to see live status in your browser — session, models, GPU, and recent requests. Choose **Quit** on that menu when you want to stop the client.
 

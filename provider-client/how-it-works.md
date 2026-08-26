@@ -28,7 +28,7 @@ You can also check status locally anytime:
 - **GET /api/health** (or **GET /health**) — full health snapshot.
 - **GET /api/busy** (or **GET /busy**) — whether the GPU is considered busy.
 
-On Linux with NVIDIA, utilization above **20%** is treated as busy. On Windows with NVIDIA the same rule applies when `nvidia-smi` is available. On macOS, busy is always reported as false.
+On Linux with NVIDIA, utilization above **20%** is treated as busy. On Windows with NVIDIA the same rule applies when `nvidia-smi` is available. On every platform, including macOS, the client also treats itself as busy while an inference request is already in flight (default one at a time).
 
 ## Model pricing and registration
 
@@ -48,7 +48,7 @@ Approved marketplace models must match a platform [approved model build](approve
 
 When Inferoute sends a request to your cluster:
 
-1. **Busy GPU** — If the GPU is busy, the client responds with **503 Service Unavailable** so Inferoute can try another provider.
+1. **Busy** — If the GPU is busy, or the client is already running an inference request, it responds with **503 Service Unavailable** so Inferoute can try another provider.
 2. **Authentication** — Valid requests include a signed header; invalid requests get **401 Unauthorized**.
 3. **Proxy** — Valid requests are forwarded to your local Ollama or vLLM server. The client supports OpenAI-compatible **POST /v1/chat/completions** and **POST /v1/completions**.
 

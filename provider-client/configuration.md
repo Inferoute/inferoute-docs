@@ -5,6 +5,7 @@ The client reads a YAML config file. Default path is platform-specific (for exam
 ## Sections
 
 - **server** — HTTP server (port, host) for the local REST API.
+  - **max_concurrent_inference** — How many inference requests the client will run at once (default **1**). Further requests return **503** so Inferoute can try another provider. Use **0** for unlimited.
 - **provider** — Connection to the Inferoute platform.
   - **provider_type** — `ollama`, `vllm`, or (future) `exo-labs`, `llama.cpp`. Default: `ollama`.
   - **llm_url** — Local LLM API URL. For example, `http://localhost:11434` for Ollama or `http://localhost:8000` for vLLM. Default: `http://localhost:11434`.
