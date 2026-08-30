@@ -5,6 +5,7 @@ The client reads a YAML config file. Default path is platform-specific (for exam
 ## Sections
 
 - **server** — HTTP server (port, host) for the local REST API.
+  - **host** — Bind address (default **127.0.0.1**). Leave this unless you need the status dashboard from another machine or from the Docker host. Set `0.0.0.0` only in that case, then publish the port to loopback on the host (for example `-p 127.0.0.1:8080:8080`). The Cloudflare tunnel does not need a published port.
   - **max_concurrent_inference** — How many inference requests the client will run at once (default **1**). Further requests return **503** so Inferoute can try another provider. Use **0** for unlimited.
 - **provider** — Connection to the Inferoute platform.
   - **provider_type** — `ollama`, `vllm`, or (future) `exo-labs`, `llama.cpp`. Default: `ollama`.

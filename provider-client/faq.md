@@ -98,8 +98,8 @@ Cluster **country** is not part of the health payload. Inferoute resolves it fro
 
 ### How are inference requests handled?
 
-1. If the GPU is busy → **503 Service Unavailable** (orchestrator can try another provider).
-2. If present, the request signature in `X-Request-Id` is validated with Inferoute; invalid requests get **401**.
+1. The request signature in `X-Request-Id` is validated with Inferoute; missing or invalid requests get **401**.
+2. If the GPU is busy → **503 Service Unavailable** (orchestrator can try another provider).
 3. Valid requests are proxied to the local Ollama or vLLM server.
 
 ### What endpoints does the client expose for inference?

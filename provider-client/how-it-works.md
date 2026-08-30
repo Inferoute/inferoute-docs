@@ -21,7 +21,7 @@ Every **3 minutes**, the client sends a health report to Inferoute. The report i
 
 Inferoute detects **cluster country** from your Cloudflare Tunnel connection on the platform side. You do not send location from the client. See [Cluster location](../provider/cluster-location.md).
 
-You can also check status locally anytime:
+You can also check status locally anytime (these URLs are not on the public tunnel):
 
 - Open **http://localhost:8080/** in a browser (or whatever port you configured) for a live status page.
 - **GET /api/status** — JSON snapshot of that page.
@@ -48,8 +48,8 @@ Approved marketplace models must match a platform [approved model build](approve
 
 When Inferoute sends a request to your cluster:
 
-1. **Busy** — If the GPU is busy, or the client is already running an inference request, it responds with **503 Service Unavailable** so Inferoute can try another provider.
-2. **Authentication** — Valid requests include a signed header; invalid requests get **401 Unauthorized**.
+1. **Authentication** — Valid requests include a signed header; missing or invalid requests get **401 Unauthorized**.
+2. **Busy** — If the GPU is busy, or the client is already running an inference request, it responds with **503 Service Unavailable** so Inferoute can try another provider.
 3. **Proxy** — Valid requests are forwarded to your local Ollama or vLLM server. The client supports OpenAI-compatible **POST /v1/chat/completions** and **POST /v1/completions**.
 
 ## Cloudflare tunnel

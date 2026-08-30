@@ -66,12 +66,13 @@ The official image is **inferoute/inferoute-client** on Docker Hub.
 
 If the client runs in Docker but Ollama/vLLM runs on the host, set `LLM_URL` so the container can reach the host (for example `http://host.docker.internal:11434`). Ollama must listen on `0.0.0.0` — see [Setup: Ollama](../provider-client/setup-ollama.md).
 
+The client listens on **127.0.0.1** inside the container. Inferoute reaches you through the Cloudflare tunnel — you do not need to publish port 8080. To open the [local status dashboard](../provider-client/rest-api.md) from the host, set **server.host** to `0.0.0.0` and publish the port to loopback (for example `-p 127.0.0.1:8080:8080`). See [Configuration](../provider-client/configuration.md).
+
 ### Docker quick start
 
 ```bash
 docker run -d \
   --name inferoute-client \
-  -p 8080:8080 \
   -e PROVIDER_API_KEY="your-key" \
   -e PROVIDER_TYPE="ollama" \
   -e LLM_URL="http://host.docker.internal:11434" \
@@ -85,8 +86,6 @@ version: '3.8'
 services:
   inferoute-client:
     image: inferoute/inferoute-client:latest
-    ports:
-      - "8080:8080"
     environment:
       - PROVIDER_API_KEY=your-key
       - PROVIDER_TYPE=ollama
@@ -100,7 +99,6 @@ services:
 docker build -t inferoute-client .
 docker run -d \
   --name inferoute-client \
-  -p 8080:8080 \
   -e PROVIDER_API_KEY="your-key" \
   inferoute-client
 ```
