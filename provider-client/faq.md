@@ -74,6 +74,12 @@ No. The client starts and supervises cloudflared. You only need to ensure the in
 
 The client supervises cloudflared and will restart it if it exits, with exponential backoff on repeated failures. Check logs if the tunnel stays down.
 
+### The client failed to start because of the API key
+
+The provider API key in **config.yaml** (`api_key`) must be the key for **that cluster**, copied from **Clusters** → select the cluster → **Settings**. A consumer key, an old rotated key, or a typo is rejected at startup with an “Invalid provider API key” message.
+
+For example, after you regenerate the key in **Settings**, update `api_key` and restart the client. Do not leave the placeholder `your_api_key_here`.
+
 ## Health and monitoring
 
 ### How often does the client report health?

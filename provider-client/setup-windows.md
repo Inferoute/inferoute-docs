@@ -32,6 +32,8 @@ inferoute-client --console
 
 Default config: `%USERPROFILE%\.config\inferoute\config.yaml`. Logs: `%USERPROFILE%\.local\state\inferoute\log`.
 
+If startup fails with **Invalid provider API key**, copy the key from **Clusters** → **Settings** into `api_key` and restart. See [FAQ](faq.md#the-client-failed-to-start-because-of-the-api-key).
+
 If SmartScreen says **Windows protected your PC**, choose **More info** → **Run anyway**. The GitHub binary is not code-signed.
 
 ## Ollama on Windows
