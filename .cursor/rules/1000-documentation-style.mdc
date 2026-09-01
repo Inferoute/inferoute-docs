@@ -6,7 +6,7 @@ alwaysApply: true
 
 # Inferoute docs — user guide conventions
 
-Content in this repo is published on **GitBook** for customers and providers. Write for readers using the dashboard or provider client, not for internal engineering notes.
+Content in this repo is published on **GitBook** for customers and providers. Write for readers using the dashboard or provider client, not for internal engineering notes. Aim for Stripe/Vercel quality: accurate, scannable, and fast to a working result.
 
 ## Audience
 
@@ -20,32 +20,73 @@ Content in this repo is published on **GitBook** for customers and providers. Wr
 
 Do **not** put table names, service names, or implementation details in user guides unless the page is explicitly for operators (this repo has no internal-only tree — keep jargon out).
 
+Assume the reader is a competent developer (they know what an API or a database is) but a complete beginner to **Inferoute**. Explain Inferoute-specific concepts thoroughly. Do not assume dashboard or client domain knowledge.
+
+## Documentation flow (funnel)
+
+Structure content from broad, easy wins down to granular detail. Fit every page into this flow — do not mix layers on one page.
+
+| Layer | Job | This repo |
+|-------|-----|-----------|
+| **Overview** | What is this, and why use it? (1–2 paragraphs) | `overview.md`, section intros |
+| **Quickstart** | Fastest path to something working (minimal theory, maximum action) | `getting-started/` |
+| **Core concepts** | How the pieces fit together | e.g. `provider-client/how-it-works.md` |
+| **Guides** | Step-by-step for one common task | `consumer/`, `provider/`, `provider-client/setup-*` |
+| **API reference** | Exhaustive dictionary of endpoints, params, payloads | `provider-client/rest-api.md` (and any future REST pages) |
+
+- **Overview:** lead with what the reader can **do**, then edge cases.
+- **Quickstart:** time-to-value — get them running real code or a live dashboard action as fast as possible.
+- **Guides:** one topic per page; link instead of duplicating long explanations.
+- **API reference:** strictly factual. Users search it; they do not read it end-to-end.
+
+## API reference sits apart from guides
+
+Keep the API reference in its **own sidebar section**, not nested inside a tutorial.
+
+- Treat it as a **dictionary**: one endpoint (or tightly related group) per heading; searchable by error code, parameter, and method name.
+- Each entry: what it does, parameters, request/response shapes, copy-pasteable examples, example JSON.
+- GitBook is not a three-pane Stripe layout. Put description and parameters in the body; put copy-pasteable snippets and example responses in fenced blocks immediately after (multiple languages when relevant).
+
+When documenting provider automation, state clearly when units differ from the dashboard (e.g. per-token in REST vs $/1M in UI). Give a conversion example with round numbers.
+
+## Voice and wording (ages 14–16, not dumbed down)
+
+High-school reading level for **language complexity**. Do not talk down to the reader.
+
+- Second person (**you**), **active voice**, **imperative mood** for steps: "Install the package," "Create a new file," "To start the controller, run..." — not "In order to instantiate the primary controller, one must first execute..."
+- Short sentences. Simple vocabulary. No unnecessary jargon.
+- Match `provider/deleting-clusters.md` and `consumer/monthly-spending-caps.md`.
+- Dashboard paths: bold UI labels (**Clusters**, **Models** tab, **Save**).
+- Inline code for file names, variables, commands, and model IDs.
+- Use tables for comparisons (per-cluster vs global, dashboard vs API units).
+- Use bullets, numbered steps, and warning/info callouts so readers can **scan**. Bold only the words that matter.
+
 ## Examples must be generic
 
 - Use fictional cluster names: **inferoute-cluster1**, **inferoute-cluster2** — not real cluster names from an account.
 - Use fictional model IDs where needed, e.g. `Qwen/Qwen2.5-7B-Instruct`.
 - Introduce examples with **“For example,”** or **“for example”** in running text.
 - Never use real emails, API keys, or customer identifiers in docs.
-
-## Voice and structure
-
-- Second person (**you**), active voice — match `provider/deleting-clusters.md` and `consumer/monthly-spending-caps.md`.
-- Lead with what the reader can **do**, then edge cases.
-- Dashboard paths: bold UI labels (**Clusters**, **Models** tab, **Save**).
-- Use tables for comparisons (per-cluster vs global, dashboard vs API units).
+- Code snippets must actually work. Outdated code is worse than no code.
 
 ## When adding or changing pages
 
 1. Update `SUMMARY.md` if the page is new or moved.
 2. Cross-link related pages (FAQ, REST API, sibling provider pages).
 3. Keep one topic per page; link instead of duplicating long explanations.
+4. Put the page in the right funnel layer (overview vs quickstart vs guide vs API).
 
-## API and units
+## What good looks like
 
-When documenting provider automation, state clearly when units differ from the dashboard (e.g. per-token in REST vs $/1M in UI). Give a conversion example with round numbers.
+- **Time-to-value:** the reader can go from the page to a working result quickly.
+- **Searchability:** an exact error code or parameter lands on the right page.
+- **Accuracy:** snippets match the product as shipped.
+- **Scanability:** headings, bold UI labels, code blocks, callouts, and bullets — not walls of text.
 
 ## What not to do
 
 - Don’t document unreleased features as shipped.
 - Don’t paste secrets or live credentials.
 - Don’t use “Home cluster 42”-style real environment names in user-facing examples.
+- Don’t bury API reference inside a guide, or write API pages as tutorials.
+- Don’t write passive or academic prose ("one must", "in order to instantiate").

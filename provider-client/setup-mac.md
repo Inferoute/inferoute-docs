@@ -30,17 +30,17 @@ If you need Ollama to listen on all interfaces (for example when the client runs
 
 ## Apple GPU monitoring
 
-On macOS the client reports basic GPU information (model name and core count). It does **not** report GPU memory or utilization, and **busy** is always reported as false. That means Inferoute may route requests to your Mac even when Ollama is already under load.
+On macOS the client reports basic GPU information (model name and core count). It does **not** report GPU memory or utilization, so load from other processes is invisible. The client still reports **busy** while it is already running an inference request (default one at a time).
 
-For production provider workloads with accurate busy detection, use **Linux with an NVIDIA GPU** — see [Setup: Linux](setup-linux.md).
+For production provider workloads with utilization-based busy detection, use **Linux with an NVIDIA GPU** — see [Setup: Linux](setup-linux.md).
 
 ## Manual install from source
 
-1. **Go:** Install Go 1.21 or higher.
+1. **Go:** Install Go 1.22 or higher.
 2. **Clone and build:**
 
    ```bash
-   git clone https://github.com/sentnl/inferoute-client.git
+   git clone https://github.com/inferoute/inferoute-client.git
    cd inferoute-client
    cp config.yaml.example config.yaml
    nano config.yaml   # set provider API key and other options

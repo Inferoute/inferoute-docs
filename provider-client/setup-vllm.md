@@ -13,7 +13,7 @@ If the client runs in Docker and vLLM runs on the host, use `http://host.docker.
 
 ## Download and serve an approved model
 
-Use the **pinned HuggingFace revision** from [approved model builds](approved-models.md) (`hf_repo` + `hf_revision`). Floating `main` may not match the approved fingerprint.
+Use the **pinned HuggingFace revision** from [approved model builds](approved-models.md) (`hf_repo` + `hf_ref`). Floating `main` may not match the approved fingerprint.
 
 ### Option A — HuggingFace hub cache (default)
 
@@ -23,7 +23,7 @@ For example, if vLLM downloads into the standard cache when you serve by repo id
 vllm serve Qwen/Qwen3-0.6B
 ```
 
-The Provider Client reads the model id from vLLM (`GET /v1/models`), looks up the approved `hf_revision`, and fingerprints weights for models located in the default vLLM folder  (`~/.cache/huggingface/hub/`)
+The Provider Client reads the model id from vLLM (`GET /v1/models`), looks up the approved `hf_ref`, and fingerprints weights for models located in the default vLLM folder  (`~/.cache/huggingface/hub/`)
 
 You can keep many models in the same hub folder; verification only runs for the model vLLM is serving.
 
@@ -34,7 +34,7 @@ If your cache is not in the default location, set **`hf_hub_cache`** in config (
 For example:
 
 ```bash
-hf download Qwen/Qwen3-0.6B --revision <hf_revision from API> --local-dir ~/models/Qwen3-0.6B
+hf download Qwen/Qwen3-0.6B --revision <hf_ref from API> --local-dir ~/models/Qwen3-0.6B
 vllm serve ~/models/Qwen3-0.6B --served-model-name Qwen/Qwen3-0.6B
 ```
 

@@ -2,12 +2,12 @@
 
 ## Manual install from source
 
-1. **Go:** Install Go 1.21 or higher.
+1. **Go:** Install Go 1.22 or higher.
 
 2. **Clone and build:**
 
    ```bash
-   git clone https://github.com/sentnl/inferoute-client.git
+   git clone https://github.com/inferoute/inferoute-client.git
    cd inferoute-client
    cp config.yaml.example config.yaml
    nano config.yaml   # set provider API key and other options

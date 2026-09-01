@@ -26,7 +26,7 @@ Install guides: [Setup: Ollama](../provider-client/setup-ollama.md), [Setup: vLL
 | Requirement | Detail |
 | --- | --- |
 | **NVIDIA GPU** (Linux and Windows) | At least **8 GB** of VRAM. Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on `PATH`. The Inferoute install script does not install the driver. |
-| **macOS** | Apple Silicon or Intel. The client reports basic GPU info; busy detection is not available. Use Linux + NVIDIA for production routing with accurate busy status. |
+| **macOS** | Apple Silicon or Intel. The client reports basic GPU info; utilization-based busy detection is not available (in-flight requests still mark the client busy). Use Linux + NVIDIA for production routing with utilization-based busy status. |
 | **System RAM** | **24 GB+** recommended if you run larger models. |
 | **Disk** | **100 GB+** free is a practical starting point for model weights. |
 

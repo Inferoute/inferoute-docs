@@ -6,6 +6,8 @@ Inferoute is a provider network and orchestration layer for running LLM inferenc
 - **Provider client:** Lightweight service on each provider machine that reports health, registers models and pricing, and handles inference by proxying to the local Ollama or vLLM server.
 - **API:** OpenAI-compatible endpoints (for example `/v1/chat/completions`, `/v1/completions`) so existing tooling and code work with minimal changes.
 
+To call models as a buyer, create a consumer key and send a chat request — see [Using the API](consumer/using-the-api.md).
+
 To offer GPU inference, start with [Software and hardware requirements](getting-started/requirements.md), then [sign up and create a cluster](getting-started/signup.md), then [install the provider client](getting-started/installation.md).
 
-All API documentation is published as OpenAPI 3 in this GitBook space (API Reference section).
+Endpoint-level API docs (parameters, payloads) live in the GitBook **API Reference** (OpenAPI 3). These pages are guides.

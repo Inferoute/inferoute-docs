@@ -17,8 +17,8 @@ Each cluster has one or more **provider API keys**. The client on your machine u
 On Settings you can:
 
 - **View** the key label and a masked suffix (last characters of the lookup key).
-- **Re-generate** the key — the old secret stops working immediately; copy the new key into your client config.
-- **Create** a key if the cluster has none (for example after all keys were revoked).
+- **Re-Generate Key** — the old secret stops working immediately; copy the new key into your client config.
+- **Create API Key** if the cluster has none (for example after all keys were revoked).
 
 The full API key is only shown **once** when it is created or re-generated. Store it somewhere safe before closing the modal.
 
@@ -26,9 +26,13 @@ Re-generating or creating a key does **not** delete the cluster. It only rotates
 
 ## Pause and resume
 
-**Pause cluster** stops new inference orders from being routed to your cluster. Your provider client can keep running, but the orchestrator will not send new work while the cluster is paused.
+On Settings, under **Pause Inference**:
 
-**Resume cluster** turns routing back on (subject to health and availability checks).
+**Pause Cluster** stops new inference orders from being routed to your cluster. Your provider client can keep running, but Inferoute will not send new work while the cluster is paused.
+
+**Resume Cluster** turns routing back on (subject to health and availability checks).
+
+The cluster list uses the same actions as **Pause cluster** / **Resume cluster**.
 
 Use pause when you want to go idle temporarily without removing the cluster from your account.
 
@@ -43,14 +47,14 @@ If email notifications for **Cluster paused** are enabled, you can get an email 
 When you confirm deletion:
 
 1. **The cluster is removed from your dashboard** — it no longer appears under **Clusters**.
-2. **Inference stops** — the cluster is paused, marked unavailable, and health is set to red so the orchestrator will not route requests to it.
+2. **Inference stops** — the cluster is paused, marked unavailable, and health is set to red so Inferoute will not route requests to it.
 3. **All active API keys for that cluster are revoked** — your provider client can no longer authenticate with those keys.
 4. **Historical data is kept** — past earnings and transactions stay in your account history for billing and audit. The cluster no longer appears in the dashboard, but we retain records tied to past payouts.
 
 ### What delete does not do
 
 - It does **not** uninstall the provider client on your machine — stop the service locally if you no longer need it.
-- It does **not** remove Cloudflare tunnels or DNS automatically from your Cloudflare account; clean those up separately if you created them outside the platform flow.
+- It does **not** delete the Cloudflare tunnel the client was using. Stop the client on that machine so it no longer accepts traffic.
 - It does **not** delete your Inferoute user account or other clusters.
 
 ### After deletion

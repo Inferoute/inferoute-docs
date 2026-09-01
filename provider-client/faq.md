@@ -15,12 +15,12 @@ A lightweight service that runs on Ollama or vLLM provider machines. It monitors
 ### What platforms are supported?
 
 - **Linux with NVIDIA GPU:** Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
-- **macOS with Apple GPU:** Basic GPU info (model, core count); busy is always reported as false. See [Setup: macOS](setup-mac.md).
+- **macOS with Apple GPU:** Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
 - **Windows amd64:** Ollama. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
 
 ### How do I configure the client?
 
-The client reads a YAML config file (server, provider, Cloudflare tunnel, logging). A default config is used if the file is missing. See [Configuration](configuration.md).
+The client reads a YAML config file (server, provider, logging). A default config is used if the file is missing. Cloudflare Tunnel is requested at runtime — it is not a config section. See [Configuration](configuration.md).
 
 ### How do I delete a cluster from my account?
 
@@ -42,7 +42,7 @@ See [Model pricing](../provider/model-pricing.md) for editing prices in the dash
 
 ### Can I change model pricing after registration?
 
-Yes. Open **Clusters** → select a cluster → **Models** tab to edit prices for that cluster only. You can also use the provider API with that cluster’s API key (see the OpenAPI reference in this GitBook space).
+Yes. Open **Clusters** → select a cluster → **Models** tab to edit prices for that cluster only. You can also call `PUT /api/provider/models/{model_id}` on `https://core.inferoute.com` with that cluster’s provider API key (per-token units). See [Model pricing](../provider/model-pricing.md).
 
 Changing prices on one cluster does not change another. See [Model pricing](../provider/model-pricing.md).
 
@@ -84,7 +84,7 @@ For example, after you regenerate the key in **Settings**, update `api_key` and 
 
 ### How often does the client report health?
 
-Every **3 minutes**. It also exposes **GET /api/health** (or **GET /health**) for on-demand status.
+Every **3 minutes**, and also when the client becomes busy or free. It exposes **GET /api/health** for on-demand status.
 
 ### What is in a health report?
 
@@ -96,16 +96,16 @@ Cluster **country** is not part of the health payload. Inferoute resolves it fro
 
 ### How is “GPU busy” determined?
 
-- **Linux (NVIDIA):** Utilization above 20% → busy.
-- **macOS:** Always reported as not busy.
-- No GPU monitoring: not busy.
+- **Linux and Windows (NVIDIA):** Utilization above 20% → busy (`nvidia-smi`).
+- **Every platform:** Busy while an inference request is already in flight (default one at a time), including macOS.
+- No GPU monitoring and nothing in flight: not busy.
 
 ## Inference requests
 
 ### How are inference requests handled?
 
 1. The request signature in `X-Request-Id` is validated with Inferoute; missing or invalid requests get **401**.
-2. If the GPU is busy → **503 Service Unavailable** (orchestrator can try another provider).
+2. If the GPU is busy → **503 Service Unavailable** (Inferoute can try another provider). Same-session follow-ups can wait for the slot instead.
 3. Valid requests are proxied to the local Ollama or vLLM server.
 
 ### What endpoints does the client expose for inference?
