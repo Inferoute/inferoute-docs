@@ -1,15 +1,17 @@
 # How It Works
 
-This page explains what the Provider Client does on your machine and how it talks to Inferoute. For install steps, see [Installation](../getting-started/installation.md).
+This page explains what the Provider Client does on your machine and how it talks to Inferoute. For install steps, see [Installation](../getting-started/installation.md). For engine and model selection, see the [setup wizard](setup.md).
 
 ## Overview
 
-The client runs alongside Ollama or vLLM on your machine. It:
+The client runs alongside the local LLM engine the wizard installed (Ollama, vLLM, vLLM Metal, or FreeToken). It:
 
 1. Reports health (GPU, models, tunnel status) to Inferoute on a schedule.
 2. Registers models and initial pricing for **your cluster**.
 3. Accepts inference requests from Inferoute and forwards them to your local LLM server.
 4. Creates and maintains a **Cloudflare Tunnel** so Inferoute can reach you without open firewall ports.
+
+If **auto_start** is on (the wizard turns this on when it finds the engine binary), the client starts that engine when `llm_url` is down. It will not start a second copy if the port is already in use.
 
 ## Health monitoring
 
@@ -34,7 +36,7 @@ On Linux or Windows with NVIDIA, utilization above **20%** is treated as busy. O
 
 **At startup**, the client discovers models on your local LLM server, looks up default prices from Inferoute, and registers each model for **that cluster**.
 
-**Ongoing**, each health cycle checks for new models (for example after you pull a new model into Ollama). New models are registered automatically — you do not need to restart the client.
+**Ongoing**, each health cycle checks for new models (for example after you re-run setup with a different approved model). New models are registered automatically — you do not need to restart the client.
 
 Initial prices come from platform averages. You set your own prices **per cluster** in the dashboard — see [Model pricing](../provider/model-pricing.md).
 
@@ -42,7 +44,7 @@ Approved marketplace models must match a platform [approved model build](approve
 
 **Ollama** — no extra config; digests come from `/api/tags`.
 
-**vLLM** — the client reads the served model id from vLLM and finds weights in the HuggingFace hub cache using the approved `hf_ref`. Optional **`hf_hub_cache`** or **`model_path`** only if your layout is non-standard.
+**vLLM / vLLM Metal / FreeToken** — the client reads the served model id and finds weights in the HuggingFace hub cache using the approved `hf_ref`. Optional **`hf_hub_cache`** or **`model_path`** only if your layout is non-standard.
 
 ## Inference requests
 
@@ -50,7 +52,7 @@ When Inferoute sends a request to your cluster:
 
 1. **Authentication** — Valid requests include a signed header; missing or invalid requests get **401 Unauthorized**.
 2. **Busy** — If the GPU is busy, or the client is already running an inference request, it responds with **503 Service Unavailable** so Inferoute can try another provider. Same-session follow-ups can wait for the slot instead.
-3. **Proxy** — Valid requests are forwarded to your local Ollama or vLLM server. The client supports OpenAI-compatible **POST /v1/chat/completions** and **POST /v1/completions**.
+3. **Proxy** — Valid requests are forwarded to your local LLM server. The client supports OpenAI-compatible **POST /v1/chat/completions** and **POST /v1/completions**.
 
 ## Cloudflare tunnel
 
@@ -64,6 +66,7 @@ You do not configure a tunnel URL yourself. On shutdown, the client stops the tu
 
 ## Related
 
+- [Setup wizard](setup.md)
 - [Configuration](configuration.md)
 - [FAQ](faq.md)
 - [Model pricing](../provider/model-pricing.md)

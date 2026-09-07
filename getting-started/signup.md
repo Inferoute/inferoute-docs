@@ -32,7 +32,7 @@ Confirm your machine matches [Software and hardware requirements](requirements.m
 
 ### 2. Software
 
-Select **vLLM** or **Ollama**, then install that engine if you have not already. Check the confirmation that it is installed before you continue.
+Select **vLLM** or **Ollama**. Skip any vendor install links in this step — the client [setup wizard](../provider-client/setup.md) installs the engine after you run the install command.
 
 ### 3. Client (cluster name and API key)
 
@@ -45,7 +45,7 @@ The full key is shown **once**. Copy it before you leave the page. Store it some
 
 The wizard shows an install command with your key filled in. You can copy that, or follow [Installation](installation.md) and substitute the key yourself.
 
-You set model prices **after** the client is running, on the cluster **Models** tab — see [Model pricing](../provider/model-pricing.md). Native Windows uses **Ollama** even if you picked vLLM in Software.
+You set model prices **after** the client is running, on the cluster **Models** tab — see [Model pricing](../provider/model-pricing.md). Native Windows uses **Ollama** or **FreeToken** even if you picked vLLM in Software.
 
 ## Copy the key later from Settings
 

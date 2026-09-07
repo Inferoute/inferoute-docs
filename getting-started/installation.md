@@ -2,7 +2,7 @@
 
 Install the Inferoute Provider Client on the machine that will serve models. Confirm it meets [hardware requirements](requirements.md): **24 GB** NVIDIA VRAM on Linux or Windows, or **48 GB** unified memory on a Mac. If you do not have a provider API key yet, complete [Sign up and create a cluster](signup.md) first.
 
-The install script places the binary, then runs **`inferoute-client setup`**. That wizard asks which inference program to use, can install it, shows which [approved models](../provider-client/approved-models.md) fit this machine, and writes `~/.config/inferoute/config.yaml`. Re-run the wizard anytime you want to change engine, model, or API key instead of editing YAML by hand:
+The install script places the binary, then runs **`inferoute-client setup`**. See the [setup wizard](../provider-client/setup.md) for what it asks (engine, model, API key) and for non-interactive flags. Re-run anytime instead of editing YAML by hand:
 
 ```bash
 inferoute-client setup
@@ -73,7 +73,7 @@ On Windows, start from **Start Menu → Inferoute → Inferoute Client**, or run
 
 The official image is **inferoute/inferoute-client** on Docker Hub.
 
-If the client runs in Docker but Ollama/vLLM runs on the host, set `LLM_URL` so the container can reach the host (for example `http://host.docker.internal:11434`). Ollama must listen on `0.0.0.0` — see [Setup: Ollama](../provider-client/setup-ollama.md).
+If the client runs in Docker but the LLM engine runs on the host, set `LLM_URL` so the container can reach the host (for example `http://host.docker.internal:11434`). Ollama on the host must listen on `0.0.0.0` (`OLLAMA_HOST=0.0.0.0:11434`), not only loopback.
 
 The client listens on **127.0.0.1** inside the container. Inferoute reaches you through the Cloudflare tunnel — you do not need to publish port 8080. To open the [local status dashboard](../provider-client/rest-api.md) from the host, set **server.host** to `0.0.0.0` and publish the port to loopback (for example `-p 127.0.0.1:8080:8080`). See [Configuration](../provider-client/configuration.md).
 
@@ -118,9 +118,8 @@ When the client starts, it publishes your available models with default costs. O
 
 ## Related
 
+- [Setup wizard](../provider-client/setup.md)
 - [Configuration](../provider-client/configuration.md)
-- [Setup: Ollama](../provider-client/setup-ollama.md)
-- [Setup: vLLM](../provider-client/setup-vllm.md)
 - [Setup: Linux](../provider-client/setup-linux.md)
 - [Setup: macOS](../provider-client/setup-mac.md)
 - [Setup: Windows](../provider-client/setup-windows.md)

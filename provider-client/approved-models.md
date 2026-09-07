@@ -54,32 +54,9 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 | `hf_ref` | Branch or tag to download (for example `main`) |
 | `min_size_bytes` | Measured minimum model weight size used by the local compatibility check |
 
-## Ollama setup
+The [setup wizard](setup.md) fetches this catalog, scores each build against this machine, and downloads the model you pick. You do not pull or serve models by hand.
 
-```bash
-curl -s "http://core.inferoute.com/api/models/approved-builds?service_type=ollama" | jq .
-```
-
-Use the **`alias`** when registering or calling Inferoute (for example `gguf/qwen3:0.6b`). Pull the model with Ollama, then start the Provider Client — it verifies the digest with the platform automatically.
-
-## vLLM setup
-
-```bash
-curl -s "http://core.inferoute.com/api/models/approved-builds?service_type=vllm" | jq .
-```
-
-For each catalog entry:
-
-1. Download **`hf_repo`** at **`hf_ref`** (for example `hf download Qwen/Qwen3-0.6B`).
-2. Serve with **`alias`** as the model id.
-
-For example:
-
-```bash
-vllm serve Qwen/Qwen3-0.6B
-```
-
-The Provider Client discovers weights from the HuggingFace hub cache using `hf_repo` and `hf_ref`. Optional **`model_path`** in config is only needed for flat directories from `hf download --local-dir`.
+Consumers call Inferoute with the catalog **`alias`**. For example, `gguf/qwen3:0.6b` routes to Ollama providers; `Qwen/Qwen3-0.6B` routes to vLLM / vLLM Metal / FreeToken providers.
 
 ## How verification works
 
@@ -97,15 +74,15 @@ You do not need to call the verify API manually for day-to-day operation.
 
 The same model family on Ollama and HuggingFace are **separate** catalog entries. Consumers pick the backend by model name (`gguf/...` → Ollama; bare HF id → vLLM).
 
-| | Ollama | vLLM |
+| | Ollama | vLLM / Metal / FreeToken |
 |---|--------|------|
 | Example alias | `gguf/qwen3:0.6b` | `Qwen/Qwen3-0.6B` |
 | Catalog fields | `alias` | `alias`, `hf_repo`, `hf_ref` |
-| Download | `ollama pull qwen3:0.6b` | `hf download` at `hf_repo` |
+| Engine | `ollama` | `vllm`, `vllm-metal`, or `freetoken` |
 
 ## Related
 
-- [Setup: Ollama](setup-ollama.md)
-- [Setup: vLLM](setup-vllm.md)
+- [Setup wizard](setup.md)
+- [Model compatibility check](compatibility.md)
 - [How it works](how-it-works.md)
 - [FAQ](faq.md)

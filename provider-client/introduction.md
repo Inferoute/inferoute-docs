@@ -1,6 +1,8 @@
 # Provider Client Introduction
 
-The **Inferoute Provider Client** is a lightweight service that runs next to Ollama or vLLM. It reports health to Inferoute, registers models and pricing for **your cluster**, and forwards inference requests to your local LLM server.
+The **Inferoute Provider Client** is a lightweight service that runs next to a local LLM engine (Ollama, vLLM, vLLM Metal, or FreeToken). It reports health to Inferoute, registers models and pricing for **your cluster**, and forwards inference requests to that engine.
+
+The [setup wizard](setup.md) installs the engine if it is missing, picks an approved model that fits this machine, and writes config. You do not install Ollama or vLLM yourself.
 
 Start here if you have not installed yet:
 
@@ -17,7 +19,7 @@ Start here if you have not installed yet:
 
 ## Exposing your machine via Cloudflare Tunnel (secure HTTPS)
 
-The client **exposes your machine to the internet** so Inferoute can send inference requests to your local Ollama or vLLM server. This uses **Cloudflare Tunnel** (cloudflared):
+The client **exposes your machine to the internet** so Inferoute can send inference requests to your local LLM server. This uses **Cloudflare Tunnel** (cloudflared):
 
 - **Secure & HTTPS:** Traffic between the internet and your provider goes through Cloudflare over HTTPS. Your home IP and ports are not exposed; Cloudflare provides a stable, TLS-terminated URL that tunnels back to your machine.
 - **Why we install cloudflared:** The install script installs the `cloudflared` binary so the client can run it automatically. When you start the client, it requests a tunnel from Inferoute, then starts and supervises cloudflared. You do not need to run or configure cloudflared yourself.
@@ -29,6 +31,7 @@ The client publishes your available models and sets initial costs from platform 
 
 ## Related
 
+- [Setup wizard](setup.md)
 - [How it works](how-it-works.md)
 - [Configuration](configuration.md)
 - [Model pricing](../provider/model-pricing.md)

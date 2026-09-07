@@ -72,6 +72,7 @@ Run `nvidia-smi` directly. If it is unavailable, install the NVIDIA driver and e
 
 ## Related
 
+- [Setup wizard](setup.md)
 - [Approved model builds](approved-models.md)
 - [Setup: Linux](setup-linux.md)
 - [Setup: macOS](setup-mac.md)

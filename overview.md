@@ -1,9 +1,9 @@
 # What is Inferoute
 
-Inferoute is a provider network and orchestration layer for running LLM inference. A central **orchestrator** (API at [core.inferoute.com](https://core.inferoute.com)) routes requests to providers that run the **Inferoute Provider Client** alongside Ollama or vLLM. The orchestrator exposes an **OpenAI-compatible API**, so you can use the same client libraries and prompts you use with OpenAI while your traffic is routed to your own or third-party providers.
+Inferoute is a provider network and orchestration layer for running LLM inference. A central **orchestrator** (API at [core.inferoute.com](https://core.inferoute.com)) routes requests to providers that run the **Inferoute Provider Client** alongside a local LLM engine (Ollama, vLLM, vLLM Metal, or FreeToken). The orchestrator exposes an **OpenAI-compatible API**, so you can use the same client libraries and prompts you use with OpenAI while your traffic is routed to your own or third-party providers.
 
 - **Orchestrator:** Manages consumers, API keys, providers, and model pricing; routes chat/completion requests to healthy providers.
-- **Provider client:** Lightweight service on each provider machine that reports health, registers models and pricing, and handles inference by proxying to the local Ollama or vLLM server.
+- **Provider client:** Lightweight service on each provider machine that reports health, registers models and pricing, and handles inference by forwarding them to the local LLM server.
 - **API:** OpenAI-compatible endpoints (for example `/v1/chat/completions`, `/v1/completions`) so existing tooling and code work with minimal changes.
 
 To call models as a buyer, create a consumer key and send a chat request — see [Using the API](consumer/using-the-api.md).

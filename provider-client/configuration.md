@@ -2,7 +2,7 @@
 
 The client reads a YAML config file. Default path is platform-specific (for example `~/.config/inferoute/config.yaml`). Override with `--config /path/to/config.yaml`.
 
-Prefer **`inferoute-client setup`** to change engine, model, or API key. Re-running the wizard updates this file and leaves server/logging settings in place.
+Prefer **`inferoute-client setup`** to change engine, model, or API key — see the [setup wizard](setup.md). Re-running the wizard updates this file and leaves server/logging settings in place.
 
 ## Sections
 
@@ -87,6 +87,7 @@ To open the local dashboard from the host, mount a config with `server.host: 0.0
 
 ## Related
 
+- [Setup wizard](setup.md)
 - [Installation](../getting-started/installation.md)
 - [How it works](how-it-works.md)
 - [Setup: Windows](setup-windows.md)

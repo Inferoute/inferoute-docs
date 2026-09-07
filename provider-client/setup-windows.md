@@ -1,6 +1,6 @@
 # Setup: Windows
 
-Use this guide when you run the provider client natively on 64-bit Windows. For example, **inferoute-cluster1** on a Windows PC. The wizard offers **Ollama** or **FreeToken**. Native vLLM is not supported. For approved BF16 models (FreeToken), you need an NVIDIA GPU with at least **24 GB** of VRAM.
+Use this guide when you run the provider client natively on 64-bit Windows. For example, **inferoute-cluster1** on a Windows PC. The [setup wizard](setup.md) offers **Ollama** or **FreeToken**. Native vLLM is not supported. For approved BF16 models (FreeToken), you need an NVIDIA GPU with at least **24 GB** of VRAM.
 
 ## Quick install (recommended)
 
@@ -16,6 +16,8 @@ The script installs **cloudflared** and **inferoute-client** to `%LOCALAPPDATA%\
 ```powershell
 inferoute-client setup
 ```
+
+The wizard can install Ollama (via winget) or FreeToken (silent NSIS installer plus the `ft` CLI). Windows may still ask you to allow the FreeToken installer.
 
 3. Start the client from **Start Menu → Inferoute → Inferoute Client**, or from a **new** terminal:
 
@@ -39,23 +41,9 @@ If startup fails with **Invalid provider API key**, copy the key from **Clusters
 
 If SmartScreen says **Windows protected your PC**, choose **More info** → **Run anyway**. The GitHub binary is not code-signed.
 
-## Ollama on Windows
-
-Ollama is one supported backend on Windows.
-
-If you need Ollama to listen on all interfaces (for example when the client runs in Docker), see [Setup: Ollama](setup-ollama.md#windows). For a native install, `http://127.0.0.1:11434` is the default.
-
-Allow Ollama through **Windows Firewall** if prompted. The Inferoute Cloudflare tunnel is outbound HTTPS and does not need an inbound port.
-
-## FreeToken on Windows
-
-[FreeToken](https://www.flashml.ai/) is an OpenAI-compatible server (`http://127.0.0.1:1919`). Set **provider_type** to `vllm` and **engine** to `freetoken`. Serve catalog HuggingFace repos (same weights as vLLM) so marketplace verification matches. Do not convert to FTW for Inferoute.
-
-The wizard can download `FreeToken-Setup-win-x64.exe` and run it silent. Windows may still ask you to allow the installer.
-
 ## GPU monitoring
 
-Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on **PATH**. You need at least **24 GB** of VRAM for approved BF16 models. Then the client reports GPU name, VRAM, and busy status (utilization above **20%**). Without `nvidia-smi` the client still runs; GPU fields are empty and busy is not detected.
+Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on **PATH**. You need at least **24 GB** of VRAM for approved BF16 models. Then the client reports GPU name, VRAM, and busy status (utilization above **20%**). Without `nvidia-smi` the client still runs; GPU fields are empty, busy is not detected from utilization, and the wizard will not offer FreeToken.
 
 `inferoute-client compatibility` uses the same `nvidia-smi` data, or system RAM if no NVIDIA GPU is present.
 
@@ -64,15 +52,15 @@ Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is o
 1. Download `inferoute-client-windows-amd64.zip` from [GitHub Releases](https://github.com/inferoute/inferoute-client/releases).
 2. Install **cloudflared**: download `cloudflared-windows-amd64.exe` from [Cloudflare releases](https://github.com/cloudflare/cloudflared/releases), or run `winget install Cloudflare.cloudflared`.
 3. Place both executables on **PATH**.
-4. Run `inferoute-client setup`, or copy `config.yaml.example` to `%USERPROFILE%\.config\inferoute\config.yaml` and set **api_key**, **engine**, and **llm_url**.
+4. Run `inferoute-client setup`.
 5. Run `inferoute-client`.
 
 The client requests a Cloudflare tunnel from the platform and runs **cloudflared** for you — no ngrok or open firewall ports required.
 
 ## Related
 
+- [Setup wizard](setup.md)
 - [Installation](../getting-started/installation.md)
 - [Configuration](configuration.md)
-- [Setup: Ollama](setup-ollama.md)
 - [Setup: Linux](setup-linux.md)
 - [FAQ](faq.md)

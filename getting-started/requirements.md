@@ -2,25 +2,20 @@
 
 The Inferoute Provider Client does **not** run models itself. It sits next to an LLM server and forwards inference requests to it.
 
-The install wizard can install the LLM server for you. You still need the right hardware (especially an NVIDIA GPU for vLLM and FreeToken). If nothing is listening on the configured URL and auto-start is off, the client cannot serve traffic.
+The [setup wizard](../provider-client/setup.md) installs that LLM server and an approved model. You still need the right hardware (especially an NVIDIA GPU for vLLM and FreeToken). If nothing is listening on the configured URL and auto-start is off, the client cannot serve traffic.
 
-## LLM software (required)
+## LLM software
 
-Pick one backend. Keep it running, or let the client auto-start it after setup:
+The wizard offers one backend for this machine:
 
 | Platform | Supported LLM backends |
 | --- | --- |
-| **Linux** | [Ollama](https://ollama.com) or [vLLM](https://docs.vllm.ai/en/stable/getting_started/quickstart.html) |
-| **macOS** (Apple Silicon) | Ollama or [vLLM Metal](https://docs.vllm.ai/projects/vllm-metal/en/latest/) |
+| **Linux** | Ollama or vLLM |
+| **macOS** (Apple Silicon) | Ollama or vLLM Metal |
 | **macOS** (Intel) | Ollama |
-| **Windows** (64-bit) | Ollama or [FreeToken](https://www.flashml.ai/) |
+| **Windows** (64-bit) | Ollama or FreeToken |
 
-You also need **at least one model loaded**:
-
-- **Ollama:** pull a model (for example `ollama pull qwen2.5:7b`) so the server lists it.
-- **vLLM / vLLM Metal / FreeToken:** serve an [approved model](../provider-client/approved-models.md) from HuggingFace (for example `Qwen/Qwen2.5-7B-Instruct`). Do not convert FreeToken checkpoints to FTW if you want marketplace verification.
-
-Install guides: [Setup: Ollama](../provider-client/setup-ollama.md), [Setup: vLLM](../provider-client/setup-vllm.md).
+Do not convert FreeToken checkpoints to FTW if you want marketplace verification.
 
 ## Hardware
 
@@ -32,7 +27,7 @@ Approved vLLM / FreeToken / vLLM Metal builds are BF16 7B-class weights (~14 GB 
 | **macOS** | Apple Silicon with at least **48 GB** of unified memory. Intel Macs can run Ollama only. The client reports basic GPU info; utilization-based busy detection is not available (in-flight requests still mark the client busy). Use Linux + NVIDIA for production routing with utilization-based busy status. |
 | **Disk** | **100 GB+** free is a practical starting point for model weights. |
 
-vLLM additionally expects a CUDA-capable NVIDIA GPU (CUDA **11.7** or later in typical installs). See the [vLLM install docs](https://docs.vllm.ai/en/latest/getting_started/installation/).
+vLLM expects a CUDA-capable NVIDIA GPU. The wizard will not offer vLLM or FreeToken if `nvidia-smi` is missing.
 
 ## Platforms the client runs on
 
@@ -48,7 +43,7 @@ Once the LLM server is up, the client:
 
 - Reports health and models to Inferoute
 - Registers pricing for **your cluster**
-- Proxies inference to your local Ollama or vLLM server
+- Proxies inference to your local LLM server
 - Opens a **Cloudflare Tunnel** so Inferoute can reach you without inbound firewall ports
 
 Next: [Sign up and create a cluster](signup.md).

@@ -4,13 +4,13 @@
 
 ### How do I get started as a provider?
 
-1. Check [Software and hardware requirements](../getting-started/requirements.md) — you need Ollama or vLLM already running.
+1. Check [Software and hardware requirements](../getting-started/requirements.md).
 2. [Sign up and create a cluster](../getting-started/signup.md) to copy a provider API key.
-3. [Install the client](../getting-started/installation.md).
+3. [Install the client](../getting-started/installation.md). The [setup wizard](setup.md) installs the LLM engine and an approved model — you do not need Ollama or vLLM already running.
 
 ### What is the Inferoute Provider Client?
 
-A lightweight service that runs on Ollama or vLLM provider machines. It monitors GPU resources, reports health to Inferoute, and handles inference requests by forwarding them to your local Ollama or vLLM instance.
+A lightweight service that runs next to a local LLM engine (Ollama, vLLM, vLLM Metal, or FreeToken). It monitors GPU resources, reports health to Inferoute, and handles inference requests by forwarding them to that engine.
 
 ### What platforms are supported?
 
@@ -20,7 +20,15 @@ A lightweight service that runs on Ollama or vLLM provider machines. It monitors
 
 ### How do I configure the client?
 
-The client reads a YAML config file (server, provider, logging). A default config is used if the file is missing. Cloudflare Tunnel is requested at runtime — it is not a config section. See [Configuration](configuration.md).
+Prefer **`inferoute-client setup`**. It writes engine, model, and API key into the YAML config. Server and logging stay in that file — see [Configuration](configuration.md). Cloudflare Tunnel is requested at runtime — it is not a config section.
+
+### How do I change engine or model later?
+
+Re-run the [setup wizard](setup.md):
+
+```bash
+inferoute-client setup
+```
 
 ### How do I delete a cluster from my account?
 
@@ -28,9 +36,9 @@ Use the dashboard: **Clusters** → select your cluster → **Settings** → **D
 
 ## Model management
 
-### When I add new models to Ollama, does the client pick them up?
+### When I add new models, does the client pick them up?
 
-Yes. New models are detected on each health check (every **3 minutes**) and automatically registered with pricing from the Inferoute API.
+Yes. New models are detected on each health check (every **3 minutes**) and automatically registered with pricing from the Inferoute API. Marketplace routing still requires an [approved model build](approved-models.md). Re-run setup to switch the engine to a different approved model.
 
 ### How does model pricing work?
 
@@ -54,11 +62,11 @@ GGUF (GPT-Generated Unified Format) is a model format used by Ollama:
 - Often faster on consumer hardware.
 - Various quantization levels (for example Q4_K_M, Q5_K_M) trade size for quality.
 
-When using the Inferoute API, Ollama models use the **gguf/** prefix. For example, `gguf/llama2`.
+When using the Inferoute API, Ollama models use the **gguf/** prefix. For example, `gguf/qwen2.5:7b`.
 
 ### Which models are approved on the marketplace?
 
-See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the public catalog (aliases and HuggingFace locations; no hashes).
+See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the public catalog (aliases and HuggingFace locations; no hashes). The setup wizard lists the ones that should fit this machine.
 
 ## Cloudflare Tunnel
 
@@ -78,7 +86,7 @@ The client supervises cloudflared and will restart it if it exits, with exponent
 
 The provider API key in **config.yaml** (`api_key`) must be the key for **that cluster**, copied from **Clusters** → select the cluster → **Settings**. A consumer key, an old rotated key, or a typo is rejected at startup with an “Invalid provider API key” message.
 
-For example, after you regenerate the key in **Settings**, update `api_key` and restart the client. Do not leave the placeholder `your_api_key_here`.
+For example, after you regenerate the key in **Settings**, update `api_key` (or re-run setup) and restart the client. Do not leave the placeholder `your_api_key_here`.
 
 ## Health and monitoring
 
@@ -106,7 +114,7 @@ Cluster **country** is not part of the health payload. Inferoute resolves it fro
 
 1. The request signature in `X-Request-Id` is validated with Inferoute; missing or invalid requests get **401**.
 2. If the GPU is busy → **503 Service Unavailable** (Inferoute can try another provider). Same-session follow-ups can wait for the slot instead.
-3. Valid requests are proxied to the local Ollama or vLLM server.
+3. Valid requests are proxied to the local LLM server.
 
 ### What endpoints does the client expose for inference?
 
@@ -119,7 +127,7 @@ OpenAI-compatible:
 
 ### How do I configure logging?
 
-In `config.yaml`, under **logging:** set level (`debug`, `info`, `warn`, `error`), `log_dir`, `max_size`, `max_backups`, `max_age`. See [Configuration](configuration.md).
+In `config.yaml`, under **logging:** set level (`debug`, `info`, `warn`, `error`), `log_dir`, `max_size`, `max_backups`, `max_age`. See [Configuration](configuration.md). Engine stdout from auto-start goes to **engine.log**.
 
 ### What if GPU monitoring isn’t available?
 
@@ -127,6 +135,7 @@ The client still runs: health reports omit or null out GPU data and the GPU is r
 
 ## Related
 
+- [Setup wizard](setup.md)
 - [Installation](../getting-started/installation.md)
 - [How it works](how-it-works.md)
 - [Approved model builds](approved-models.md)
