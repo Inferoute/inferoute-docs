@@ -1,13 +1,18 @@
 # Setup: vLLM
 
-Install and run vLLM according to the official docs:
+On **Linux**, install and run vLLM according to the official docs. You need an NVIDIA GPU with at least **24 GB** of VRAM:
 
 [vLLM Quick Start](https://docs.vllm.ai/en/stable/getting_started/quickstart.html)
+
+On **macOS Apple Silicon**, use [vLLM Metal](https://docs.vllm.ai/projects/vllm-metal/en/latest/) on a Mac with at least **48 GB** of unified memory. The setup wizard can run the official Metal install script into `~/.venv-vllm-metal`.
 
 Configure the Provider Client with:
 
 - **provider_type:** `vllm`
-- **llm_url:** Your vLLM server URL (for example `http://localhost:8000`)
+- **engine:** `vllm` (Linux) or `vllm-metal` (Mac)
+- **llm_url:** Your vLLM server URL (for example `http://127.0.0.1:8000`)
+
+`inferoute-client setup` writes these for you.
 
 If the client runs in Docker and vLLM runs on the host, use `http://host.docker.internal:8000` for `llm_url`.
 

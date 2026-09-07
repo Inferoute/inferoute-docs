@@ -14,9 +14,9 @@ A lightweight service that runs on Ollama or vLLM provider machines. It monitors
 
 ### What platforms are supported?
 
-- **Linux with NVIDIA GPU:** Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
-- **macOS with Apple GPU:** Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
-- **Windows amd64:** Ollama. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
+- **Linux with NVIDIA GPU:** At least **24 GB** of VRAM. Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
+- **macOS with Apple GPU:** At least **48 GB** of unified memory for approved vLLM Metal models. Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
+- **Windows amd64:** NVIDIA GPU with at least **24 GB** of VRAM. Ollama or FreeToken. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
 
 ### How do I configure the client?
 

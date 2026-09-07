@@ -1,42 +1,51 @@
 # Installation
 
-Install the Inferoute Provider Client on the machine that already runs Ollama or vLLM. If you do not have a provider API key yet, complete [Sign up and create a cluster](signup.md) first.
+Install the Inferoute Provider Client on the machine that will serve models. Confirm it meets [hardware requirements](requirements.md): **24 GB** NVIDIA VRAM on Linux or Windows, or **48 GB** unified memory on a Mac. If you do not have a provider API key yet, complete [Sign up and create a cluster](signup.md) first.
 
-## Prerequisites
+The install script places the binary, then runs **`inferoute-client setup`**. That wizard asks which inference program to use, can install it, shows which [approved models](../provider-client/approved-models.md) fit this machine, and writes `~/.config/inferoute/config.yaml`. Re-run the wizard anytime you want to change engine, model, or API key instead of editing YAML by hand:
 
-- A running LLM server — see [Software and hardware requirements](requirements.md).
-- Your **provider API key** from cluster **Settings** (or from the **Deploy a Cluster** wizard).
+```bash
+inferoute-client setup
+```
 
 ## Linux / macOS one-liner
 
 Works on Linux (amd64/arm64) and macOS (Intel and Apple Silicon):
 
 ```bash
-PROVIDER_API_KEY="your-key" curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
 ```
 
-On macOS, the script installs `cloudflared` via Homebrew when available, otherwise it downloads the native binary for your architecture.
+The wizard asks for your **provider API key** if you did not set `PROVIDER_API_KEY`. On macOS, the script installs `cloudflared` via Homebrew when available, otherwise it downloads the native binary for your architecture.
+
+Engine choices:
+
+| OS | Wizard options |
+| --- | --- |
+| **Linux** | Ollama or vLLM |
+| **macOS** | Ollama or vLLM Metal (Apple Silicon) |
 
 ## Windows (PowerShell)
 
-Requires 64-bit Windows. Ollama should already be installed.
+Requires 64-bit Windows. The wizard offers **Ollama** or **FreeToken**.
 
 ```powershell
-$env:PROVIDER_API_KEY="your-key"; irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
+irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
 ```
 
-Optional: `$env:PROVIDER_TYPE="ollama"`, `$env:LLM_URL="http://localhost:11434"`, `$env:SERVER_PORT="8080"`.
-
-The script does not need Administrator. It installs `cloudflared` and `inferoute-client` to `%LOCALAPPDATA%\inferoute\bin`, writes `%USERPROFILE%\.config\inferoute\config.yaml`, and adds a **Start Menu → Inferoute → Inferoute Client** shortcut. On Windows the client runs in the notification area by default — closing the terminal does not stop it. See [Setup: Windows](../provider-client/setup-windows.md).
+The script does not need Administrator. It installs `cloudflared` and `inferoute-client` to `%LOCALAPPDATA%\inferoute\bin`, runs setup, and adds a **Start Menu → Inferoute → Inferoute Client** shortcut. On Windows the client runs in the notification area by default — closing the terminal does not stop it. See [Setup: Windows](../provider-client/setup-windows.md).
 
 You can also download `scripts/windows-install.bat` from the [inferoute-client](https://github.com/inferoute/inferoute-client) repo and double-click it (no administrator prompt).
 
-## Manual environment variables
+## Skip the wizard (scripts / CI)
+
+Set `INFEROUTE_SKIP_SETUP=1` and pass the old environment variables:
 
 ```bash
+export INFEROUTE_SKIP_SETUP=1
 export PROVIDER_API_KEY="your-provider-api-key"
 export PROVIDER_TYPE="ollama"   # or "vllm"
-export LLM_URL="http://localhost:11434"   # or "http://localhost:8000" for vLLM
+export LLM_URL="http://127.0.0.1:11434"   # or "http://127.0.0.1:8000" for vLLM
 export SERVER_PORT="8080"
 
 curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash

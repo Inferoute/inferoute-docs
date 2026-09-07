@@ -1,20 +1,25 @@
 # Setup: macOS (Apple GPU)
 
-Use this guide when you run the provider client natively on a Mac with an Apple GPU. For example, **inferoute-cluster1** on a MacBook with Ollama installed locally.
+Use this guide when you run the provider client natively on a Mac with an Apple GPU. For example, **inferoute-cluster1** on a MacBook. You need **48 GB** of unified memory to run approved vLLM Metal models (BF16 7B-class). Ollama GGUF models can run on less RAM, but Inferoute’s approved vLLM catalog assumes 48 GB.
 
 ## Quick install (recommended)
 
-1. Install [Ollama](https://ollama.com) and pull at least one model.
-2. Get your provider API key — see [Sign up and create a cluster](../getting-started/signup.md).
-3. Run the install script:
+1. Get your provider API key — see [Sign up and create a cluster](../getting-started/signup.md).
+2. Run the install script:
 
    ```bash
-   PROVIDER_API_KEY="your-key" curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
+   curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
    ```
+
+The wizard asks which engine to use (**Ollama** or **vLLM Metal** on Apple Silicon), can install it, and shows which models fit this Mac. Re-run anytime:
+
+```bash
+inferoute-client setup
+```
 
 The script detects Intel and Apple Silicon Macs, installs **cloudflared** (via Homebrew when available, otherwise a native binary download), and places **inferoute-client** in `/usr/local/bin`.
 
-4. Start the client:
+3. Start the client:
 
    ```bash
    inferoute-client
@@ -24,9 +29,13 @@ Default config: `~/.config/inferoute/config.yaml`. Logs: `~/.local/state/inferou
 
 ## Ollama on macOS
 
-Ollama is the typical backend on Mac. vLLM is not commonly used on macOS.
+Ollama is the typical backend on Mac, including Intel Macs.
 
 If you need Ollama to listen on all interfaces (for example when the client runs in Docker), see [Setup: Ollama](setup-ollama.md#macos-application).
+
+## vLLM Metal (Apple Silicon)
+
+On Apple Silicon with **48 GB** or more unified memory, the wizard can install [vLLM Metal](https://docs.vllm.ai/projects/vllm-metal/en/latest/) into `~/.venv-vllm-metal`. Set **provider_type** to `vllm` and **engine** to `vllm-metal`. Serve an approved HuggingFace repo — see [Setup: vLLM](setup-vllm.md).
 
 ## Apple GPU monitoring
 

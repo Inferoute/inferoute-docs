@@ -2,7 +2,7 @@
 
 Before you install models or start the provider client as a daemon, you can check which **approved Inferoute models** are likely to fit on this machine.
 
-The command detects local hardware and scores each approved build. It does **not** start the provider daemon and does **not** need an API key.
+The command detects local hardware and scores each approved build. It does **not** start the provider daemon and does **not** need an API key. **`inferoute-client setup`** uses the same scoring when it asks which model to run.
 
 It reads the public approved-model catalog from `https://core.inferoute.com` by default. It does not read your provider configuration file unless you explicitly pass a different URL with `--catalog-url`.
 
@@ -51,6 +51,8 @@ inferoute-client compatibility --catalog-url https://api.example.com
 | `unknown` | Missing size or usable memory |
 
 Scoring uses each build’s public `min_size_bytes` plus a conservative runtime overhead (higher for vLLM). On Apple Silicon, only a fraction of unified memory is treated as usable so the OS still has headroom. On multi-GPU Linux or Windows hosts, v1 scores against the **largest single GPU**.
+
+Approved vLLM builds are BF16 7B-class weights. Plan on **24 GB** NVIDIA VRAM (Linux/Windows) or **48 GB** unified memory (Mac). See [Software and hardware requirements](../getting-started/requirements.md).
 
 This is a fit check only — it does not estimate tokens/sec.
 

@@ -24,6 +24,7 @@
 
 ## NVIDIA GPU
 
+- At least **24 GB** of VRAM (for example RTX 3090 or RTX 4090).
 - Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on `PATH`.
 - The client uses `nvidia-smi` for GPU monitoring and busy-state detection. The install script does not install the driver.
 

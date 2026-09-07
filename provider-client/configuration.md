@@ -2,6 +2,8 @@
 
 The client reads a YAML config file. Default path is platform-specific (for example `~/.config/inferoute/config.yaml`). Override with `--config /path/to/config.yaml`.
 
+Prefer **`inferoute-client setup`** to change engine, model, or API key. Re-running the wizard updates this file and leaves server/logging settings in place.
+
 ## Sections
 
 - **server** — HTTP server for the [local REST API](rest-api.md).
@@ -13,8 +15,12 @@ The client reads a YAML config file. Default path is platform-specific (for exam
 - **provider** — Connection to the Inferoute platform.
   - **api_key** — Provider API key for **this cluster** (from **Clusters** → **Settings**). Required. The client refuses to start if this is empty or still `your_api_key_here`.
   - **url** — Inferoute platform URL. The install script sets `https://core.inferoute.com`. Do not point this at localhost unless you are developing against a local platform.
-  - **provider_type** — `ollama` or `vllm`. Default: `ollama`.
-  - **llm_url** — Local LLM API URL. For example, `http://localhost:11434` for Ollama or `http://localhost:8000` for vLLM. Default: `http://localhost:11434`.
+  - **provider_type** — `ollama` or `vllm`. Default: `ollama`. vLLM Metal and FreeToken still use `vllm` here (same API).
+  - **engine** — Local program: `ollama`, `vllm`, `vllm-metal`, or `freetoken`. Empty defaults from **provider_type**. Change this with `inferoute-client setup`.
+  - **engine_bin** — Absolute path to the engine binary when it is not on `PATH` (typical for FreeToken on Windows).
+  - **model** — Catalog alias the client auto-starts (for example `Qwen/Qwen2.5-7B-Instruct`).
+  - **auto_start** — When **true**, start the engine if **llm_url** is down. Setup turns this on when it can find the binary. Existing configs without this field stay off.
+  - **llm_url** — Local LLM API URL. For example, `http://127.0.0.1:11434` for Ollama, `http://127.0.0.1:8000` for vLLM, or `http://127.0.0.1:1919` for FreeToken.
   - **llm_timeout_seconds** — Timeout for requests forwarded to Ollama or vLLM (default **120**).
   - **hf_hub_cache** — (vLLM, optional) HuggingFace hub cache directory. Default: `~/.cache/huggingface/hub`. The client uses this to find weights for the model vLLM is serving.
   - **model_path** — (vLLM, optional) Flat directory override when you use `hf download --local-dir` instead of the hub cache layout.
@@ -33,18 +39,22 @@ Under `log_dir` (default `~/.local/state/inferoute/log`):
 
 - **inferoute.log** — Main application log (all levels).
 - **error.log** — Error-level entries only.
+- **engine.log** — Stdout/stderr from an auto-started Ollama, vLLM, or FreeToken process.
 
 ## Overriding defaults
 
-Defaults (for example provider type, LLM URL, server port) can be overridden without editing the config file.
+Prefer `inferoute-client setup` to change engine, model, and API key.
+
+For non-interactive installs, set `INFEROUTE_SKIP_SETUP=1` and pass environment variables:
 
 **Install script (Linux/macOS):**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | \
+  INFEROUTE_SKIP_SETUP=1 \
   PROVIDER_API_KEY="your-key" \
   PROVIDER_TYPE="vllm" \
-  LLM_URL="http://localhost:8000" \
+  LLM_URL="http://127.0.0.1:8000" \
   SERVER_PORT="9090" \
   bash
 ```
@@ -52,14 +62,15 @@ curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scr
 **Install script (Windows):**
 
 ```powershell
+$env:INFEROUTE_SKIP_SETUP="1"
 $env:PROVIDER_API_KEY="your-key"
 $env:PROVIDER_TYPE="ollama"
-$env:LLM_URL="http://localhost:11434"
+$env:LLM_URL="http://127.0.0.1:11434"
 $env:SERVER_PORT="9090"
 irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
 ```
 
-Windows providers should use Ollama. See [Setup: Windows](setup-windows.md).
+Windows providers typically use Ollama or FreeToken. See [Setup: Windows](setup-windows.md).
 
 **Docker:**
 
