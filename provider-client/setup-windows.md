@@ -17,7 +17,7 @@ The script installs **cloudflared** and **inferoute-client** to `%LOCALAPPDATA%\
 inferoute-client setup
 ```
 
-The wizard can install Ollama (via winget) or the FreeToken **CLI** (`ft serve` on port **1919**) into `%LOCALAPPDATA%\inferoute\venv-freetoken`. First-run engine download can take several minutes. This is not **FreeToken Desktop** — if that app is already installed, close it before setup. It uses the same API port, and its bundled `ft.exe` cannot serve models for Inferoute.
+The wizard can install Ollama (via winget) or the FreeToken **CLI** (`ft serve` on port **1919**) into `%LOCALAPPDATA%\inferoute\venv-freetoken`, including **CUDA PyTorch** (the Windows PyPI `torch` package is CPU-only and will not use your GPU). First-run download can take several minutes. This is not **FreeToken Desktop** — if that app is already installed, close it before setup. It uses the same API port, and its bundled `ft.exe` cannot serve models for Inferoute.
 
 3. Start the client from **Start Menu → Inferoute → Inferoute Client**, or from a **new** terminal:
 
