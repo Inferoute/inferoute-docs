@@ -25,7 +25,7 @@ The wizard can install Ollama (via winget) or the FreeToken **CLI** (`ft serve` 
    inferoute-client
    ```
 
-On Windows the client runs in the **notification area** by default. The terminal prompt returns; closing that window does **not** stop the client. A notification appears when the client starts.
+On Windows the client runs in the **notification area** by default. The terminal waits until the local dashboard is up, then the prompt returns. Closing that window does **not** stop the client.
 
 Right-click the Inferoute icon and choose **Open dashboard** to see live status in your browser — session, models, GPU, and recent requests. **Open config** and **Open logs** open those files. Choose **Quit** on that menu when you want to stop the client.
 
