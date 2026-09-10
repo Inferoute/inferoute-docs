@@ -1,6 +1,6 @@
 # Setup: Linux (NVIDIA)
 
-Use this guide when you run the provider client natively on Linux with an NVIDIA GPU. For example, **inferoute-cluster1** on a workstation. You need at least **24 GB** of VRAM for approved vLLM models.
+Use this guide when you run the provider client natively on Linux with an NVIDIA GPU. For example, **inferoute-cluster1** on a workstation. You need at least **32 GB** of system memory and **24 GB** of VRAM for approved vLLM models.
 
 ## Quick install (recommended)
 
@@ -27,6 +27,7 @@ Default config: `~/.config/inferoute/config.yaml`. Logs: `~/.local/state/inferou
 
 ## NVIDIA GPU
 
+- At least **32 GB** of system memory.
 - At least **24 GB** of VRAM (for example RTX 3090 or RTX 4090).
 - Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on `PATH`. The wizard will not offer vLLM if `nvidia-smi` is missing.
 - The client uses `nvidia-smi` for GPU monitoring and busy-state detection. The install script does not install the driver.

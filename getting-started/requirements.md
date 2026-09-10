@@ -23,6 +23,7 @@ Approved vLLM / FreeToken / vLLM Metal builds are BF16 7B-class weights (~14 GB 
 
 | Requirement | Detail |
 | --- | --- |
+| **System memory** (Linux and Windows) | At least **32 GB** of RAM. Loading approved BF16 weights needs host memory in addition to GPU VRAM. |
 | **NVIDIA GPU** (Linux and Windows) | At least **24 GB** of VRAM (for example RTX 3090, RTX 4090). Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on `PATH`. The Inferoute install script does not install the driver. |
 | **macOS** | Apple Silicon with at least **48 GB** of unified memory. Intel Macs can run Ollama only. The client reports basic GPU info; utilization-based busy detection is not available (in-flight requests still mark the client busy). Use Linux + NVIDIA for production routing with utilization-based busy status. |
 | **Disk** | **100 GB+** free is a practical starting point for model weights. |

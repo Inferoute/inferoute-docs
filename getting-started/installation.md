@@ -1,6 +1,6 @@
 # Installation
 
-Install the Inferoute Provider Client on the machine that will serve models. Confirm it meets [hardware requirements](requirements.md): **24 GB** NVIDIA VRAM on Linux or Windows, or **48 GB** unified memory on a Mac. If you do not have a provider API key yet, complete [Sign up and create a cluster](signup.md) first.
+Install the Inferoute Provider Client on the machine that will serve models. Confirm it meets [hardware requirements](requirements.md): **32 GB** of system memory and **24 GB** NVIDIA VRAM on Linux or Windows, or **48 GB** unified memory on a Mac. If you do not have a provider API key yet, complete [Sign up and create a cluster](signup.md) first.
 
 The install script places the binary, then runs **`inferoute-client setup`**. See the [setup wizard](../provider-client/setup.md) for what it asks (engine, model, API key) and for non-interactive flags. Re-run anytime instead of editing YAML by hand:
 

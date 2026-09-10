@@ -52,7 +52,7 @@ inferoute-client compatibility --catalog-url https://api.example.com
 
 Scoring uses each build’s public `min_size_bytes` plus a conservative runtime overhead (higher for vLLM). On Apple Silicon, only a fraction of unified memory is treated as usable so the OS still has headroom. On multi-GPU Linux or Windows hosts, v1 scores against the **largest single GPU**.
 
-Approved vLLM builds are BF16 7B-class weights. Plan on **24 GB** NVIDIA VRAM (Linux/Windows) or **48 GB** unified memory (Mac). See [Software and hardware requirements](../getting-started/requirements.md).
+Approved vLLM builds are BF16 7B-class weights. Plan on **32 GB** of system memory and **24 GB** NVIDIA VRAM (Linux/Windows), or **48 GB** unified memory (Mac). See [Software and hardware requirements](../getting-started/requirements.md).
 
 This is a fit check only — it does not estimate tokens/sec.
 

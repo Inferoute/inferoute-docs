@@ -1,6 +1,6 @@
 # Setup: Windows
 
-Use this guide when you run the provider client natively on 64-bit Windows. For example, **inferoute-cluster1** on a Windows PC. The [setup wizard](setup.md) offers **Ollama** or **FreeToken**. Native vLLM is not supported. For approved BF16 models (FreeToken), you need an NVIDIA GPU with at least **24 GB** of VRAM.
+Use this guide when you run the provider client natively on 64-bit Windows. For example, **inferoute-cluster1** on a Windows PC. The [setup wizard](setup.md) offers **Ollama** or **FreeToken**. Native vLLM is not supported. For approved BF16 models (FreeToken), you need at least **32 GB** of system memory and an NVIDIA GPU with at least **24 GB** of VRAM.
 
 ## Quick install (recommended)
 
@@ -43,7 +43,7 @@ If SmartScreen says **Windows protected your PC**, choose **More info** → **Ru
 
 ## GPU monitoring
 
-Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on **PATH**. You need at least **24 GB** of VRAM for approved BF16 models. Then the client reports GPU name, VRAM, and busy status (utilization above **20%**). Without `nvidia-smi` the client still runs; GPU fields are empty, busy is not detected from utilization, and the wizard will not offer FreeToken.
+Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on **PATH**. You need at least **32 GB** of system memory and **24 GB** of VRAM for approved BF16 models. Then the client reports GPU name, VRAM, and busy status (utilization above **20%**). Without `nvidia-smi` the client still runs; GPU fields are empty, busy is not detected from utilization, and the wizard will not offer FreeToken.
 
 `inferoute-client compatibility` uses the same `nvidia-smi` data, or system RAM if no NVIDIA GPU is present.
 

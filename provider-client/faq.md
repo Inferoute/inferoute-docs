@@ -14,9 +14,9 @@ A lightweight service that runs next to a local LLM engine (Ollama, vLLM, vLLM M
 
 ### What platforms are supported?
 
-- **Linux with NVIDIA GPU:** At least **24 GB** of VRAM. Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
+- **Linux with NVIDIA GPU:** At least **32 GB** of system memory and **24 GB** of VRAM. Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
 - **macOS with Apple GPU:** At least **48 GB** of unified memory for approved vLLM Metal models. Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
-- **Windows amd64:** NVIDIA GPU with at least **24 GB** of VRAM. Ollama or FreeToken. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
+- **Windows amd64:** At least **32 GB** of system memory and an NVIDIA GPU with **24 GB** of VRAM. Ollama or FreeToken. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
 
 ### How do I configure the client?
 
