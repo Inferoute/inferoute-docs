@@ -22,7 +22,9 @@ If you have not installed the client yet, start with [Installation](../getting-s
 4. **Model** — fetches the approved catalog, scores each build against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table.
 5. **Start now** — can pull (Ollama) or serve the model, then wait until the engine is healthy.
 
-It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`) and prints how to start the client.
+It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`, and any catalog serve flags such as `max_model_len`) and prints how to start the client.
+
+Already-running engines do **not** pick up new serve flags automatically. Stop the engine and re-run setup (or start with the printed command) after changing model or catalog context settings.
 
 ## Engines by platform
 
