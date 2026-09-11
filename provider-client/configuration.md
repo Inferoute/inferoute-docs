@@ -25,7 +25,8 @@ Prefer **`inferoute-client setup`** to change engine, model, or API key — see 
   - **hf_hub_cache** — (vLLM, optional) HuggingFace hub cache directory. Default: `~/.cache/huggingface/hub`. The client uses this to find weights for the model vLLM is serving.
   - **model_path** — (vLLM, optional) Flat directory override when you use `hf download --local-dir` instead of the hub cache layout.
   - **hf_repo** — (optional) HuggingFace id when it differs from **model**. Setup writes this from the catalog.
-  - **tool_call_parser**, **max_model_len**, **rope_type**, **rope_base_context_len** — (optional) Catalog serve flags copied by setup so auto-start can rebuild the same engine command offline. See [Approved model builds](approved-models.md).- **logging**
+  - **tool_call_parser**, **max_model_len**, **rope_type**, **rope_base_context_len** — (optional) Catalog serve flags copied by setup so auto-start can rebuild the same engine command offline. See [Approved model builds](approved-models.md).
+- **logging**
   - **level** — `debug`, `info`, `warn`, `error`.
   - **log_dir** — Directory for log files (default: `~/.local/state/inferoute/log`).
   - **max_size** — Max log file size in MB before rotation (default: 100).

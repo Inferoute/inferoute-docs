@@ -50,7 +50,7 @@ inferoute-client compatibility --catalog-url https://api.example.com
 | `too_large` | Unlikely to fit |
 | `unknown` | Missing size or usable memory |
 
-Scoring uses each build’s public `min_size_bytes` plus a conservative runtime overhead (higher for vLLM). When the catalog sets `max_model_len` on a vLLM build, the check scales the **KV** portion of required memory with that context (baseline **8k**), so a 128k target can flip a mid-VRAM card to `too_large` even when weights alone would fit. Ollama builds ignore `max_model_len`. On Apple Silicon, only a fraction of unified memory is treated as usable so the OS still has headroom. On multi-GPU Linux or Windows hosts, v1 scores against the **largest single GPU**.
+Scoring uses each build’s public `min_size_bytes` plus a conservative runtime overhead (higher for vLLM). When the catalog sets `max_model_len` on a vLLM build, required memory is weights plus a small **KV** term that grows with context (~3% of weight size per **8k** tokens). A 128k target can still flip a mid-VRAM card to `too_large`; a 7B at 128k should still fit a 96 GB Mac. Ollama builds ignore `max_model_len`. On Apple Silicon, only a fraction of unified memory is treated as usable so the OS still has headroom. On multi-GPU Linux or Windows hosts, v1 scores against the **largest single GPU**.
 
 Approved vLLM builds are BF16 7B-class weights. Plan on **32 GB** of system memory and **24 GB** NVIDIA VRAM (Linux/Windows), or **48 GB** unified memory (Mac). See [Software and hardware requirements](../getting-started/requirements.md).
 
