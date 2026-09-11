@@ -57,6 +57,7 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 | `max_model_len` | (optional) Target context length the client must serve |
 | `rope_type` | (vLLM optional) RoPE scaling type when YaRN is required, for example `yarn` |
 | `rope_base_context_len` | (vLLM optional) Base context used to compute the YaRN factor |
+| `kv_cache_bytes_per_token` | (vLLM optional) The model's exact KV cache cost per token, used by the local fit check |
 
 Serve-flag fields are **nullable**. When set, setup and auto-start pass them into the engine:
 
