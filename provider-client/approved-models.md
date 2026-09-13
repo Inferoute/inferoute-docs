@@ -53,7 +53,7 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 | `hf_repo` | HuggingFace repo id (`org/name`) for vLLM downloads |
 | `hf_ref` | Branch or tag to download (for example `main`) |
 | `min_size_bytes` | Measured minimum model weight size used by the local compatibility check |
-| `tool_call_parser` | (vLLM optional) Parser name for auto tool calling, for example `hermes` |
+| `tool_call_parser` | (vLLM optional) Parser name for auto tool calling, for example `hermes`. **Omit** (null) when the model does not support tools — setup and auto-start then start the engine **without** `--enable-auto-tool-choice` |
 | `max_model_len` | (optional) Target context length the client must serve |
 | `rope_type` | (vLLM optional) RoPE scaling type when YaRN is required, for example `yarn` |
 | `rope_base_context_len` | (vLLM optional) Base context used to compute the YaRN factor |
@@ -69,7 +69,9 @@ Serve-flag fields are **nullable**. When set, setup and auto-start pass them int
 
 Default product target for extended models is **128k** (`131072`). Ops can set a higher value per alias when VRAM allows.
 
-The [setup wizard](setup.md) fetches this catalog, scores each build against this machine (including KV for `max_model_len` when set), and downloads the model you pick. You do not pull or serve models by hand.
+The [setup wizard](setup.md) fetches this catalog, scores each build against this machine (including KV for `max_model_len` when set), and downloads the model you pick.
+
+Health checks refresh this catalog to verify weights and live context. They do **not** rewrite `config.yaml` or restart the engine with new flags. If you start the engine yourself, match the catalog row — or re-run setup. See [Setup wizard](setup.md).
 
 Consumers call Inferoute with the catalog **`alias`**. For example, `gguf/qwen3:0.6b` routes to Ollama providers; `Qwen/Qwen3-0.6B` routes to vLLM / vLLM Metal / FreeToken providers.
 

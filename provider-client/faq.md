@@ -24,11 +24,17 @@ Prefer **`inferoute-client setup`**. It writes engine, model, and API key into t
 
 ### How do I change engine or model later?
 
-Re-run the [setup wizard](setup.md):
+Stop the engine if it is already running, then re-run the [setup wizard](setup.md):
 
 ```bash
 inferoute-client setup
 ```
+
+Auto-start only replays `config.yaml`. It does not notice that the catalog row changed, and it will not restart a process that is already listening.
+
+### Can I start vLLM (or FreeToken) myself?
+
+Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call_parser`, do not pass `--enable-auto-tool-choice`. If the catalog sets `max_model_len`, serve at least that context or verification fails. Safer: let setup start the engine. See [Approved model builds](approved-models.md).
 
 ### How do I delete a cluster from my account?
 

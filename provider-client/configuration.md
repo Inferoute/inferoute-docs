@@ -19,13 +19,13 @@ Prefer **`inferoute-client setup`** to change engine, model, or API key — see 
   - **engine** — Local program: `ollama`, `vllm`, `vllm-metal`, or `freetoken`. Empty defaults from **provider_type**. Change this with `inferoute-client setup`.
   - **engine_bin** — Absolute path to the engine binary when it is not on `PATH` (typical for FreeToken on Windows).
   - **model** — Catalog alias the client auto-starts (for example `Qwen/Qwen2.5-7B-Instruct`).
-  - **auto_start** — When **true**, start the engine if **llm_url** is down. Setup turns this on when it can find the binary. Existing configs without this field stay off.
+  - **auto_start** — When **true**, start the engine if **llm_url** is down, using the serve flags already in this file. Setup turns this on when it can find the binary. Existing configs without this field stay off. A process already bound on **llm_url** is not restarted.
   - **llm_url** — Local LLM API URL. For example, `http://127.0.0.1:11434` for Ollama, `http://127.0.0.1:8000` for vLLM, or `http://127.0.0.1:1919` for FreeToken.
   - **llm_timeout_seconds** — Timeout for requests forwarded to Ollama or vLLM (default **120**).
   - **hf_hub_cache** — (vLLM, optional) HuggingFace hub cache directory. Default: `~/.cache/huggingface/hub`. The client uses this to find weights for the model vLLM is serving.
   - **model_path** — (vLLM, optional) Flat directory override when you use `hf download --local-dir` instead of the hub cache layout.
   - **hf_repo** — (optional) HuggingFace id when it differs from **model**. Setup writes this from the catalog.
-  - **tool_call_parser**, **max_model_len**, **rope_type**, **rope_base_context_len** — (optional) Catalog serve flags copied by setup so auto-start can rebuild the same engine command offline. See [Approved model builds](approved-models.md).
+  - **tool_call_parser**, **max_model_len**, **rope_type**, **rope_base_context_len** — (optional) Catalog serve flags copied by setup so auto-start can rebuild the same engine command offline. Missing `tool_call_parser` means start **without** tool calling. Changing these by hand does not update a running engine — stop it and re-run setup. See [Approved model builds](approved-models.md).
 - **logging**
   - **level** — `debug`, `info`, `warn`, `error`.
   - **log_dir** — Directory for log files (default: `~/.local/state/inferoute/log`).

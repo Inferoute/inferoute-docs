@@ -11,7 +11,7 @@ The client runs alongside the local LLM engine the wizard installed (Ollama, vLL
 3. Accepts inference requests from Inferoute and forwards them to your local LLM server.
 4. Creates and maintains a **Cloudflare Tunnel** so Inferoute can reach you without open firewall ports.
 
-If **auto_start** is on (the wizard turns this on when it finds the engine binary), the client starts that engine when `llm_url` is down. It will not start a second copy if the port is already in use.
+If **auto_start** is on (the wizard turns this on when it finds the engine binary), the client starts that engine when `llm_url` is down. It uses the serve flags already in `config.yaml` (including whether tool calling is on). It will not start a second copy if the port is already in use, and it will not pull fresh catalog flags at runtime. Re-run [setup](setup.md) after you change model or catalog flags.
 
 ## Health monitoring
 

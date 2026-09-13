@@ -24,7 +24,14 @@ If you have not installed the client yet, start with [Installation](../getting-s
 
 It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`, and any catalog serve flags such as `max_model_len`) and prints how to start the client.
 
-Already-running engines do **not** pick up new serve flags automatically. Stop the engine and re-run setup (or start with the printed command) after changing model or catalog context settings.
+{% hint style="warning" %}
+**Start the engine the way setup would.** Auto-start only replays what is already in `config.yaml`. The client does **not** re-read catalog serve flags at runtime or restart a process that is already bound.
+
+- Prefer **`inferoute-client setup`**. It writes the flags and can start the engine.
+- If you start vLLM, vLLM Metal, or FreeToken yourself, use the command setup printed (same `max_model_len` / `--max-seq-len-override`, YaRN, and tool parser when the catalog has them).
+- If the catalog row has **no** `tool_call_parser`, do **not** pass `--enable-auto-tool-choice`. That model does not use Inferoute tool calling.
+- After you change model or catalog flags, **stop the engine** and re-run setup. A process already listening on `llm_url` is left as-is.
+{% endhint %}
 
 ## Engines by platform
 
@@ -49,7 +56,7 @@ inferoute-client
 
 On Windows, use **Start Menu → Inferoute → Inferoute Client**. See [Setup: Windows](setup-windows.md).
 
-When `auto_start` is on, later client starts will bring the engine up if `llm_url` is down — they will not spawn a second copy if that port is already in use.
+When `auto_start` is on, later client starts will bring the engine up if `llm_url` is down — they replay the serve flags stored in config and will not spawn a second copy if that port is already in use.
 
 Then set prices on **Clusters** → **Models**. See [Model pricing](../provider/model-pricing.md).
 
