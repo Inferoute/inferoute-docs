@@ -40,7 +40,7 @@ On Linux or Windows with NVIDIA, utilization above **20%** is treated as busy. O
 
 Initial prices come from platform averages. You set your own prices **per cluster** in the dashboard — see [Model pricing](../provider/model-pricing.md).
 
-Approved marketplace models must match a platform [approved model build](approved-models.md). The client verifies Ollama digests and vLLM weight fingerprints against that allowlist before registration, health reporting, and inference.
+Approved marketplace models must match a platform [approved model build](approved-models.md). The public catalog’s **`engines`** field lists which client (Ollama, vLLM, vLLM Metal, FreeToken) may serve that row. The client verifies Ollama digests and vLLM weight fingerprints against platform records before registration, health reporting, and inference.
 
 **Ollama** — no extra config; digests come from `/api/tags`.
 

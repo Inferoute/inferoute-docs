@@ -27,7 +27,7 @@ Engine choices:
 
 ## Windows (PowerShell)
 
-Requires 64-bit Windows. The wizard offers **Ollama** or **FreeToken**.
+Requires 64-bit Windows. The wizard offers **Ollama** or **FreeToken**. FreeToken only lists catalog rows tagged `freetoken` — see [Approved model builds](../provider-client/approved-models.md).
 
 ```powershell
 irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex

@@ -19,6 +19,10 @@ inferoute-client setup
 
 The wizard can install Ollama (via winget) or the FreeToken **CLI** (`ft serve` on port **1919**) into `%LOCALAPPDATA%\inferoute\venv-freetoken`, including **CUDA PyTorch** (the Windows PyPI `torch` package is CPU-only and will not use your GPU). First-run download can take several minutes. This is not **FreeToken Desktop** — if that app is already installed, close it before setup. It uses the same API port, and its bundled `ft.exe` cannot serve models for Inferoute.
 
+{% hint style="info" %}
+**FreeToken only serves tagged catalog rows.** Setup and `compatibility` hide vLLM builds whose `engines` array does not include `freetoken`. Fitting VRAM is not enough — FreeToken cannot load encoder or embedding checkpoints such as `baai/bge-m3`. See [Approved model builds](approved-models.md) and [FreeToken’s supported models](https://github.com/FlashML-org/FreeToken/blob/main/docs/models.md).
+{% endhint %}
+
 3. Start the client from **Start Menu → Inferoute → Inferoute Client**, or from a **new** terminal:
 
    ```powershell

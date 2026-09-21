@@ -6,6 +6,8 @@ The command detects local hardware and scores each approved build. It does **not
 
 It reads the public approved-model catalog from `https://core.inferoute.com` by default. It does not read your provider configuration file unless you explicitly pass a different URL with `--catalog-url`.
 
+On Windows, vLLM catalog rows are filtered to builds whose `engines` list includes **`freetoken`**. On macOS they are filtered to **`vllm-metal`**. Untagged vLLM rows never imply FreeToken. See [Approved model builds](approved-models.md).
+
 ## Requirements
 
 | Platform | What it uses |
@@ -21,6 +23,7 @@ It reads the public approved-model catalog from `https://core.inferoute.com` by 
 inferoute-client compatibility
 inferoute-client compatibility --provider-type ollama
 inferoute-client compatibility --provider-type vllm
+inferoute-client compatibility --engine freetoken
 inferoute-client compatibility --json
 inferoute-client compatibility --catalog-url https://core.inferoute.com
 inferoute-client compatibility --offline-catalog ./approved-models.json
@@ -29,6 +32,7 @@ inferoute-client compatibility --offline-catalog ./approved-models.json
 | Flag | Purpose |
 |------|---------|
 | `--provider-type` | `ollama`, `vllm`, or omit for both |
+| `--engine` | `ollama`, `vllm`, `vllm-metal`, or `freetoken`. Default: inferred from this OS (`freetoken` on Windows, `vllm-metal` on macOS) |
 | `--catalog-url` | Inferoute API base (default `https://core.inferoute.com`) |
 | `--offline-catalog` | Local JSON in the same shape as the public catalog |
 | `--json` | Machine-readable output for scripts |

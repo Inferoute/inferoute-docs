@@ -19,7 +19,7 @@ If you have not installed the client yet, start with [Installation](../getting-s
 1. **Provider API key** — from **Clusters** → **Settings**. Required. See [Sign up and create a cluster](../getting-started/signup.md).
 2. **Inference engine** — only engines that work on this OS are selectable.
 3. **Install if missing** — if the engine is not on the machine, the wizard offers to install it.
-4. **Model** — fetches the approved catalog, scores each build against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table.
+4. **Model** — fetches the approved catalog, **keeps only rows tagged for this engine** (`engines`), scores the rest against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table. Windows FreeToken only shows builds that include `freetoken`. See [Approved model builds](approved-models.md).
 5. **Start now** — can pull (Ollama) or serve the model, then wait until the engine is healthy.
 
 It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`, and any catalog serve flags such as `max_model_len`) and prints how to start the client.

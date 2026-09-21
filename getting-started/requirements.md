@@ -15,7 +15,7 @@ The wizard offers one backend for this machine:
 | **macOS** (Intel) | Ollama |
 | **Windows** (64-bit) | Ollama or FreeToken |
 
-Do not convert FreeToken checkpoints to FTW if you want marketplace verification.
+Do not convert FreeToken checkpoints to FTW if you want marketplace verification. Native Windows FreeToken only serves catalog rows whose `engines` include `freetoken` — see [Approved model builds](../provider-client/approved-models.md).
 
 ## Hardware
 

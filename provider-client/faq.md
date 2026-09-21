@@ -16,7 +16,7 @@ A lightweight service that runs next to a local LLM engine (Ollama, vLLM, vLLM M
 
 - **Linux with NVIDIA GPU:** At least **32 GB** of system memory and **24 GB** of VRAM. Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
 - **macOS with Apple GPU:** At least **48 GB** of unified memory for approved vLLM Metal models. Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
-- **Windows amd64:** At least **32 GB** of system memory and an NVIDIA GPU with **24 GB** of VRAM. Ollama or FreeToken. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
+- **Windows amd64:** At least **32 GB** of system memory and an NVIDIA GPU with **24 GB** of VRAM. Ollama or FreeToken. FreeToken only lists catalog rows tagged `freetoken`. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
 
 ### How do I configure the client?
 
@@ -72,7 +72,7 @@ When using the Inferoute API, Ollama models use the **gguf/** prefix. For exampl
 
 ### Which models are approved on the marketplace?
 
-See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the public catalog (aliases and HuggingFace locations; no hashes). The setup wizard lists the ones that should fit this machine.
+See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the public catalog (aliases, HuggingFace locations, and `engines`; no hashes). The setup wizard lists rows tagged for this engine that should also fit this machine. On Windows FreeToken, models without `freetoken` in `engines` are hidden — the dashboard labels them **Unsupported on Windows / FreeToken**.
 
 ## Cloudflare Tunnel
 
