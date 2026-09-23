@@ -21,6 +21,8 @@ The wizard can install Ollama (via winget) or the FreeToken **CLI** (`ft serve` 
 
 {% hint style="info" %}
 **FreeToken only serves tagged catalog rows.** Setup and `compatibility` hide vLLM builds whose `engines` array does not include `freetoken`. Fitting VRAM is not enough — FreeToken cannot load encoder or embedding checkpoints such as `baai/bge-m3`. See [Approved model builds](approved-models.md) and [FreeToken’s supported models](https://github.com/FlashML-org/FreeToken/blob/main/docs/models.md).
+
+When you answer **yes** to start FreeToken, the client runs `ft serve` with `--moe-backend fused`. That keeps MoE experts on the GPU. FreeToken’s own default puts them in system RAM, and that load path stops on Windows.
 {% endhint %}
 
 3. Start the client from **Start Menu → Inferoute → Inferoute Client**, or from a **new** terminal:

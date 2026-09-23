@@ -98,7 +98,7 @@ Serve-flag fields are **nullable**. When set, setup and auto-start pass them int
 | Engine | How `max_model_len` is applied | Tools / RoPE |
 |--------|--------------------------------|--------------|
 | **vLLM / vLLM Metal** | `--max-model-len N` | `--enable-auto-tool-choice --tool-call-parser …` when `tool_call_parser` is set; YaRN `--hf-overrides` when `rope_type` is set |
-| **FreeToken** | `--max-seq-len-override N` | Tools stay on FreeToken’s default (`auto`). RoPE fields are ignored |
+| **FreeToken** | `--max-seq-len-override N` | Tools stay on FreeToken’s default (`auto`). RoPE fields are ignored. Setup also passes `--moe-backend fused` so MoE experts stay in VRAM |
 | **Ollama** | Not applied | Unchanged |
 
 Default product target for extended models is **128k** (`131072`). Ops can set a higher value per alias when VRAM allows.
