@@ -1,6 +1,15 @@
 # Setup: Windows
 
-Use this guide when you run the provider client natively on 64-bit Windows. For example, **inferoute-cluster1** on a Windows PC. The [setup wizard](setup.md) offers **Ollama** or **FreeToken**. Native vLLM is not supported. For approved BF16 models (FreeToken), you need at least **32 GB** of system memory and an NVIDIA GPU with at least **24 GB** of VRAM.
+Use this guide when you run the provider client natively on 64-bit Windows. For example, **inferoute-cluster1** on a Windows PC. The [setup wizard](setup.md) offers **Ollama** or **FreeToken**. Native vLLM is not supported.
+
+You need an NVIDIA GPU with at least **24 GB** of VRAM, and either:
+
+- **32 GB** of RAM plus a **fixed 64 GB page file**, or
+- **64 GB** of RAM (the default page file is then enough)
+
+{% hint style="warning" %}
+Windows limits a process to RAM + page file. FreeToken often loads MoE experts in system RAM. On a **32 GB** box, set a fixed **64 GB** page file: **System Properties** → **Advanced** → **Performance Settings** → **Advanced** → **Virtual memory**. Without it, load fails with `OSError 1455` (paging file too small).
+{% endhint %}
 
 ## Quick install (recommended)
 
@@ -22,7 +31,7 @@ The wizard can install Ollama (via winget) or the FreeToken **CLI** (`ft serve` 
 {% hint style="info" %}
 **FreeToken only serves tagged catalog rows.** Setup and `compatibility` hide vLLM builds whose `engines` array does not include `freetoken`. Fitting VRAM is not enough — FreeToken cannot load encoder or embedding checkpoints such as `baai/bge-m3`. See [Approved model builds](approved-models.md) and [FreeToken’s supported models](https://github.com/FlashML-org/FreeToken/blob/main/docs/models.md).
 
-When you answer **yes** to start FreeToken, the client runs `ft serve` with `--moe-backend fused`. That keeps MoE experts on the GPU. FreeToken’s own default puts them in system RAM, and that load path stops on Windows.
+When you answer **yes** to start FreeToken, setup picks `--moe-backend fused` if the model fits in VRAM, or `auto` (experts in system RAM) if it does not. `auto` is why Windows needs **32 GB** RAM + a **64 GB** page file, or **64 GB** of RAM.
 {% endhint %}
 
 3. Start the client from **Start Menu → Inferoute → Inferoute Client**, or from a **new** terminal:
@@ -49,7 +58,7 @@ If SmartScreen says **Windows protected your PC**, choose **More info** → **Ru
 
 ## GPU monitoring
 
-Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on **PATH**. You need at least **32 GB** of system memory and **24 GB** of VRAM for approved BF16 models. Then the client reports GPU name, VRAM, and busy status (utilization above **20%**). Without `nvidia-smi` the client still runs; GPU fields are empty, busy is not detected from utilization, and the wizard will not offer FreeToken.
+Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on **PATH**. You need **24 GB** of VRAM and either **32 GB** of RAM with a **fixed 64 GB page file**, or **64 GB** of RAM. Then the client reports GPU name, VRAM, and busy status (utilization above **20%**). Without `nvidia-smi` the client still runs; GPU fields are empty, busy is not detected from utilization, and the wizard will not offer FreeToken.
 
 `inferoute-client compatibility` uses the same `nvidia-smi` data, or system RAM if no NVIDIA GPU is present.
 
