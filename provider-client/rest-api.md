@@ -36,6 +36,40 @@ Inferoute sends work to **POST /v1/chat/completions** and **POST /v1/completions
 
 When the GPU is busy and the request is not a follow-up for the same session, the client returns **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. Unverified models return **403**. LLM failures return **502**.
 
+## Platform: client version
+
+These are Inferoute platform routes, not the local client API. The client calls them with `X-Inferoute-Client-Version`.
+
+### GET /api/client/version
+
+No API key. Returns the newest release and the oldest release Inferoute still accepts.
+
+```json
+{
+  "latest": "1.4.0",
+  "min_supported": "1.2.0",
+  "download_url": "https://github.com/inferoute/inferoute-client/releases/latest",
+  "support_window_days": 90
+}
+```
+
+`min_supported` is an empty string while every release is accepted.
+
+### 426 Upgrade Required
+
+A provider route returns this when the client is older than `min_supported`.
+
+```json
+{
+  "error": "client_outdated",
+  "min_version": "1.2.0",
+  "latest_version": "1.4.0",
+  "download_url": "https://github.com/inferoute/inferoute-client/releases/latest"
+}
+```
+
+Successful responses include `X-Inferoute-Latest-Client-Version`. See [Updating the client](updating.md).
+
 ## Related
 
 - [How it works](how-it-works.md)

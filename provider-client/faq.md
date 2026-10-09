@@ -22,6 +22,10 @@ A lightweight service that runs next to a local LLM engine (Ollama, vLLM, vLLM M
 
 Prefer **`inferoute-client setup`**. It writes engine, model, and API key into the YAML config. Server and logging stay in that file — see [Configuration](configuration.md). Cloudflare Tunnel is requested at runtime — it is not a config section.
 
+### How do I update the client?
+
+Stop the client, run `inferoute-client update`, then start it again. The console tells you when a newer release exists. If it says **Update required**, Inferoute is no longer accepting that release. See [Updating the client](updating.md).
+
 ### How do I change engine or model later?
 
 Stop the engine if it is already running, then re-run the [setup wizard](setup.md):

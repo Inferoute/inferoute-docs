@@ -20,6 +20,7 @@
   - [How it works](provider-client/how-it-works.md)
   - [Setup wizard](provider-client/setup.md)
   - [Configuration](provider-client/configuration.md)
+  - [Updating the client](provider-client/updating.md)
   - [Setup: Linux](provider-client/setup-linux.md)
   - [Setup: macOS](provider-client/setup-mac.md)
   - [Setup: Windows](provider-client/setup-windows.md)
