@@ -2,19 +2,19 @@
 
 Inferoute maintains a platform allowlist of **approved model builds**. The Provider Client uses this list to know which models can be offered on the marketplace and verifies your local weights against platform records.
 
-Verification secrets (digests, fingerprints, manifests) are **not** published. The client measures your local model and the platform returns **verified** or **failed**.
+Verification secrets (fingerprints and manifests) are **not** published. The client measures your local model and the platform returns **verified** or **failed**.
 
 ## Public catalog
 
 **GET** `/api/models/approved-builds`
 
-No authentication. Returns only **active** builds and **no hashes**. Safe sizing metadata such as `min_size_bytes` may be included so the client can run a local [compatibility check](compatibility.md). Each row also lists **`engines`**: which client runtimes may serve that build. Digests, fingerprints, and manifests are never returned.
+No authentication. Returns only **active** builds and **no hashes**. Safe sizing metadata such as `min_size_bytes` may be included so the client can run a local [compatibility check](compatibility.md). Each row also lists **`engines`**: which client runtimes may serve that build. Fingerprints and manifests are never returned.
 
 Optional query:
 
 | Parameter | Values | Purpose |
 |-----------|--------|---------|
-| `service_type` | `ollama` or `vllm` | Filter by backend |
+| `service_type` | `vllm` | Filter by backend |
 
 ### Example
 
@@ -27,14 +27,6 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 {
   "object": "list",
   "data": [
-    {
-      "id": "41a99b3a-d928-4580-9656-3508c0529148",
-      "alias": "gguf/qwen3:0.6b",
-      "service_type": "ollama",
-      "min_size_bytes": 523456789,
-      "is_active": true,
-      "engines": ["ollama"]
-    },
     {
       "id": "b2c8e1f0-1234-5678-9abc-def012345678",
       "alias": "Qwen/Qwen2.5-7B-Instruct",
@@ -72,11 +64,11 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 | Field | Meaning |
 |-------|---------|
 | `alias` | Model id to use with Inferoute and your LLM server |
-| `service_type` | Verify/routing family: `ollama` or `vllm`. FreeToken and vLLM Metal still use `vllm` here |
+| `service_type` | `vllm`. FreeToken and vLLM Metal use `vllm` here |
 | `hf_repo` | HuggingFace repo id (`org/name`) for vLLM downloads |
 | `hf_ref` | Branch or tag to download (for example `main`) |
 | `min_size_bytes` | Measured minimum model weight size used by the local compatibility check |
-| `engines` | Client runtimes allowed to serve this build: `ollama`, `vllm`, `vllm-metal`, `freetoken` |
+| `engines` | Client runtimes allowed to serve this build: `vllm`, `vllm-metal`, `freetoken` |
 | `tool_call_parser` | (vLLM optional) Parser name for auto tool calling, for example `hermes`. **Omit** (null) when the model does not support tools — setup and auto-start then start the engine **without** `--enable-auto-tool-choice` |
 | `max_model_len` | (optional) Target context length the client must serve |
 | `rope_type` | (vLLM optional) RoPE scaling type when YaRN is required, for example `yarn` |
@@ -87,7 +79,7 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 
 | If `engines` is… | Who sees the model |
 |------------------|--------------------|
-| missing or empty | Ollama rows → Ollama. vLLM rows → **vLLM and vLLM Metal only** (never FreeToken) |
+| missing or empty | **vLLM and vLLM Metal only** (never FreeToken) |
 | includes `freetoken` | Windows FreeToken setup and `compatibility` will list it (if it also fits VRAM) |
 | omits `freetoken` | Hidden on Windows FreeToken. The dashboard marks it **Unsupported on Windows / FreeToken** |
 
@@ -99,7 +91,6 @@ Serve-flag fields are **nullable**. When set, setup and auto-start pass them int
 |--------|--------------------------------|--------------|
 | **vLLM / vLLM Metal** | `--max-model-len N` | `--enable-auto-tool-choice --tool-call-parser …` when `tool_call_parser` is set; YaRN `--hf-overrides` when `rope_type` is set |
 | **FreeToken** | `--max-seq-len-override N` | Tools stay on FreeToken’s default (`auto`). RoPE fields are ignored. Setup passes `--moe-backend fused` when the model fits in VRAM, or `auto` (experts in system RAM) when it does not |
-| **Ollama** | Not applied | Unchanged |
 
 Default product target for extended models is **128k** (`131072`). Ops can set a higher value per alias when VRAM allows.
 
@@ -107,36 +98,25 @@ The [setup wizard](setup.md) fetches this catalog, **drops rows this engine cann
 
 Health checks refresh this catalog to verify weights and live context. They do **not** rewrite `config.yaml` or restart the engine with new flags. If you start the engine yourself, match the catalog row — or re-run setup. See [Setup wizard](setup.md).
 
-Consumers call Inferoute with the catalog **`alias`**. For example, `gguf/qwen3:0.6b` routes to Ollama providers; `Qwen/Qwen2.5-7B-Instruct` routes to vLLM / vLLM Metal providers. A vLLM alias only reaches **FreeToken** providers when `engines` includes `freetoken`.
+Consumers call Inferoute with the catalog **`alias`**. For example, `Qwen/Qwen2.5-7B-Instruct` routes to vLLM and vLLM Metal providers. That alias only reaches **FreeToken** providers when `engines` includes `freetoken`.
 
 ## How verification works
 
 1. Client fetches the **public catalog** (names, HuggingFace location, `engines`, and optional serve flags).
-2. Client hashes local model files (Ollama digest or vLLM weight files).
+2. Client measures the local weight fingerprint.
 3. Client calls **POST** `/api/provider/verify-model` with your **provider API key**.
 4. Platform compares measurements to internal records and returns `verification_status`.
-5. For vLLM / FreeToken, if the catalog lists `max_model_len`, the client also reads the **live** engine context. If it is lower than the catalog value (or unreadable), verification is **failed** and the model is not approved for routing.
+5. If the catalog lists `max_model_len`, the client also reads the **live** engine context. If it is lower than the catalog value (or unreadable), verification is **failed** and the model is not approved for routing.
 6. Health reports include the verified status; the platform re-checks on ingest.
 
 | Engine | Live context source |
 |--------|---------------------|
 | **vLLM / vLLM Metal** | `GET /v1/models` → model card `max_model_len` |
 | **FreeToken** | Prefer `/v1/models` `max_model_len` if present; else `GET /v1/cache/status` → `geometry.num_pages * geometry.page_size` |
-| **Ollama** | No context gate in this release |
 
 The client **caches** verify results for about **10 minutes** and only re-verifies when the catalog changes or your local model files change. The console UI reads the last health snapshot — it does not call verify on every refresh.
 
 You do not need to call the verify API manually for day-to-day operation.
-
-## Ollama vs vLLM
-
-The same model family on Ollama and HuggingFace are **separate** catalog entries. Consumers pick the backend by model name (`gguf/...` → Ollama; bare HF id → vLLM).
-
-| | Ollama | vLLM / Metal / FreeToken |
-|---|--------|------|
-| Example alias | `gguf/qwen3:0.6b` | `Qwen/Qwen2.5-7B-Instruct` |
-| Catalog fields | `alias`, `engines: ["ollama"]` | `alias`, `hf_repo`, `hf_ref`, `engines`, optional serve flags |
-| Engine | `ollama` | `vllm`, `vllm-metal`, or `freetoken` (only if tagged) |
 
 ## Related
 

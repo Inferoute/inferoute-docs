@@ -15,13 +15,14 @@ On Windows, vLLM catalog rows are filtered to builds whose `engines` list includ
 | **Linux + NVIDIA** | `nvidia-smi` for GPU name, driver, CUDA, VRAM total/free |
 | **Windows + NVIDIA** | `nvidia-smi` (same as Linux) when the NVIDIA driver is on `PATH` |
 | **macOS (Apple Silicon)** | `system_profiler` for GPU name; unified memory from system RAM |
-| **macOS (Intel) / CPU-only / Windows without NVIDIA** | System RAM with a slow/CPU warning |
+| **CPU-only / Windows without NVIDIA** | System RAM with a slow/CPU warning |
+
+Intel Macs are not supported.
 
 ## Commands
 
 ```bash
 inferoute-client compatibility
-inferoute-client compatibility --provider-type ollama
 inferoute-client compatibility --provider-type vllm
 inferoute-client compatibility --engine freetoken
 inferoute-client compatibility --json
@@ -31,8 +32,8 @@ inferoute-client compatibility --offline-catalog ./approved-models.json
 
 | Flag | Purpose |
 |------|---------|
-| `--provider-type` | `ollama`, `vllm`, or omit for both |
-| `--engine` | `ollama`, `vllm`, `vllm-metal`, or `freetoken`. Default: inferred from this OS (`freetoken` on Windows, `vllm-metal` on macOS) |
+| `--provider-type` | `vllm`, or omit |
+| `--engine` | `vllm`, `vllm-metal`, or `freetoken`. Default: inferred from this OS (`vllm` on Linux, `vllm-metal` on macOS, `freetoken` on Windows) |
 | `--catalog-url` | Inferoute API base (default `https://core.inferoute.com`) |
 | `--offline-catalog` | Local JSON in the same shape as the public catalog |
 | `--json` | Machine-readable output for scripts |
@@ -54,7 +55,7 @@ inferoute-client compatibility --catalog-url https://api.example.com
 | `too_large` | Unlikely to fit |
 | `unknown` | Missing size or usable memory |
 
-Scoring uses each build’s public `min_size_bytes` plus a conservative runtime overhead (higher for vLLM). When the catalog sets `max_model_len` on a vLLM build, a **KV cache** term is added on top. If the catalog also carries `kv_cache_bytes_per_token` (the model’s exact per-token KV cost), the client uses it directly: `required = weights × 1.2 + kv_cache_bytes_per_token × max_model_len`. For example, a Qwen 7B-class build (57,344 bytes/token) at 128k context adds ~7 GiB of KV cache. Without that field, the client falls back to an estimate (~3% of weight size per **8k** tokens). A 128k target can still flip a mid-VRAM card to `too_large`; a 7B at 128k should still fit a 96 GB Mac. Ollama builds ignore `max_model_len`. On Apple Silicon, only a fraction of unified memory is treated as usable so the OS still has headroom. On multi-GPU Linux or Windows hosts, v1 scores against the **largest single GPU**.
+Scoring uses each build’s public `min_size_bytes` plus a conservative runtime overhead. When the catalog sets `max_model_len`, a **KV cache** term is added on top. If the catalog also carries `kv_cache_bytes_per_token` (the model’s exact per-token KV cost), the client uses it directly: `required = weights × 1.2 + kv_cache_bytes_per_token × max_model_len`. For example, a Qwen 7B-class build (57,344 bytes/token) at 128k context adds ~7 GiB of KV cache. Without that field, the client falls back to an estimate (~3% of weight size per **8k** tokens). A 128k target can still flip a mid-VRAM card to `too_large`; a 7B at 128k should still fit a 96 GB Mac. On Apple Silicon, only a fraction of unified memory is treated as usable so the OS still has headroom. On multi-GPU Linux or Windows hosts, v1 scores against the **largest single GPU**.
 
 Approved vLLM builds are BF16 7B-class weights. Plan on **32 GB** of system memory and **24 GB** NVIDIA VRAM on Linux; on Windows **32 GB** of RAM plus a **fixed 64 GB page file** (or **64 GB** of RAM) and **24 GB** NVIDIA VRAM; or **48 GB** unified memory on a Mac. See [Software and hardware requirements](../getting-started/requirements.md).
 

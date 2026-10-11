@@ -1,6 +1,6 @@
 # Setup: macOS (Apple GPU)
 
-Use this guide when you run the provider client natively on a Mac. For example, **inferoute-cluster1** on a MacBook. You need **48 GB** of unified memory to run approved vLLM Metal models (BF16 7B-class). Ollama GGUF models can run on less RAM, but Inferoute’s approved vLLM catalog assumes 48 GB.
+Use this guide when you run the provider client natively on a Mac with Apple Silicon. For example, **inferoute-cluster1** on a MacBook. You need **48 GB** of unified memory to run approved vLLM Metal models (BF16 7B-class). Intel Macs are not supported.
 
 ## Quick install (recommended)
 
@@ -11,13 +11,13 @@ Use this guide when you run the provider client natively on a Mac. For example, 
    curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
    ```
 
-The [setup wizard](setup.md) asks which engine to use (**Ollama**, or **vLLM Metal** on Apple Silicon), installs it if needed, and shows which models fit this Mac. Re-run anytime:
+The [setup wizard](setup.md) installs **vLLM Metal** if it is missing, and shows which models fit this Mac. Re-run anytime:
 
 ```bash
 inferoute-client setup
 ```
 
-The script detects Intel and Apple Silicon Macs, installs **cloudflared** (via Homebrew when available, otherwise a native binary download), and places **inferoute-client** in `/usr/local/bin`.
+The script installs **cloudflared** (via Homebrew when available, otherwise a native binary download) and places **inferoute-client** in `/usr/local/bin`.
 
 3. Start the client:
 
@@ -44,7 +44,7 @@ For production provider workloads with utilization-based busy detection, use **L
    go build -o inferoute-client ./cmd
    ```
 
-3. **cloudflared:** Install with Homebrew (`brew install cloudflared`) or download the matching binary from [Cloudflare releases](https://github.com/cloudflare/cloudflared/releases) (`cloudflared-darwin-amd64.tgz` for Intel, `cloudflared-darwin-arm64.tgz` for Apple Silicon).
+3. **cloudflared:** Install with Homebrew (`brew install cloudflared`) or download `cloudflared-darwin-arm64.tgz` from [Cloudflare releases](https://github.com/cloudflare/cloudflared/releases).
 4. Run **`inferoute-client setup`**, then:
 
    ```bash

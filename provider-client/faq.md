@@ -6,17 +6,17 @@
 
 1. Check [Software and hardware requirements](../getting-started/requirements.md).
 2. [Sign up and create a cluster](../getting-started/signup.md) to copy a provider API key.
-3. [Install the client](../getting-started/installation.md). The [setup wizard](setup.md) installs the LLM engine and an approved model — you do not need Ollama or vLLM already running.
+3. [Install the client](../getting-started/installation.md). The [setup wizard](setup.md) installs the LLM engine and an approved model — you do not need the engine already running.
 
 ### What is the Inferoute Provider Client?
 
-A lightweight service that runs next to a local LLM engine (Ollama, vLLM, vLLM Metal, or FreeToken). It monitors GPU resources, reports health to Inferoute, and handles inference requests by forwarding them to that engine.
+A lightweight service that runs next to a local LLM engine (vLLM, vLLM Metal, or FreeToken). It monitors GPU resources, reports health to Inferoute, and handles inference requests by forwarding them to that engine.
 
 ### What platforms are supported?
 
 - **Linux with NVIDIA GPU:** At least **32 GB** of system memory and **24 GB** of VRAM. Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
-- **macOS with Apple GPU:** At least **48 GB** of unified memory for approved vLLM Metal models. Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
-- **Windows amd64:** **32 GB** of RAM plus a **fixed 64 GB page file**, or **64 GB** of RAM, and an NVIDIA GPU with **24 GB** of VRAM. Ollama or FreeToken. FreeToken only lists catalog rows tagged `freetoken`. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
+- **macOS with Apple Silicon:** At least **48 GB** of unified memory for approved vLLM Metal models. Intel Macs are not supported. Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
+- **Windows amd64:** **32 GB** of RAM plus a **fixed 64 GB page file**, or **64 GB** of RAM, and an NVIDIA GPU with **24 GB** of VRAM. FreeToken only. It only lists catalog rows tagged `freetoken`. Encoder and embedding models such as `baai/bge-m3` stay off Windows. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
 
 ### How do I configure the client?
 
@@ -63,16 +63,6 @@ See [Model pricing](../provider/model-pricing.md) for editing prices in the dash
 Yes. Open **Clusters** → select a cluster → **Models** tab to edit prices for that cluster only. You can also call `PUT /api/provider/models/{model_id}` on `https://core.inferoute.com` with that cluster’s provider API key (per-token units). See [Model pricing](../provider/model-pricing.md).
 
 Changing prices on one cluster does not change another. See [Model pricing](../provider/model-pricing.md).
-
-### What are GGUF models?
-
-GGUF (GPT-Generated Unified Format) is a model format used by Ollama:
-
-- More memory-efficient than FP16 via quantization.
-- Often faster on consumer hardware.
-- Various quantization levels (for example Q4_K_M, Q5_K_M) trade size for quality.
-
-When using the Inferoute API, Ollama models use the **gguf/** prefix. For example, `gguf/qwen2.5:7b`.
 
 ### Which models are approved on the marketplace?
 

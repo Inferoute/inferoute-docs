@@ -6,27 +6,28 @@ The [setup wizard](../provider-client/setup.md) installs that LLM server and an 
 
 ## LLM software
 
-The wizard offers one backend for this machine:
+The wizard installs one engine for this machine:
 
-| Platform | Supported LLM backends |
+| Platform | Engine |
 | --- | --- |
-| **Linux** | Ollama or vLLM |
-| **macOS** (Apple Silicon) | Ollama or vLLM Metal |
-| **macOS** (Intel) | Ollama |
-| **Windows** (64-bit) | Ollama or FreeToken |
+| **Linux** | vLLM (needs an NVIDIA GPU) |
+| **macOS** (Apple Silicon) | vLLM Metal |
+| **Windows** (64-bit) | FreeToken |
 
-Do not convert FreeToken checkpoints to FTW if you want marketplace verification. Native Windows FreeToken only serves catalog rows whose `engines` include `freetoken` — see [Approved model builds](../provider-client/approved-models.md).
+Intel Macs are not supported.
+
+Do not convert FreeToken checkpoints to FTW if you want marketplace verification. FreeToken does not serve every catalog model. It only serves rows whose `engines` include `freetoken`. Encoder and embedding models such as `baai/bge-m3` stay off Windows. See [Approved model builds](../provider-client/approved-models.md).
 
 ## Hardware
 
-Approved vLLM / FreeToken / vLLM Metal builds are BF16 7B-class weights (~14 GB on disk). That is why the floor is higher than a quantized Ollama GGUF.
+Approved builds are BF16 7B-class weights (~14 GB on disk).
 
 | Requirement | Detail |
 | --- | --- |
 | **System memory** (Linux) | At least **32 GB** of RAM. Loading approved BF16 weights needs host memory in addition to GPU VRAM. |
 | **System memory** (Windows) | **32 GB** of RAM with a **fixed 64 GB page file**, or **64 GB** of RAM. FreeToken often keeps MoE experts in system RAM. Windows commit limit is RAM + page file — without enough of either, load fails with `OSError 1455` (paging file too small). Set a fixed page file: **System Properties** → **Advanced** → **Performance Settings** → **Advanced** → **Virtual memory**. |
 | **NVIDIA GPU** (Linux and Windows) | At least **24 GB** of VRAM (for example RTX 3090, RTX 4090). Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on `PATH`. The Inferoute install script does not install the driver. |
-| **macOS** | Apple Silicon with at least **48 GB** of unified memory. Intel Macs can run Ollama only. The client reports basic GPU info; utilization-based busy detection is not available (in-flight requests still mark the client busy). Use Linux + NVIDIA for production routing with utilization-based busy status. |
+| **macOS** | Apple Silicon with at least **48 GB** of unified memory. Intel Macs are not supported. The client reports basic GPU info; utilization-based busy detection is not available (in-flight requests still mark the client busy). Use Linux + NVIDIA for production routing with utilization-based busy status. |
 | **Disk** | **100 GB+** free is a practical starting point for model weights. |
 
 vLLM expects a CUDA-capable NVIDIA GPU. The wizard will not offer vLLM or FreeToken if `nvidia-smi` is missing.
@@ -35,9 +36,9 @@ vLLM expects a CUDA-capable NVIDIA GPU. The wizard will not offer vLLM or FreeTo
 
 | Platform | GPU monitoring | Typical LLM backend |
 | --- | --- | --- |
-| **Linux + NVIDIA** | Full via `nvidia-smi` | Ollama or vLLM |
-| **macOS** (Apple Silicon) | Basic via `system_profiler` | Ollama or vLLM Metal |
-| **Windows amd64** | `nvidia-smi` when the NVIDIA driver is installed | Ollama or FreeToken |
+| **Linux + NVIDIA** | Full via `nvidia-smi` | vLLM |
+| **macOS** (Apple Silicon) | Basic via `system_profiler` | vLLM Metal |
+| **Windows amd64** | `nvidia-smi` when the NVIDIA driver is installed | FreeToken |
 
 ## What the Inferoute client adds
 

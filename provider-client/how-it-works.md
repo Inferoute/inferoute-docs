@@ -4,7 +4,7 @@ This page explains what the Provider Client does on your machine and how it talk
 
 ## Overview
 
-The client runs alongside the local LLM engine the wizard installed (Ollama, vLLM, vLLM Metal, or FreeToken). It:
+The client runs alongside the local LLM engine the wizard installed (vLLM, vLLM Metal, or FreeToken). It:
 
 1. Reports health (GPU, models, tunnel status) to Inferoute on a schedule.
 2. Registers models and initial pricing for **your cluster**.
@@ -40,11 +40,9 @@ On Linux or Windows with NVIDIA, utilization above **20%** is treated as busy. O
 
 Initial prices come from platform averages. You set your own prices **per cluster** in the dashboard — see [Model pricing](../provider/model-pricing.md).
 
-Approved marketplace models must match a platform [approved model build](approved-models.md). The public catalog’s **`engines`** field lists which client (Ollama, vLLM, vLLM Metal, FreeToken) may serve that row. The client verifies Ollama digests and vLLM weight fingerprints against platform records before registration, health reporting, and inference.
+Approved marketplace models must match a platform [approved model build](approved-models.md). The public catalog’s **`engines`** field lists which client (vLLM, vLLM Metal, FreeToken) may serve that row. The client verifies the weight fingerprint against platform records before registration, health reporting, and inference.
 
-**Ollama** — no extra config; digests come from `/api/tags`.
-
-**vLLM / vLLM Metal / FreeToken** — the client reads the served model id and finds weights in the HuggingFace hub cache using the approved `hf_ref`. Optional **`hf_hub_cache`** or **`model_path`** only if your layout is non-standard.
+The client reads the served model id and finds weights in the HuggingFace hub cache using the approved `hf_ref`. Optional **`hf_hub_cache`** or **`model_path`** only if your layout is non-standard.
 
 ## Inference requests
 

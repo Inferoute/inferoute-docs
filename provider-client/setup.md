@@ -2,7 +2,7 @@
 
 The install script places the binary, then runs **`inferoute-client setup`**. That wizard is how you pick an engine, install it if it is missing, choose an [approved model](approved-models.md) that fits this machine, and write `~/.config/inferoute/config.yaml`.
 
-You do **not** install Ollama, vLLM, vLLM Metal, or FreeToken by hand. The wizard does that, then can start the engine and wait for the first model download.
+You do **not** install vLLM, vLLM Metal, or FreeToken by hand. The wizard does that, then can start the engine and wait for the first model download.
 
 Re-run anytime you want to change engine, model, or API key:
 
@@ -17,10 +17,10 @@ If you have not installed the client yet, start with [Installation](../getting-s
 ## What the wizard asks
 
 1. **Provider API key** — from **Clusters** → **Settings**. Required. See [Sign up and create a cluster](../getting-started/signup.md).
-2. **Inference engine** — only engines that work on this OS are selectable.
+2. **Inference engine** — vLLM on Linux, vLLM Metal on Apple Silicon, or FreeToken on Windows.
 3. **Install if missing** — if the engine is not on the machine, the wizard offers to install it.
 4. **Model** — fetches the approved catalog, **keeps only rows tagged for this engine** (`engines`), scores the rest against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table. Windows FreeToken only shows builds that include `freetoken`. See [Approved model builds](approved-models.md).
-5. **Start now** — can pull (Ollama) or serve the model, then wait until the engine is healthy.
+5. **Start now** — can serve the model, then wait until the engine is healthy.
 
 It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`, and any catalog serve flags such as `max_model_len`) and prints how to start the client.
 
@@ -35,14 +35,15 @@ It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_star
 
 ## Engines by platform
 
-| OS | Wizard options | Default URL |
+| OS | Engine | Default URL |
 | --- | --- | --- |
-| **Linux** | Ollama or vLLM (vLLM needs `nvidia-smi`) | `http://127.0.0.1:11434` / `http://127.0.0.1:8000` |
-| **macOS** (Apple Silicon) | Ollama or vLLM Metal | `http://127.0.0.1:11434` / `http://127.0.0.1:8000` |
-| **macOS** (Intel) | Ollama | `http://127.0.0.1:11434` |
-| **Windows** (64-bit) | Ollama or FreeToken (FreeToken needs `nvidia-smi`) | `http://127.0.0.1:11434` / `http://127.0.0.1:1919` |
+| **Linux** | vLLM (needs `nvidia-smi`) | `http://127.0.0.1:8000` |
+| **macOS** (Apple Silicon) | vLLM Metal | `http://127.0.0.1:8000` |
+| **Windows** (64-bit) | FreeToken (needs `nvidia-smi`) | `http://127.0.0.1:1919` |
 
-vLLM Metal and FreeToken still set **provider_type** to `vllm` (same OpenAI-compatible API). Change engine with the wizard, not by editing YAML.
+Intel Macs are not supported.
+
+Every engine sets **provider_type** to `vllm` (same OpenAI-compatible API). Change engine with the wizard, not by editing YAML.
 
 First-run model download and load can take a long time. Setup waits up to **2 hours**. If the engine is still fetching weights, check `engine.log` under the [log directory](configuration.md#log-files) and re-run setup or start the client after it is up.
 
@@ -65,12 +66,12 @@ Then set prices on **Clusters** → **Models**. See [Model pricing](../provider/
 For scripts, pass flags instead of answering prompts. `--yes` does **not** install a missing engine unless you also pass `--install`.
 
 ```bash
-inferoute-client setup --yes --engine ollama --model gguf/qwen3:0.6b --api-key "your-provider-api-key"
+inferoute-client setup --yes --engine vllm --model Qwen/Qwen2.5-7B-Instruct --api-key "your-provider-api-key"
 ```
 
 | Flag | Purpose |
 | --- | --- |
-| `--engine` | `ollama`, `vllm`, `vllm-metal`, or `freetoken` |
+| `--engine` | `vllm`, `vllm-metal`, or `freetoken` |
 | `--model` | Catalog alias (must exist for that engine) |
 | `--api-key` | Provider API key (or `PROVIDER_API_KEY`) |
 | `--yes` | No prompts; requires `--engine`, `--model`, and `--api-key` unless config already has them |

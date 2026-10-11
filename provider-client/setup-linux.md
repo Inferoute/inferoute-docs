@@ -11,7 +11,7 @@ Use this guide when you run the provider client natively on Linux with an NVIDIA
    curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
    ```
 
-The [setup wizard](setup.md) asks which engine to use (**Ollama** or **vLLM**), installs it if needed, and shows which models fit this GPU. Re-run anytime:
+The [setup wizard](setup.md) installs **vLLM** if it is missing, and shows which models fit this GPU. Re-run anytime:
 
 ```bash
 inferoute-client setup

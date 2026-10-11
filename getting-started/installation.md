@@ -10,7 +10,7 @@ inferoute-client setup
 
 ## Linux / macOS one-liner
 
-Works on Linux (amd64/arm64) and macOS (Intel and Apple Silicon):
+Works on Linux (amd64/arm64) and macOS (Apple Silicon). Intel Macs are not supported.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
@@ -18,16 +18,16 @@ curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scr
 
 The wizard asks for your **provider API key** if you did not set `PROVIDER_API_KEY`. On macOS, the script installs `cloudflared` via Homebrew when available, otherwise it downloads the native binary for your architecture.
 
-Engine choices:
+The wizard installs:
 
-| OS | Wizard options |
+| OS | Engine |
 | --- | --- |
-| **Linux** | Ollama or vLLM |
-| **macOS** | Ollama or vLLM Metal (Apple Silicon) |
+| **Linux** | vLLM (needs an NVIDIA GPU) |
+| **macOS** | vLLM Metal (Apple Silicon) |
 
 ## Windows (PowerShell)
 
-Requires 64-bit Windows. The wizard offers **Ollama** or **FreeToken**. FreeToken only lists catalog rows tagged `freetoken` — see [Approved model builds](../provider-client/approved-models.md).
+Requires 64-bit Windows. The wizard installs **FreeToken**. Native vLLM is not supported. FreeToken only lists catalog rows tagged `freetoken`. Encoder and embedding models such as `baai/bge-m3` stay off Windows — see [Approved model builds](../provider-client/approved-models.md).
 
 ```powershell
 irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
@@ -44,8 +44,8 @@ Set `INFEROUTE_SKIP_SETUP=1` and pass the old environment variables:
 ```bash
 export INFEROUTE_SKIP_SETUP=1
 export PROVIDER_API_KEY="your-provider-api-key"
-export PROVIDER_TYPE="ollama"   # or "vllm"
-export LLM_URL="http://127.0.0.1:11434"   # or "http://127.0.0.1:8000" for vLLM
+export PROVIDER_TYPE="vllm"
+export LLM_URL="http://127.0.0.1:8000"
 export SERVER_PORT="8080"
 
 curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
@@ -73,7 +73,7 @@ On Windows, start from **Start Menu → Inferoute → Inferoute Client**, or run
 
 The official image is **inferoute/inferoute-client** on Docker Hub.
 
-If the client runs in Docker but the LLM engine runs on the host, set `LLM_URL` so the container can reach the host (for example `http://host.docker.internal:11434`). Ollama on the host must listen on `0.0.0.0` (`OLLAMA_HOST=0.0.0.0:11434`), not only loopback.
+If the client runs in Docker but the LLM engine runs on the host, set `LLM_URL` so the container can reach the host (for example `http://host.docker.internal:8000`). The engine on the host must listen on `0.0.0.0`, not only loopback.
 
 The client listens on **127.0.0.1** inside the container. Inferoute reaches you through the Cloudflare tunnel — you do not need to publish port 8080. To open the [local status dashboard](../provider-client/rest-api.md) from the host, set **server.host** to `0.0.0.0` and publish the port to loopback (for example `-p 127.0.0.1:8080:8080`). See [Configuration](../provider-client/configuration.md).
 
@@ -83,8 +83,8 @@ The client listens on **127.0.0.1** inside the container. Inferoute reaches you 
 docker run -d \
   --name inferoute-client \
   -e PROVIDER_API_KEY="your-key" \
-  -e PROVIDER_TYPE="ollama" \
-  -e LLM_URL="http://host.docker.internal:11434" \
+  -e PROVIDER_TYPE="vllm" \
+  -e LLM_URL="http://host.docker.internal:8000" \
   inferoute/inferoute-client:latest
 ```
 
@@ -97,8 +97,8 @@ services:
     image: inferoute/inferoute-client:latest
     environment:
       - PROVIDER_API_KEY=your-key
-      - PROVIDER_TYPE=ollama
-      - LLM_URL=http://host.docker.internal:11434
+      - PROVIDER_TYPE=vllm
+      - LLM_URL=http://host.docker.internal:8000
     restart: unless-stopped
 ```
 

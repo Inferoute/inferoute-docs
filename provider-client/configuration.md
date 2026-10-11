@@ -15,13 +15,13 @@ Prefer **`inferoute-client setup`** to change engine, model, or API key — see 
 - **provider** — Connection to the Inferoute platform.
   - **api_key** — Provider API key for **this cluster** (from **Clusters** → **Settings**). Required. The client refuses to start if this is empty or still `your_api_key_here`.
   - **url** — Inferoute platform URL. The install script sets `https://core.inferoute.com`. Do not point this at localhost unless you are developing against a local platform.
-  - **provider_type** — `ollama` or `vllm`. Default: `ollama`. vLLM Metal and FreeToken still use `vllm` here (same API).
-  - **engine** — Local program: `ollama`, `vllm`, `vllm-metal`, or `freetoken`. Empty defaults from **provider_type**. Change this with `inferoute-client setup`.
+  - **provider_type** — `vllm`. Default: `vllm`. vLLM Metal and FreeToken use `vllm` here (same API).
+  - **engine** — Local program: `vllm`, `vllm-metal`, or `freetoken`. Change this with `inferoute-client setup`.
   - **engine_bin** — Absolute path to the engine binary when it is not on `PATH` (typical for FreeToken on Windows).
   - **model** — Catalog alias the client auto-starts (for example `Qwen/Qwen2.5-7B-Instruct`).
   - **auto_start** — When **true**, start the engine if **llm_url** is down, using the serve flags already in this file. Setup turns this on when it can find the binary. Existing configs without this field stay off. A process already bound on **llm_url** is not restarted.
-  - **llm_url** — Local LLM API URL. For example, `http://127.0.0.1:11434` for Ollama, `http://127.0.0.1:8000` for vLLM, or `http://127.0.0.1:1919` for FreeToken.
-  - **llm_timeout_seconds** — Timeout for requests forwarded to Ollama or vLLM (default **120**).
+  - **llm_url** — Local LLM API URL. For example, `http://127.0.0.1:8000` for vLLM and vLLM Metal, or `http://127.0.0.1:1919` for FreeToken.
+  - **llm_timeout_seconds** — Timeout for requests forwarded to the local engine (default **120**).
   - **hf_hub_cache** — (vLLM, optional) HuggingFace hub cache directory. Default: `~/.cache/huggingface/hub`. The client uses this to find weights for the model vLLM is serving.
   - **model_path** — (vLLM, optional) Flat directory override when you use `hf download --local-dir` instead of the hub cache layout.
   - **hf_repo** — (optional) HuggingFace id when it differs from **model**. Setup writes this from the catalog.
@@ -41,7 +41,7 @@ Under `log_dir` (default `~/.local/state/inferoute/log`):
 
 - **inferoute.log** — Main application log (all levels).
 - **error.log** — Error-level entries only.
-- **engine.log** — Stdout/stderr from an auto-started Ollama, vLLM, or FreeToken process.
+- **engine.log** — Stdout/stderr from an auto-started vLLM, vLLM Metal, or FreeToken process.
 
 ## Overriding defaults
 
@@ -66,13 +66,13 @@ curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scr
 ```powershell
 $env:INFEROUTE_SKIP_SETUP="1"
 $env:PROVIDER_API_KEY="your-key"
-$env:PROVIDER_TYPE="ollama"
-$env:LLM_URL="http://127.0.0.1:11434"
+$env:PROVIDER_TYPE="vllm"
+$env:LLM_URL="http://127.0.0.1:1919"
 $env:SERVER_PORT="9090"
 irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
 ```
 
-Windows providers typically use Ollama or FreeToken. See [Setup: Windows](setup-windows.md).
+Windows uses FreeToken. See [Setup: Windows](setup-windows.md).
 
 **Docker:**
 
@@ -80,8 +80,8 @@ Use `host.docker.internal` when the LLM runs on the host. The process binds **12
 
 ```bash
 docker run -e PROVIDER_API_KEY="your-key" \
-  -e PROVIDER_TYPE="ollama" \
-  -e LLM_URL="http://host.docker.internal:11434" \
+  -e PROVIDER_TYPE="vllm" \
+  -e LLM_URL="http://host.docker.internal:8000" \
   inferoute/inferoute-client:latest
 ```
 
