@@ -39,12 +39,9 @@ Request price overrides can be lower than your API key limits, or higher up to y
 
 If **Prefer own providers** is enabled, Inferoute tries your own clusters first. Your own clusters still need to meet `min_tokens_per_second`, but max price (profile, key, and request) only limits marketplace providers.
 
-## Streaming
-
-`"stream": true` is accepted, but Inferoute does **not** stream tokens today. You get the full reply when generation finishes. Routing options do not change that.
-
 ## Related
 
 - [Using the API](using-the-api.md)
 - [Prefer own providers](prefer-own-providers.md)
 - [Max price limits](max-price-limits.md)
+- [Automatic model selection](automatic-model-selection.md)
