@@ -11,6 +11,7 @@
   - [Max price limits](consumer/max-price-limits.md)
   - [Prefer own providers](consumer/prefer-own-providers.md)
   - [Request routing options](consumer/request-routing-options.md)
+  - [Automatic model selection](consumer/automatic-model-selection.md)
 - [Provider (dashboard)](provider/deleting-clusters.md)
   - [Deleting and managing clusters](provider/deleting-clusters.md)
   - [Cluster location](provider/cluster-location.md)

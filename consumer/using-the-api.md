@@ -48,7 +48,19 @@ completion = client.chat.completions.create(
 print(completion.choices[0].message.content)
 ```
 
-Also supported: `POST /v1/completions` (prompt-style).
+Also supported:
+
+- `POST /v1/completions` — send `prompt` instead of `messages`.
+- `POST /v1/embeddings` — send `input` as a string or an array of strings.
+- `GET /v1/models` — a short list of model ids. It is the busiest models, not every model a provider is serving.
+
+Send one of `messages`, `prompt`, or `input`. Do not send more than one.
+
+Fields you send, other than `inferoute`, are forwarded to the engine. That includes `tools`, `tool_choice`, `response_format`, `temperature`, `seed`, and the rest of the OpenAI body. If you omit `max_tokens`, Inferoute sets it to **16384**.
+
+`tools` only works on a model that supports tool calling. If you name a model that does not, the request returns **400**.
+
+You can omit `model`, or send `"model": "auto"`, and Inferoute picks a model for you. See [Automatic model selection](automatic-model-selection.md).
 
 ## Routing options
 
@@ -56,15 +68,17 @@ Add an `inferoute` object to choose providers without changing the payload the m
 
 ## Streaming
 
-`"stream": true` is accepted, but Inferoute does **not** stream tokens today. You get the full reply when generation finishes.
+`"stream": true` returns Server-Sent Events (`text/event-stream`). Tokens arrive as `data:` lines and the stream ends with `data: [DONE]`.
 
 ## Errors
 
 | HTTP | When |
 |------|------|
+| **400** | Bad body, a request price above your profile default, or `tools` on a model that does not support them |
 | **401** | Missing or invalid API key |
 | **402** `Insufficient funds` | Wallet available balance is below **$1.00** |
 | **402** `spending_cap_exceeded` | That key hit its [monthly spending cap](monthly-spending-caps.md) |
+| **404** | No provider can serve that model under your price or throughput limits |
 
 ## Related
 
@@ -72,3 +86,4 @@ Add an `inferoute` object to choose providers without changing the payload the m
 - [Monthly spending caps](monthly-spending-caps.md)
 - [Prefer own providers](prefer-own-providers.md)
 - [Request routing options](request-routing-options.md)
+- [Automatic model selection](automatic-model-selection.md)
