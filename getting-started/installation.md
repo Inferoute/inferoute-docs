@@ -16,7 +16,7 @@ Works on Linux (amd64/arm64) and macOS (Apple Silicon). Intel Macs are not suppo
 curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
 ```
 
-The wizard asks for your **provider API key** if you did not set `PROVIDER_API_KEY`. On macOS, the script installs `cloudflared` via Homebrew when available, otherwise it downloads the native binary for your architecture.
+The wizard asks for your **provider API key** if you did not set `PROVIDER_API_KEY`.
 
 The wizard installs:
 
@@ -33,7 +33,7 @@ Requires 64-bit Windows. The wizard installs **FreeToken**. Native vLLM is not s
 irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
 ```
 
-The script does not need Administrator. It installs `cloudflared` and `inferoute-client` to `%LOCALAPPDATA%\inferoute\bin`, runs setup, and adds a **Start Menu → Inferoute → Inferoute Client** shortcut. On Windows the client runs in the notification area by default — closing the terminal does not stop it. See [Setup: Windows](../provider-client/setup-windows.md).
+The script does not need Administrator. It installs `inferoute-client` to `%LOCALAPPDATA%\inferoute\bin`, runs setup, and adds a **Start Menu → Inferoute → Inferoute Client** shortcut. On Windows the client runs in the notification area by default — closing the terminal does not stop it. See [Setup: Windows](../provider-client/setup-windows.md).
 
 You can also download `scripts/windows-install.bat` from the [inferoute-client](https://github.com/inferoute/inferoute-client) repo and double-click it (no administrator prompt).
 
@@ -75,7 +75,7 @@ The official image is **inferoute/inferoute-client** on Docker Hub.
 
 If the client runs in Docker but the LLM engine runs on the host, set `LLM_URL` so the container can reach the host (for example `http://host.docker.internal:8000`). The engine on the host must listen on `0.0.0.0`, not only loopback.
 
-The client listens on **127.0.0.1** inside the container. Inferoute reaches you through the Cloudflare tunnel — you do not need to publish port 8080. To open the [local status dashboard](../provider-client/rest-api.md) from the host, set **server.host** to `0.0.0.0` and publish the port to loopback (for example `-p 127.0.0.1:8080:8080`). See [Configuration](../provider-client/configuration.md).
+The client listens on **127.0.0.1** inside the container. Inferoute reaches you through the outbound connection the client opens — you do not need to publish port 8080. To open the [local status dashboard](../provider-client/rest-api.md) from the host, set **server.host** to `0.0.0.0` and publish the port to loopback (for example `-p 127.0.0.1:8080:8080`). See [Configuration](../provider-client/configuration.md).
 
 ### Docker quick start
 

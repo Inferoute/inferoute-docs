@@ -15,15 +15,15 @@ Start here if you have not installed yet:
 - Report provider health (GPU, models) to the Inferoute orchestrator
 - Register models and pricing with the platform
 - Accept inference requests from the orchestrator and proxy them to your local LLM server
-- Expose your machine securely via **Cloudflare Tunnel** so the platform can reach your server without opening firewall ports
+- Open an outbound connection to Inferoute so the platform can send inference requests back to your machine without inbound firewall ports
 
-## Exposing your machine via Cloudflare Tunnel (secure HTTPS)
+## How Inferoute reaches your machine
 
-The client **exposes your machine to the internet** so Inferoute can send inference requests to your local LLM server. This uses **Cloudflare Tunnel** (cloudflared):
+The client opens an outbound connection to Inferoute when it starts, and reconnects if that connection drops. Inferoute sends inference requests back over that connection.
 
-- **Secure & HTTPS:** Traffic between the internet and your provider goes through Cloudflare over HTTPS. Your home IP and ports are not exposed; Cloudflare provides a stable, TLS-terminated URL that tunnels back to your machine.
-- **Why we install cloudflared:** The install script installs the `cloudflared` binary so the client can run it automatically. When you start the client, it requests a tunnel from Inferoute, then starts and supervises cloudflared. You do not need to run or configure cloudflared yourself.
-- **No open firewall ports** are required on your side; outbound HTTPS to Cloudflare is sufficient.
+- You do not install another program.
+- You do not open inbound firewall ports.
+- You do not set a public URL. The address is the platform URL already in your config.
 
 ## After first run
 

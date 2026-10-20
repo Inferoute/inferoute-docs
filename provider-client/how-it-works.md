@@ -6,10 +6,10 @@ This page explains what the Provider Client does on your machine and how it talk
 
 The client runs alongside the local LLM engine the wizard installed (vLLM, vLLM Metal, or FreeToken). It:
 
-1. Reports health (GPU, models, tunnel status) to Inferoute on a schedule.
+1. Reports health (GPU and models) to Inferoute on a schedule.
 2. Registers models and initial pricing for **your cluster**.
 3. Accepts inference requests from Inferoute and forwards them to your local LLM server.
-4. Creates and maintains a **Cloudflare Tunnel** so Inferoute can reach you without open firewall ports.
+4. Opens an outbound connection so Inferoute can reach you without open firewall ports. It reconnects if the connection drops.
 
 If **auto_start** is on (the wizard turns this on when it finds the engine binary), the client starts that engine when `llm_url` is down. It uses the serve flags already in `config.yaml` (including whether tool calling is on). It will not start a second copy if the port is already in use, and it will not pull fresh catalog flags at runtime. Re-run [setup](setup.md) after you change model or catalog flags.
 
@@ -19,11 +19,10 @@ Every **3 minutes**, the client sends a health report to Inferoute. It also send
 
 - GPU type, memory, and utilization (on Linux with NVIDIA).
 - Which models your local server exposes.
-- Your current tunnel URL, when active.
 
-Inferoute detects **cluster country** from your Cloudflare Tunnel connection on the platform side. You do not send location from the client. See [Cluster location](../provider/cluster-location.md).
+Inferoute detects **cluster country** from the public IP of your connection. You do not send location from the client. See [Cluster location](../provider/cluster-location.md).
 
-You can also check status locally anytime (these URLs are not on the public tunnel):
+You can also check status locally anytime (these URLs stay on your machine):
 
 - Open **http://localhost:8080/** in a browser (or whatever port you configured) for a live status page.
 - **GET /api/status** — JSON snapshot of that page.
@@ -52,15 +51,11 @@ When Inferoute sends a request to your cluster:
 2. **Busy** — If the GPU is busy, or the client is already running an inference request, it responds with **503 Service Unavailable** so Inferoute can try another provider. Same-session follow-ups can wait for the slot instead.
 3. **Proxy** — Valid requests are forwarded to your local LLM server. The client supports OpenAI-compatible **POST /v1/chat/completions** and **POST /v1/completions**.
 
-## Cloudflare tunnel
+## Connection to Inferoute
 
-On startup:
+On startup the client opens an outbound connection to Inferoute. If the connection drops, the client reconnects on its own. You do not configure a public URL.
 
-1. The client asks Inferoute for a tunnel.
-2. Inferoute returns a one-time token and hostname.
-3. The client starts **cloudflared** with that token and keeps it running (restarts if it exits).
-
-You do not configure a tunnel URL yourself. On shutdown, the client stops the tunnel process.
+On shutdown, the client closes the connection.
 
 ## Related
 

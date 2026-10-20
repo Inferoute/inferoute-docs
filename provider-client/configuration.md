@@ -8,7 +8,7 @@ Prefer **`inferoute-client setup`** to change engine, model, or API key — see 
 
 - **server** — HTTP server for the [local REST API](rest-api.md).
   - **port** — Listen port (default **8080**).
-  - **host** — Bind address (default **127.0.0.1**). Leave this unless you need the status dashboard from another machine or from the Docker host. Set `0.0.0.0` only in that case, then publish the port to loopback on the host (for example `-p 127.0.0.1:8080:8080`). The Cloudflare tunnel does not need a published port.
+  - **host** — Bind address (default **127.0.0.1**). Leave this unless you need the status dashboard from another machine or from the Docker host. Set `0.0.0.0` only in that case, then publish the port to loopback on the host (for example `-p 127.0.0.1:8080:8080`). The connection to Inferoute does not need a published port.
   - **max_concurrent_inference** — How many inference requests the client will run at once (default **1**). Further requests return **503** so Inferoute can try another provider. Use **0** for unlimited. Follow-up turns for the same session can wait instead of getting 503 — see `session_queue_wait_seconds`.
   - **session_queue_wait_seconds** — How long a same-session follow-up waits for a free slot instead of **503** (default **90**).
   - **request_timeout_seconds** — HTTP read/write timeout. Must cover the session queue wait plus inference (default **240**).
@@ -33,7 +33,7 @@ Prefer **`inferoute-client setup`** to change engine, model, or API key — see 
   - **max_backups** — Number of rotated files to keep (default: 5).
   - **max_age** — Max age of rotated files in days (default: 30).
 
-Cloudflare Tunnel is **not** a config section. The client requests a tunnel from Inferoute at runtime. See [How it works](how-it-works.md).
+The connection to Inferoute is **not** a config section. The client opens it at startup from `provider.url`. See [How it works](how-it-works.md).
 
 ## Log files
 
@@ -85,7 +85,7 @@ docker run -e PROVIDER_API_KEY="your-key" \
   inferoute/inferoute-client:latest
 ```
 
-To open the local dashboard from the host, mount a config with `server.host: 0.0.0.0` and publish to loopback (`-p 127.0.0.1:8080:8080`). The tunnel does not need that port.
+To open the local dashboard from the host, mount a config with `server.host: 0.0.0.0` and publish to loopback (`-p 127.0.0.1:8080:8080`). The connection to Inferoute does not need that port.
 
 ## Related
 
