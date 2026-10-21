@@ -2,7 +2,7 @@
 
 The install script places the binary, then runs **`inferoute-client setup`**. That wizard is how you pick an engine, install it if it is missing, choose an [approved model](approved-models.md) that fits this machine, and write `~/.config/inferoute/config.yaml`.
 
-You do **not** install vLLM, vLLM Metal, or FreeToken by hand. The wizard does that, then can start the engine and wait for the first model download.
+You do **not** install vLLM, vLLM Metal, or llama.cpp by hand. The wizard does that, then can start the engine and wait for the first model download.
 
 Re-run anytime you want to change engine, model, or API key:
 
@@ -17,9 +17,9 @@ If you have not installed the client yet, start with [Installation](../getting-s
 ## What the wizard asks
 
 1. **Provider API key** — from **Clusters** → **Settings**. Required. See [Sign up and create a cluster](../getting-started/signup.md).
-2. **Inference engine** — vLLM on Linux, vLLM Metal on Apple Silicon, or FreeToken on Windows.
+2. **Inference engine** — vLLM on Linux, vLLM Metal or llama.cpp on Apple Silicon, or llama.cpp on Windows.
 3. **Install if missing** — if the engine is not on the machine, the wizard offers to install it.
-4. **Model** — fetches the approved catalog, **keeps only rows tagged for this engine** (`engines`), scores the rest against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table. Windows FreeToken only shows builds that include `freetoken`. See [Approved model builds](approved-models.md).
+4. **Model** — fetches the approved catalog, **keeps only rows tagged for this engine** (`engines`), scores the rest against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table. Windows only shows builds that include `llama_cpp`. See [Approved model builds](approved-models.md).
 5. **Start now** — can serve the model, then wait until the engine is healthy.
 
 It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`, and any catalog serve flags such as `max_model_len`) and prints how to start the client.
@@ -28,7 +28,7 @@ It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_star
 **Start the engine the way setup would.** Auto-start only replays what is already in `config.yaml`. The client does **not** re-read catalog serve flags at runtime or restart a process that is already bound.
 
 - Prefer **`inferoute-client setup`**. It writes the flags and can start the engine.
-- If you start vLLM, vLLM Metal, or FreeToken yourself, use the command setup printed (same `max_model_len` / `--max-seq-len-override`, YaRN, and tool parser when the catalog has them).
+- If you start vLLM, vLLM Metal, or llama.cpp yourself, use the command setup printed (same `max_model_len`, YaRN, and tool parser when the catalog has them). llama.cpp uses `-c` for context and `--jinja` when a parser is set.
 - If the catalog row has **no** `tool_call_parser`, do **not** pass `--enable-auto-tool-choice`. That model does not use Inferoute tool calling.
 - After you change model or catalog flags, **stop the engine** and re-run setup. A process already listening on `llm_url` is left as-is.
 {% endhint %}
@@ -38,12 +38,12 @@ It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_star
 | OS | Engine | Default URL |
 | --- | --- | --- |
 | **Linux** | vLLM (needs `nvidia-smi`) | `http://127.0.0.1:8000` |
-| **macOS** (Apple Silicon) | vLLM Metal | `http://127.0.0.1:8000` |
-| **Windows** (64-bit) | FreeToken (needs `nvidia-smi`) | `http://127.0.0.1:1919` |
+| **macOS** (Apple Silicon) | vLLM Metal, or llama.cpp | `http://127.0.0.1:8000` or `:8081` |
+| **Windows** (64-bit) | llama.cpp (needs `nvidia-smi`) | `http://127.0.0.1:8081` |
 
 Intel Macs are not supported.
 
-Every engine sets **provider_type** to `vllm` (same OpenAI-compatible API). Change engine with the wizard, not by editing YAML.
+vLLM and vLLM Metal set **provider_type** to `vllm`. llama.cpp sets it to `llama_cpp`. Change engine with the wizard, not by editing YAML.
 
 First-run model download and load can take a long time. Setup waits up to **2 hours**. If the engine is still fetching weights, check `engine.log` under the [log directory](configuration.md#log-files) and re-run setup or start the client after it is up.
 
@@ -71,7 +71,7 @@ inferoute-client setup --yes --engine vllm --model Qwen/Qwen2.5-7B-Instruct --ap
 
 | Flag | Purpose |
 | --- | --- |
-| `--engine` | `vllm`, `vllm-metal`, or `freetoken` |
+| `--engine` | `vllm`, `vllm-metal`, or `llama_cpp` |
 | `--model` | Catalog alias (must exist for that engine) |
 | `--api-key` | Provider API key (or `PROVIDER_API_KEY`) |
 | `--yes` | No prompts; requires `--engine`, `--model`, and `--api-key` unless config already has them |

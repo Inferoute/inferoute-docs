@@ -14,7 +14,7 @@ Optional query:
 
 | Parameter | Values | Purpose |
 |-----------|--------|---------|
-| `service_type` | `vllm` | Filter by backend |
+| `service_type` | `vllm` or `llama_cpp` | Filter by backend. Leave it out to get one row per alias |
 
 ### Example
 
@@ -55,7 +55,7 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
       "rope_type": "yarn",
       "rope_base_context_len": 4096,
       "kv_cache_bytes_per_token": 24576,
-      "engines": ["vllm", "vllm-metal", "freetoken"]
+      "engines": ["vllm", "vllm-metal"]
     }
   ]
 }
@@ -64,11 +64,12 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 | Field | Meaning |
 |-------|---------|
 | `alias` | Model id to use with Inferoute and your LLM server |
-| `service_type` | `vllm`. FreeToken and vLLM Metal use `vllm` here |
+| `service_type` | `vllm` or `llama_cpp`. vLLM Metal uses `vllm` |
 | `hf_repo` | HuggingFace repo id (`org/name`) for vLLM downloads |
 | `hf_ref` | Branch or tag to download (for example `main`) |
 | `min_size_bytes` | Measured minimum model weight size used by the local compatibility check |
-| `engines` | Client runtimes allowed to serve this build: `vllm`, `vllm-metal`, `freetoken` |
+| `engines` | Client runtimes allowed to serve this build: `vllm`, `vllm-metal`, `llama_cpp` |
+| `gguf_file` | llama.cpp filename, for example `qwen2.5-7b-instruct-q4_k_m.gguf`. Present on `llama_cpp` rows |
 | `tool_call_parser` | (vLLM optional) Parser name for auto tool calling, for example `hermes`. **Omit** (null) when the model does not support tools — setup and auto-start then start the engine **without** `--enable-auto-tool-choice` |
 | `max_model_len` | (optional) Target context length the client must serve |
 | `rope_type` | (vLLM optional) RoPE scaling type when YaRN is required, for example `yarn` |
@@ -79,18 +80,20 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 
 | If `engines` is… | Who sees the model |
 |------------------|--------------------|
-| missing or empty | **vLLM and vLLM Metal only** (never FreeToken) |
-| includes `freetoken` | Windows FreeToken setup and `compatibility` will list it (if it also fits VRAM) |
-| omits `freetoken` | Hidden on Windows FreeToken. The dashboard marks it **Unsupported on Windows / FreeToken** |
+| missing or empty on a `vllm` row | **vLLM and vLLM Metal** |
+| missing or empty on a `llama_cpp` row | **llama.cpp** |
+| includes `llama_cpp` | Windows setup and `compatibility` will list it (if it also fits VRAM) |
 
-FreeToken only loads a small set of architectures. Inferoute tags a build with `freetoken` only when that checkpoint is on [FreeToken’s supported list](https://github.com/FlashML-org/FreeToken/blob/main/docs/models.md). Encoder and embedding models (for example `baai/bge-m3`) stay off Windows even if they fit in VRAM.
+The public catalog (no `service_type`) returns **one row per alias**. A Windows build is the same model: `engines` includes `llama_cpp` when that build exists. Encoder and embedding models (for example `baai/bge-m3`) stay off Windows even if they fit in VRAM.
+
+Windows clients fetch `?service_type=llama_cpp`. That response includes `gguf_file`, the file llama.cpp serves. For example, `qwen2.5-7b-instruct-q4_k_m.gguf`.
 
 Serve-flag fields are **nullable**. When set, setup and auto-start pass them into the engine:
 
 | Engine | How `max_model_len` is applied | Tools / RoPE |
 |--------|--------------------------------|--------------|
 | **vLLM / vLLM Metal** | `--max-model-len N` | `--enable-auto-tool-choice --tool-call-parser …` when `tool_call_parser` is set; YaRN `--hf-overrides` when `rope_type` is set |
-| **FreeToken** | `--max-seq-len-override N` | Tools stay on FreeToken’s default (`auto`). RoPE fields are ignored. Setup passes `--moe-backend fused` when the model fits in VRAM, or `auto` (experts in system RAM) when it does not |
+| **llama.cpp** | `-c N` | `--jinja` when `tool_call_parser` is set. RoPE fields are ignored |
 
 Default product target for extended models is **128k** (`131072`). Ops can set a higher value per alias when VRAM allows.
 
@@ -98,7 +101,7 @@ The [setup wizard](setup.md) fetches this catalog, **drops rows this engine cann
 
 Health checks refresh this catalog to verify weights and live context. They do **not** rewrite `config.yaml` or restart the engine with new flags. If you start the engine yourself, match the catalog row — or re-run setup. See [Setup wizard](setup.md).
 
-Consumers call Inferoute with the catalog **`alias`**. For example, `Qwen/Qwen2.5-7B-Instruct` routes to vLLM and vLLM Metal providers. That alias only reaches **FreeToken** providers when `engines` includes `freetoken`.
+Consumers call Inferoute with the catalog **`alias`**. For example, `Qwen/Qwen2.5-7B-Instruct` routes to whichever providers are serving that alias, including Windows llama.cpp providers when `engines` includes `llama_cpp`.
 
 ## How verification works
 
@@ -112,7 +115,7 @@ Consumers call Inferoute with the catalog **`alias`**. For example, `Qwen/Qwen2.
 | Engine | Live context source |
 |--------|---------------------|
 | **vLLM / vLLM Metal** | `GET /v1/models` → model card `max_model_len` |
-| **FreeToken** | Prefer `/v1/models` `max_model_len` if present; else `GET /v1/cache/status` → `geometry.num_pages * geometry.page_size` |
+| **llama.cpp** | `GET /props` → `default_generation_settings.n_ctx` |
 
 The client **caches** verify results for about **10 minutes** and only re-verifies when the catalog changes or your local model files change. The console UI reads the last health snapshot — it does not call verify on every refresh.
 

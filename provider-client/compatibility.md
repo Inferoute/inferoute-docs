@@ -6,7 +6,7 @@ The command detects local hardware and scores each approved build. It does **not
 
 It reads the public approved-model catalog from `https://core.inferoute.com` by default. It does not read your provider configuration file unless you explicitly pass a different URL with `--catalog-url`.
 
-On Windows, vLLM catalog rows are filtered to builds whose `engines` list includes **`freetoken`**. On macOS they are filtered to **`vllm-metal`**. Untagged vLLM rows never imply FreeToken. See [Approved model builds](approved-models.md).
+On Windows, `compatibility` lists `llama_cpp` builds. On macOS the default is **`vllm-metal`**. Pass `--engine llama_cpp` to score the llama.cpp rows instead. Untagged vLLM rows are not offered on Windows. See [Approved model builds](approved-models.md).
 
 ## Requirements
 
@@ -24,7 +24,7 @@ Intel Macs are not supported.
 ```bash
 inferoute-client compatibility
 inferoute-client compatibility --provider-type vllm
-inferoute-client compatibility --engine freetoken
+inferoute-client compatibility --engine llama_cpp
 inferoute-client compatibility --json
 inferoute-client compatibility --catalog-url https://core.inferoute.com
 inferoute-client compatibility --offline-catalog ./approved-models.json
@@ -32,8 +32,8 @@ inferoute-client compatibility --offline-catalog ./approved-models.json
 
 | Flag | Purpose |
 |------|---------|
-| `--provider-type` | `vllm`, or omit |
-| `--engine` | `vllm`, `vllm-metal`, or `freetoken`. Default: inferred from this OS (`vllm` on Linux, `vllm-metal` on macOS, `freetoken` on Windows) |
+| `--provider-type` | `vllm`, `llama_cpp`, or omit |
+| `--engine` | `vllm`, `vllm-metal`, or `llama_cpp`. Default: inferred from this OS (`vllm` on Linux, `vllm-metal` on macOS, `llama_cpp` on Windows) |
 | `--catalog-url` | Inferoute API base (default `https://core.inferoute.com`) |
 | `--offline-catalog` | Local JSON in the same shape as the public catalog |
 | `--json` | Machine-readable output for scripts |

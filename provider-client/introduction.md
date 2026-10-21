@@ -1,6 +1,6 @@
 # Provider Client Introduction
 
-The **Inferoute Provider Client** is a lightweight service that runs next to a local LLM engine (vLLM, vLLM Metal, or FreeToken). It reports health to Inferoute, registers models and pricing for **your cluster**, and forwards inference requests to that engine.
+The **Inferoute Provider Client** is a lightweight service that runs next to a local LLM engine (vLLM, vLLM Metal, or llama.cpp). It reports health to Inferoute, registers models and pricing for **your cluster**, and forwards inference requests to that engine.
 
 The [setup wizard](setup.md) installs the engine if it is missing, picks an approved model that fits this machine, and writes config. You do not install the engine yourself.
 
