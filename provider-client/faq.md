@@ -10,13 +10,13 @@
 
 ### What is the Inferoute Provider Client?
 
-A lightweight service that runs next to a local LLM engine (vLLM, vLLM Metal, or FreeToken). It monitors GPU resources, reports health to Inferoute, and handles inference requests by forwarding them to that engine.
+A lightweight service that runs next to a local LLM engine (vLLM, vLLM Metal, or llama.cpp). It monitors GPU resources, reports health to Inferoute, and handles inference requests by forwarding them to that engine.
 
 ### What platforms are supported?
 
 - **Linux with NVIDIA GPU:** At least **32 GB** of system memory and **24 GB** of VRAM. Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
 - **macOS with Apple Silicon:** At least **48 GB** of unified memory for approved vLLM Metal models. Intel Macs are not supported. Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
-- **Windows amd64:** **32 GB** of RAM plus a **fixed 64 GB page file**, or **64 GB** of RAM, and an NVIDIA GPU with **24 GB** of VRAM. FreeToken only. It only lists catalog rows tagged `freetoken`. Encoder and embedding models such as `baai/bge-m3` stay off Windows. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
+- **Windows amd64:** **32 GB** of RAM and an NVIDIA GPU with **24 GB** of VRAM. llama.cpp only. It only lists catalog rows tagged `llama_cpp`. Encoder and embedding models such as `baai/bge-m3` stay off Windows. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
 
 ### How do I configure the client?
 
@@ -36,9 +36,9 @@ inferoute-client setup
 
 Auto-start only replays `config.yaml`. It does not notice that the catalog row changed, and it will not restart a process that is already listening.
 
-### Can I start vLLM (or FreeToken) myself?
+### Can I start vLLM (or llama.cpp) myself?
 
-Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call_parser`, do not pass `--enable-auto-tool-choice`. If the catalog sets `max_model_len`, serve at least that context or verification fails. Safer: let setup start the engine. See [Approved model builds](approved-models.md).
+Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call_parser`, do not pass `--enable-auto-tool-choice` (vLLM) or `--jinja` (llama.cpp). If the catalog sets `max_model_len`, serve at least that context or verification fails. Safer: let setup start the engine. See [Approved model builds](approved-models.md).
 
 ### How do I delete a cluster from my account?
 
@@ -66,7 +66,7 @@ Changing prices on one cluster does not change another. See [Model pricing](../p
 
 ### Which models are approved on the marketplace?
 
-See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the public catalog (aliases, HuggingFace locations, and `engines`; no hashes). The setup wizard lists rows tagged for this engine that should also fit this machine. On Windows FreeToken, models without `freetoken` in `engines` are hidden — the dashboard labels them **Unsupported on Windows / FreeToken**.
+See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the public catalog (aliases, HuggingFace locations, and `engines`; no hashes). The setup wizard lists rows tagged for this engine that should also fit this machine. On Windows, models without `llama_cpp` in `engines` are hidden. The dashboard says **No Windows build yet**.
 
 ## Reaching your machine
 

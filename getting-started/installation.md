@@ -27,7 +27,7 @@ The wizard installs:
 
 ## Windows (PowerShell)
 
-Requires 64-bit Windows. The wizard installs **FreeToken**. Native vLLM is not supported. FreeToken only lists catalog rows tagged `freetoken`. Encoder and embedding models such as `baai/bge-m3` stay off Windows — see [Approved model builds](../provider-client/approved-models.md).
+Requires 64-bit Windows. The wizard installs **llama.cpp**. Native vLLM is not supported. Windows only lists catalog rows tagged `llama_cpp`. Encoder and embedding models such as `baai/bge-m3` stay off Windows — see [Approved model builds](../provider-client/approved-models.md).
 
 ```powershell
 irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
