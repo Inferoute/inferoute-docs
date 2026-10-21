@@ -20,7 +20,7 @@ A lightweight service that runs next to a local LLM engine (vLLM, vLLM Metal, or
 
 ### How do I configure the client?
 
-Prefer **`inferoute-client setup`**. It writes engine, model, and API key into the YAML config. Server and logging stay in that file — see [Configuration](configuration.md). Cloudflare Tunnel is requested at runtime — it is not a config section.
+Prefer **`inferoute-client setup`**. It writes engine, model, and API key into the YAML config. Server and logging stay in that file — see [Configuration](configuration.md). The connection to Inferoute is opened at startup — it is not a config section.
 
 ### How do I update the client?
 
@@ -68,19 +68,15 @@ Changing prices on one cluster does not change another. See [Model pricing](../p
 
 See [Approved model builds](approved-models.md). Call **GET** `/api/models/approved-builds` for the public catalog (aliases, HuggingFace locations, and `engines`; no hashes). The setup wizard lists rows tagged for this engine that should also fit this machine. On Windows FreeToken, models without `freetoken` in `engines` are hidden — the dashboard labels them **Unsupported on Windows / FreeToken**.
 
-## Cloudflare Tunnel
+## Reaching your machine
 
-### How does the tunnel URL get set?
+### Do I set a public URL?
 
-The client does not use a hardcoded URL. On startup it requests a tunnel from the Inferoute platform; the platform returns a one-time token and hostname. The client starts cloudflared with that token. You do not need to manually update any URL in config.
+No. On startup the client opens an outbound connection to Inferoute. Inferoute sends inference requests back over that connection. You do not install another program or open inbound ports.
 
-### Do I need to run cloudflared myself?
+### What if the connection drops?
 
-No. The client starts and supervises cloudflared. You only need to ensure the install script has installed the cloudflared binary (or install it yourself if you installed the client manually).
-
-### What if the tunnel process stops?
-
-The client supervises cloudflared and will restart it if it exits, with exponential backoff on repeated failures. Check logs if the tunnel stays down.
+The client reconnects on its own. Check the client logs if it stays disconnected.
 
 ### The client failed to start because of the API key
 
@@ -98,9 +94,9 @@ Every **3 minutes**, and also when the client becomes busy or free. It exposes *
 
 - GPU info (type, driver, CUDA, memory, utilization where available).
 - Available models from the local LLM server.
-- Current Cloudflare tunnel URL (when configured).
+- Whether the client is connected to Inferoute.
 
-Cluster **country** is not part of the health payload. Inferoute resolves it from your tunnel connection. See [Cluster location](../provider/cluster-location.md).
+Cluster **country** is not part of the health payload. Inferoute resolves it from your connection. See [Cluster location](../provider/cluster-location.md).
 
 ### How is “GPU busy” determined?
 

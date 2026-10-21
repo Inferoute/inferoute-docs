@@ -50,7 +50,7 @@ Default config: `~/.config/inferoute/config.yaml`. Logs: `~/.local/state/inferou
    ./inferoute-client --config ~/.config/inferoute/config.yaml
    ```
 
-The client uses **Cloudflare Tunnel** to expose your machine. No need to install ngrok or open firewall ports.
+The client opens an outbound connection to Inferoute. No need to install ngrok or open firewall ports.
 
 ## Related
 

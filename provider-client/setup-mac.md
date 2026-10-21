@@ -17,7 +17,7 @@ The [setup wizard](setup.md) installs **vLLM Metal** if it is missing, and shows
 inferoute-client setup
 ```
 
-The script installs **cloudflared** (via Homebrew when available, otherwise a native binary download) and places **inferoute-client** in `/usr/local/bin`.
+The script places **inferoute-client** in `/usr/local/bin`.
 
 3. Start the client:
 
@@ -44,14 +44,13 @@ For production provider workloads with utilization-based busy detection, use **L
    go build -o inferoute-client ./cmd
    ```
 
-3. **cloudflared:** Install with Homebrew (`brew install cloudflared`) or download `cloudflared-darwin-arm64.tgz` from [Cloudflare releases](https://github.com/cloudflare/cloudflared/releases).
-4. Run **`inferoute-client setup`**, then:
+3. Run **`inferoute-client setup`**, then:
 
    ```bash
    ./inferoute-client --config ~/.config/inferoute/config.yaml
    ```
 
-The client requests a Cloudflare tunnel from the platform and runs **cloudflared** for you — no ngrok or open firewall ports required.
+The client opens an outbound connection to Inferoute — no ngrok or open firewall ports required.
 
 ## Related
 

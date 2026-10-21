@@ -20,7 +20,7 @@ Windows limits a process to RAM + page file. FreeToken often loads MoE experts i
    irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
    ```
 
-The script installs **cloudflared** and **inferoute-client** to `%LOCALAPPDATA%\inferoute\bin`, runs **`inferoute-client setup`**, and adds that folder to your user **PATH**. It does **not** require Administrator. Re-run the wizard anytime:
+The script installs **inferoute-client** to `%LOCALAPPDATA%\inferoute\bin`, runs **`inferoute-client setup`**, and adds that folder to your user **PATH**. It does **not** require Administrator. Re-run the wizard anytime:
 
 ```powershell
 inferoute-client setup
@@ -65,12 +65,11 @@ Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is o
 ## Manual install
 
 1. Download `inferoute-client-windows-amd64.zip` from [GitHub Releases](https://github.com/inferoute/inferoute-client/releases).
-2. Install **cloudflared**: download `cloudflared-windows-amd64.exe` from [Cloudflare releases](https://github.com/cloudflare/cloudflared/releases), or run `winget install Cloudflare.cloudflared`.
-3. Place both executables on **PATH**.
-4. Run `inferoute-client setup`.
-5. Run `inferoute-client`.
+2. Place `inferoute-client.exe` on **PATH**.
+3. Run `inferoute-client setup`.
+4. Run `inferoute-client`.
 
-The client requests a Cloudflare tunnel from the platform and runs **cloudflared** for you — no ngrok or open firewall ports required.
+The client opens an outbound connection to Inferoute — no ngrok or open firewall ports required.
 
 ## Related
 

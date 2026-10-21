@@ -54,7 +54,7 @@ When you confirm deletion:
 ### What delete does not do
 
 - It does **not** uninstall the provider client on your machine — stop the service locally if you no longer need it.
-- It does **not** delete the Cloudflare tunnel the client was using. Stop the client on that machine so it no longer accepts traffic.
+- Stop the client on that machine so it closes its connection and no longer accepts traffic.
 - It does **not** delete your Inferoute user account or other clusters.
 
 ### After deletion

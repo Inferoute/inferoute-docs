@@ -47,6 +47,6 @@ Once the LLM server is up, the client:
 - Reports health and models to Inferoute
 - Registers pricing for **your cluster**
 - Proxies inference to your local LLM server
-- Opens a **Cloudflare Tunnel** so Inferoute can reach you without inbound firewall ports
+- Opens an outbound connection so Inferoute can reach you without inbound firewall ports
 
 Next: [Sign up and create a cluster](signup.md).
