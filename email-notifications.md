@@ -45,6 +45,19 @@ If a cluster stops reporting as healthy (for example it goes offline or misses h
 
 This is meant for clusters that should be running but are no longer available to receive work. A paused cluster does not trigger an outage email.
 
+## Cluster join
+
+Join mail is separate from the toggles above. You cannot turn it off on **Notifications**. It is sent only when a join actually happens, and only to a **verified** account email. The join code is never in the email.
+
+| When | Who is emailed |
+| --- | --- |
+| Someone clicks **Request invite** | The cluster owner and the person who asked |
+| The owner clicks **Accept** or **Reject** | The person who asked |
+
+The owner’s email links to that cluster’s **Nodes** tab and includes the requester’s preferred contact (account email, Telegram, or Discord). The requester’s accept email tells them to open **Explore** → **Clusters** and use **Show join code**. That code is shown once in the dashboard.
+
+See [Inviting nodes](provider/inviting-nodes.md) and [Joining a cluster](provider/joining-a-cluster.md).
+
 ## Things to keep in mind
 
 - **Toggles are per account.** Preferences apply to your user, not per API key or per cluster.
@@ -55,5 +68,6 @@ This is meant for clusters that should be running but are no longer available to
 ## Related
 
 - [Deleting and managing clusters](provider/deleting-clusters.md) — pause, resume, and delete
+- [Inviting nodes](provider/inviting-nodes.md) — accept or reject a join request
 - [Monthly spending caps](consumer/monthly-spending-caps.md) — per-key spend limits
 - [Overview](overview.md)

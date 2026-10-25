@@ -82,4 +82,5 @@ Use **pause** for temporary downtime. Use **delete** when you are done with that
 - [Email notifications](../email-notifications.md)
 - [Cluster location](cluster-location.md)
 - [Model pricing](model-pricing.md)
+- [Multi-node clusters](multi-node-clusters.md)
 - [Provider client introduction](../provider-client/introduction.md)

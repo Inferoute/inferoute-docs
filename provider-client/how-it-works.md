@@ -11,6 +11,8 @@ The client runs alongside the local LLM engine the wizard installed (vLLM, vLLM 
 3. Accepts inference requests from Inferoute and forwards them to your local LLM server.
 4. Opens an outbound connection so Inferoute can reach you without open firewall ports. It reconnects if the connection drops.
 
+On a multi-node cluster, setup also connects this machine as the master (provider API key) or as a worker (a `join-` code). See [Multi-node clusters](../provider/multi-node-clusters.md).
+
 If **auto_start** is on (the wizard turns this on when it finds the engine binary), the client starts that engine when `llm_url` is down. It uses the serve flags already in `config.yaml` (including whether tool calling is on). It will not start a second copy if the port is already in use, and it will not pull fresh catalog flags at runtime. Re-run [setup](setup.md) after you change model or catalog flags.
 
 ## Health monitoring

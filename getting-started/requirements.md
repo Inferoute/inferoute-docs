@@ -10,7 +10,7 @@ The wizard installs one engine for this machine:
 
 | Platform | Engine |
 | --- | --- |
-| **Linux** | vLLM (needs an NVIDIA GPU) |
+| **Linux** | vLLM (needs an NVIDIA GPU). Multi-node clusters use this path only. |
 | **macOS** (Apple Silicon) | vLLM Metal |
 | **Windows** (64-bit) | llama.cpp |
 

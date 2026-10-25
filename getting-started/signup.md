@@ -21,14 +21,19 @@ Choose **Provider** (or **I want both**). You can switch between **Provider** an
 
 ## Deploy a cluster
 
-1. Open **Clusters**.
+1. Open **Clusters** under **Inference**.
 2. Click **Deploy a Cluster**.
 
-The wizard has three steps:
+The wizard has three steps. The first step is titled **Check Compatibility**.
 
-### 1. Requirements
+### 1. Check Compatibility
 
 Confirm your machine matches [Software and hardware requirements](requirements.md).
+
+Then set **Cluster type**:
+
+- **Single node** — one machine.
+- **Multi-node** — this key is the master. Workers join later with a code from the **Nodes** tab. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
 ### 2. Software
 
@@ -64,7 +69,7 @@ You can **Create API Key** if the cluster has none, or **Re-Generate Key** for a
 
 The full secret is only shown when you create or re-generate it. Settings otherwise shows a masked suffix.
 
-More on keys, pause, and delete: [Deleting and managing clusters](../provider/deleting-clusters.md).
+More on keys, pause, and delete: [Deleting and managing clusters](../provider/deleting-clusters.md). To add workers and split earnings, see [Inviting nodes](../provider/inviting-nodes.md) and [Cluster earnings](../provider/cluster-earnings.md).
 
 ## Next
 
