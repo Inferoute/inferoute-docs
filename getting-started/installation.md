@@ -114,7 +114,7 @@ docker run -d \
 
 ## After first run
 
-When the client starts, it publishes your available models with default costs. Open [www.inferoute.com](https://www.inferoute.com), go to **Clusters** → your cluster → **Models**, and set prices you actually want — see [Model pricing](../provider/model-pricing.md).
+When the client starts, it publishes your available models with default costs. Open [www.inferoute.com](https://www.inferoute.com), go to **My Clusters** → your cluster → **Models**, and set prices you actually want — see [Model pricing](../provider/model-pricing.md).
 
 ## Related
 

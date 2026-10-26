@@ -6,7 +6,7 @@ For example, if **inferoute-cluster1** and **inferoute-cluster2** both serve `Qw
 
 ## Where to edit prices
 
-1. Open **Clusters** in the dashboard.
+1. Open **My Clusters** in the dashboard.
 2. Select a cluster (for example **inferoute-cluster1**).
 3. Open the **Models** tab.
 4. Edit **Input / 1M** and **Output / 1M**.

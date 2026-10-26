@@ -21,7 +21,7 @@ Choose **Provider** (or **I want both**). You can switch between **Provider** an
 
 ## Deploy a cluster
 
-1. Open **Clusters** under **Inference**.
+1. Open **My Clusters** under **Inference**.
 2. Click **Deploy a Cluster**.
 
 The wizard has three steps. The first step is titled **Check Compatibility**.
@@ -33,7 +33,7 @@ Confirm your machine matches [Software and hardware requirements](requirements.m
 Then set **Cluster type**:
 
 - **Single node** — one machine.
-- **Multi-node** — this key is the master. Workers join later with a code from the **Nodes** tab. See [Multi-node clusters](../provider/multi-node-clusters.md).
+- **Multi-node** — this key is the master. Share the cluster page so workers can request an invite. When the slots are filled, everyone starts together. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
 ### 2. Software
 
@@ -62,7 +62,7 @@ You set model prices **after** the client is running, on the cluster **Models** 
 
 If you already have a cluster and need the key again:
 
-1. Open **Clusters** and select the cluster (for example **inferoute-cluster1**).
+1. Open **My Clusters** and select the cluster (for example **inferoute-cluster1**).
 2. Open the **Settings** tab.
 
 You can **Create API Key** if the cluster has none, or **Re-Generate Key** for an existing key. Re-generating immediately invalidates the old secret — update the client config before you expect inference to work.

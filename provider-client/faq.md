@@ -42,7 +42,7 @@ Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call
 
 ### How do I delete a cluster from my account?
 
-Use the dashboard: **Clusters** → select your cluster → **Settings** → **Delete cluster** (Danger zone). That stops inference and revokes API keys; it does not uninstall the client on your machine. See [Deleting and managing clusters](../provider/deleting-clusters.md).
+Use the dashboard: **My Clusters** → select your cluster → **Settings** → **Delete cluster** (Danger zone). That stops inference and revokes API keys; it does not uninstall the client on your machine. See [Deleting and managing clusters](../provider/deleting-clusters.md).
 
 ## Model management
 
@@ -60,7 +60,7 @@ See [Model pricing](../provider/model-pricing.md) for editing prices in the dash
 
 ### Can I change model pricing after registration?
 
-Yes. Open **Clusters** → select a cluster → **Models** tab to edit prices for that cluster only. You can also call `PUT /api/provider/models/{model_id}` on `https://core.inferoute.com` with that cluster’s provider API key (per-token units). See [Model pricing](../provider/model-pricing.md).
+Yes. Open **My Clusters** → select a cluster → **Models** tab to edit prices for that cluster only. You can also call `PUT /api/provider/models/{model_id}` on `https://core.inferoute.com` with that cluster’s provider API key (per-token units). See [Model pricing](../provider/model-pricing.md).
 
 Changing prices on one cluster does not change another. See [Model pricing](../provider/model-pricing.md).
 
@@ -80,7 +80,7 @@ The client reconnects on its own. Check the client logs if it stays disconnected
 
 ### The client failed to start because of the API key
 
-The provider API key in **config.yaml** (`api_key`) must be the key for **that cluster**, copied from **Clusters** → select the cluster → **Settings**. A consumer key, an old rotated key, or a typo is rejected at startup with an “Invalid provider API key” message.
+The provider API key in **config.yaml** (`api_key`) must be the key for **that cluster**, copied from **My Clusters** → select the cluster → **Settings**. A consumer key, an old rotated key, or a typo is rejected at startup with an “Invalid provider API key” message.
 
 For example, after you regenerate the key in **Settings**, update `api_key` (or re-run setup) and restart the client. Do not leave the placeholder `your_api_key_here`.
 

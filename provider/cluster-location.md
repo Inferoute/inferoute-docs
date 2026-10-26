@@ -1,10 +1,10 @@
 # Cluster location
 
-The dashboard shows a **country flag** next to each cluster on **Clusters** so you can see where your GPU is running at a glance.
+The dashboard shows a **country flag** next to each cluster on **My Clusters** so you can see where your GPU is running at a glance.
 
 ## What you see
 
-On **Clusters**, each row shows:
+On **My Clusters**, each row shows:
 
 - Cluster name
 - **Country flag** (when location is known)

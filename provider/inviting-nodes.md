@@ -4,7 +4,7 @@ You invite workers to a multi-node cluster you own. They ask to join. You accept
 
 ## Create the cluster
 
-1. Open **Clusters** under **Inference**.
+1. Open **My Clusters** under **Inference**.
 2. Click **Deploy a Cluster**.
 3. On **Check Compatibility**, set **Cluster type** to **Multi-node**.
 4. Finish the wizard and copy the provider API key. That key is the **master**. It is shown once.
@@ -24,7 +24,7 @@ When someone asks to join, you get an email (if their account email is verified)
 
 `join-` followed by a long hex string.
 
-Copy it before you leave. Inferoute does not show it again, and it is not emailed. You can also send it yourself using the contact on the request. The person who asked can open the same code once from **Explore** → **Clusters**. See [Joining a cluster](joining-a-cluster.md).
+Copy it before you leave. Inferoute does not show it again, and it is not emailed. You can also send it yourself using the contact on the request. The person who asked can open the same code once on the cluster page. See [Joining a cluster](joining-a-cluster.md).
 
 **Reject** declines the request. They can ask again.
 
@@ -36,9 +36,11 @@ They can **Cancel request** while it is still pending. Then it disappears from *
 
 The join code works **once**. After setup uses it, that code cannot be used again.
 
+When enough machines are in, tell everyone to start the client together. All nodes have **60 minutes**. See [Start every machine together](multi-node-clusters.md#start-every-machine-together). Copy the cluster link on **Nodes** and send that page before they request an invite, so they can read the model and VRAM first.
+
 **Invited** lists people you accepted who have not finished setup. It shows the same contact as the request. It does not show the code.
 
-If they lose the code before setup, click **New code**. That kills the old code and shows a new one once, on that page. They can also open it once from **Explore** → **Clusters**. Inferoute emails them to look there. The code is not in the email.
+If they lose the code before setup, click **New code**. That kills the old code and shows a new one once, on that page. They can also open it once on the cluster page. Inferoute emails them to look there. The code is not in the email.
 
 **Revoke** withdraws an invite that has not been used. They can **Request invite** again.
 

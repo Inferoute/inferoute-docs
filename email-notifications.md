@@ -35,7 +35,7 @@ This is separate from [monthly spending caps](consumer/monthly-spending-caps.md)
 
 ## Cluster paused
 
-If you (or someone with access) **pauses** a cluster in the dashboard, we can email you. The message includes a link to that cluster’s page under **Clusters** so you can resume or check settings.
+If you (or someone with access) **pauses** a cluster in the dashboard, we can email you. The message includes a link to that cluster’s page under **My Clusters** so you can resume or check settings.
 
 Pausing stops new inference from being routed to the cluster. See [Deleting and managing clusters](provider/deleting-clusters.md).
 
@@ -55,7 +55,7 @@ Join mail is separate from the toggles above. You cannot turn it off on **Notifi
 | The owner clicks **Accept** or **Reject** | The person who asked |
 | The owner clicks **New code**, **Revoke**, or **Remove** | The person who asked or the worker who was removed |
 
-The owner’s email links to that cluster’s **Nodes** tab and includes the requester’s preferred contact (account email, Telegram, or Discord). The requester’s accept email tells them to open **Explore** → **Clusters** and use **Show join code**. That code is shown once in the dashboard.
+The owner’s email links to that cluster’s **Nodes** tab and includes the requester’s preferred contact (account email, Telegram, or Discord). The requester’s accept email tells them to open the cluster page and use **Show join code**. That code is shown once on that page.
 
 See [Inviting nodes](provider/inviting-nodes.md) and [Joining a cluster](provider/joining-a-cluster.md).
 

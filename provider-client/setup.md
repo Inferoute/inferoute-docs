@@ -16,7 +16,7 @@ If you have not installed the client yet, start with [Installation](../getting-s
 
 ## What the wizard asks
 
-1. **Provider API key** — from **Clusters** → **Settings**. Required. See [Sign up and create a cluster](../getting-started/signup.md). A **join code** (`join-…`) goes in this same field. Setup then joins that multi-node cluster as a worker and does not ask you to pick a model. See [Joining a cluster](../provider/joining-a-cluster.md).
+1. **Provider API key** — from **My Clusters** → **Settings**. Required. See [Sign up and create a cluster](../getting-started/signup.md). A **join code** (`join-…`) goes in this same field. Setup then joins that multi-node cluster as a worker and does not ask you to pick a model. See [Joining a cluster](../provider/joining-a-cluster.md).
 2. **Inference engine** — vLLM on Linux, vLLM Metal or llama.cpp on Apple Silicon, or llama.cpp on Windows.
 3. **Install if missing** — if the engine is not on the machine, the wizard offers to install it.
 4. **Model** — fetches the approved catalog, **keeps only rows tagged for this engine** (`engines`), scores the rest against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table. Windows only shows builds that include `llama_cpp`. See [Approved model builds](approved-models.md).
@@ -47,6 +47,8 @@ vLLM and vLLM Metal set **provider_type** to `vllm`. llama.cpp sets it to `llama
 
 First-run model download and load can take a long time. Setup waits up to **2 hours**. If the engine is still fetching weights, check `engine.log` under the [log directory](configuration.md#log-files) and re-run setup or start the client after it is up.
 
+On a multi-node cluster, that **2 hour** wait is the download. It is not the peer wait. After the owner says to start, every machine must come up within **60 minutes** of each other. Start together. If one node is late, the engines stop and the group starts again. See [Multi-node clusters](../provider/multi-node-clusters.md).
+
 ## After the wizard
 
 Start the Inferoute client (not just the LLM engine):
@@ -59,7 +61,7 @@ On Windows, use **Start Menu → Inferoute → Inferoute Client**. See [Setup: W
 
 When `auto_start` is on, later client starts will bring the engine up if `llm_url` is down — they replay the serve flags stored in config and will not spawn a second copy if that port is already in use.
 
-Then set prices on **Clusters** → **Models**. See [Model pricing](../provider/model-pricing.md).
+Then set prices on **My Clusters** → **Models**. See [Model pricing](../provider/model-pricing.md).
 
 ## Non-interactive setup
 

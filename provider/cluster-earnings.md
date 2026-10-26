@@ -6,13 +6,13 @@ A **multi-node** cluster can split it. You set a **commission** on the **Nodes**
 
 ## Set the commission
 
-1. Open **Clusters** under **Inference**.
+1. Open **My Clusters** under **Inference**.
 2. Select the multi-node cluster.
 3. Open **Nodes**.
 4. Under **Commission**, enter a percent from 0 to 100.
 5. Click **Save commission**.
 
-People see this percent on **Explore** → **Clusters** before they request an invite.
+People see this percent on the cluster page (**Explore** → **GPU clusters**, then the cluster) before they request an invite.
 
 If you never save a commission, or no worker is **In the cluster** yet, you keep the whole payout.
 
@@ -35,7 +35,7 @@ At **100%** you keep the payout and workers get nothing. At **0%** the whole pay
 
 ## Where it shows up
 
-The share is added to each person’s balance. Open **Clusters**, then the **Earnings** tab. **Your balance** is that account balance (the same number **Withdraw** uses). **Earned today** on that page is income from clusters you **own**, and it is the cluster total before the split. A worker who does not own a cluster will not see their join income in **Earned today** there. It is still in **Your balance**.
+The share is added to each person’s balance. Open **My Clusters**, then the **Earnings** tab. **Your balance** is that account balance (the same number **Withdraw** uses). **Earned today** on that page is income from clusters you **own**, and it is the cluster total before the split. A worker who does not own a cluster will not see their join income in **Earned today** there. It is still in **Your balance**.
 
 Open the cluster from **My Clusters** for the per-cluster **Earnings** tab:
 

@@ -18,12 +18,12 @@ This is not a second login. Inferoute still emails your account address.
 
 ## Ask to join
 
-1. In the sidebar, open **Explore**, then **Clusters**.
-2. This list is only multi-node clusters. It is not the **Clusters** list under **Inference** (those are clusters you own).
-3. Check the model, VRAM minimum, slots left, and the owner’s commission.
-4. Click **Request invite**.
+1. Open the cluster link the owner sent you, or go to **Explore** → **GPU clusters** and open a card.
+2. The list is only multi-node clusters. It is not **My Clusters** under **Inference** (those are clusters you own or already joined).
+3. On the cluster page, read the model, VRAM minimum, open slots (for example `1/2`), and the owner’s commission.
+4. Click **Request invite**. The list itself has no invite button.
 
-You and the owner each get an email. The email does not include a join code. The button changes to **Cancel request**.
+You and the owner each get an email. The email does not include a join code. On the cluster page the button changes to **Cancel request**.
 
 **Cancel request** withdraws a pending ask. The owner no longer sees it. You can request again.
 
@@ -34,7 +34,7 @@ You cannot request to join a cluster you own.
 | Result | What you see | Email |
 | --- | --- | --- |
 | Still waiting | **Cancel request** | “We sent your request…” |
-| Accepted | **Show join code** and **Cancel invite** | Tells you to open **Explore** → **Clusters**. The code is not in the email. |
+| Accepted | **Show join code** and **Cancel invite** on the cluster page | Tells you to open that cluster page. The code is not in the email. |
 | Rejected | **Request invite** again | The owner declined. |
 
 **Show join code** displays the code **once**. Copy it. A second visit does not show it.
@@ -58,6 +58,12 @@ When setup asks for a provider API key, paste the join code (`join-…`). Setup 
 The code is spent when setup succeeds. Running setup again with the same code fails.
 
 If the owner has not saved an intended model, setup stops and tells you to wait until they pick one.
+
+## Start when the owner says
+
+Do not start the engine on your own schedule. The owner waits until enough machines have joined, then tells everyone to start together. vLLM gives the cluster **60 minutes** from the first engine. If you are late, every engine stops and the owner has to start the group again.
+
+The long wait you may see during setup (up to **2 hours**) is the model download. It is not the 60 minute start window.
 
 ## Related
 

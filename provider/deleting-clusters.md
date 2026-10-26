@@ -4,7 +4,7 @@ This page covers **dashboard** actions for a provider cluster: API keys, pause/r
 
 ## Where to find cluster settings
 
-1. Open **Clusters** in the dashboard.
+1. Open **My Clusters** in the dashboard.
 2. Select the cluster you want to manage.
 3. Go to the **Settings** tab.
 
@@ -46,7 +46,7 @@ If email notifications for **Cluster paused** are enabled, you can get an email 
 
 When you confirm deletion:
 
-1. **The cluster is removed from your dashboard** — it no longer appears under **Clusters**.
+1. **The cluster is removed from your dashboard** — it no longer appears under **My Clusters**.
 2. **Inference stops** — the cluster is paused, marked unavailable, and health is set to red so Inferoute will not route requests to it.
 3. **All active API keys for that cluster are revoked** — your provider client can no longer authenticate with those keys.
 4. **Historical data is kept** — past earnings and transactions stay in your account history for billing and audit. The cluster no longer appears in the dashboard, but we retain records tied to past payouts.

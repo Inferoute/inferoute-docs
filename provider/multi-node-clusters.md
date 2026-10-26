@@ -25,19 +25,33 @@ The master has to be healthy before you can run **Test cluster** on the **Nodes*
 
 ## What you set on the cluster
 
-Open **Clusters** (under **Inference**), select the cluster, and open **Nodes**.
+Open **My Clusters** (under **Inference**), select the cluster, and open **Nodes**.
 
 - **Intended model** — the catalog model setup installs. Save it before anyone runs setup. The page treats it as a reminder: it does not stop other models the client might register later.
 - **VRAM per node** — the minimum VRAM you expect on every machine. The page uses this, with the model, to say how many nodes you need.
 - **Commission** — your cut of each payout. See [Cluster earnings](cluster-earnings.md).
 
-**Explore** → **Clusters** shows the model, the VRAM minimum, how many slots are left, and your commission before someone asks to join.
+**Explore** → **GPU clusters** lists multi-node clusters as cards. Open a cluster to see the model, the VRAM minimum, open slots (for example `1/2`), and your commission. People request an invite on that page, not on the list. Share the page link so someone can read the requirements before they ask to join.
 
 ## How the machines connect
 
 Setup connects each machine into the cluster. Inferoute still reaches you through the outbound connection the client already opens. You do not open firewall ports, and you do not paste a network key yourself. A join code or the master API key is enough.
 
 The master has to finish setup before workers can be useful. On **Nodes**, a machine stays **Waiting to join** until that setup completes. **Test cluster** stays off until the master is healthy.
+
+## Start every machine together
+
+A multi-node model does not start one machine at a time. vLLM waits until **every** planned node is up. Do this:
+
+1. Deploy the cluster and save the intended model and VRAM per node on **Nodes**. That sets how many machines the model needs.
+2. Copy the cluster link from **Nodes** and send it to the people you want. They can also find it under **Explore** → **GPU clusters**.
+3. They open that page and click **Request invite**. You accept on **Nodes**. They run setup with the join code.
+4. When enough machines are in the cluster, tell everyone to start the client (and the engine) **at the same time**.
+5. All nodes have **60 minutes** to come up together. The clock starts when the first engine begins waiting for the others.
+
+If a machine is late, the engines stop. Start them again, together. The **2 hour** wait during setup is only the first model download. It is not this 60 minute window.
+
+For example, **inferoute-cluster1** needs 4 nodes. You start it, three people join, and you message them when the fourth slot is filled. Everyone starts within that hour.
 
 ## Related
 
