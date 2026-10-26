@@ -11,7 +11,7 @@ The wizard installs one engine for this machine:
 | Platform | Engine |
 | --- | --- |
 | **Linux** | vLLM (needs an NVIDIA GPU). Multi-node clusters use this path only. |
-| **macOS** (Apple Silicon) | vLLM Metal |
+| **macOS** (Apple Silicon) | vLLM Metal or llama.cpp |
 | **Windows** (64-bit) | llama.cpp |
 
 Intel Macs are not supported.
@@ -25,9 +25,9 @@ Approved builds are BF16 7B-class weights (~14 GB on disk).
 | Requirement | Detail |
 | --- | --- |
 | **System memory** (Linux) | At least **32 GB** of RAM. Loading approved BF16 weights needs host memory in addition to GPU VRAM. |
-| **System memory** (Windows) | **32 GB** of RAM |
+| **System memory** (Windows) | **32 GB** of RAM plus a **fixed 64 GB page file**, or **64 GB** of RAM |
 | **NVIDIA GPU** (Linux and Windows) | At least **24 GB** of VRAM (for example RTX 3090, RTX 4090). Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on `PATH`. The Inferoute install script does not install the driver. |
-| **macOS** | Apple Silicon with at least **48 GB** of unified memory. Intel Macs are not supported. The client reports basic GPU info; utilization-based busy detection is not available (in-flight requests still mark the client busy). Use Linux + NVIDIA for production routing with utilization-based busy status. |
+| **macOS** | Apple Silicon with at least **48 GB** of unified memory. Intel Macs are not supported. The client reports basic GPU info. Utilization is not reported. A request in flight still marks the client busy. On Linux, the health report also marks the GPU busy above **20%** utilization. See [How it works](../provider-client/how-it-works.md). |
 | **Disk** | **100 GB+** free is a practical starting point for model weights. |
 
 vLLM and Windows llama.cpp expect a CUDA-capable NVIDIA GPU. The wizard will not offer them if `nvidia-smi` is missing.
@@ -37,7 +37,7 @@ vLLM and Windows llama.cpp expect a CUDA-capable NVIDIA GPU. The wizard will not
 | Platform | GPU monitoring | Typical LLM backend |
 | --- | --- | --- |
 | **Linux + NVIDIA** | Full via `nvidia-smi` | vLLM |
-| **macOS** (Apple Silicon) | Basic via `system_profiler` | vLLM Metal |
+| **macOS** (Apple Silicon) | Basic via `system_profiler` | vLLM Metal or llama.cpp |
 | **Windows amd64** | `nvidia-smi` when the NVIDIA driver is installed | llama.cpp |
 
 ## What the Inferoute client adds

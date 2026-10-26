@@ -30,7 +30,22 @@ Default config: `~/.config/inferoute/config.yaml`. Logs: `~/.local/state/inferou
 - At least **32 GB** of system memory.
 - At least **24 GB** of VRAM (for example RTX 3090 or RTX 4090).
 - Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on `PATH`. The wizard will not offer vLLM if `nvidia-smi` is missing.
-- The client uses `nvidia-smi` for GPU monitoring and busy-state detection. The install script does not install the driver.
+- The client uses `nvidia-smi` for GPU name, VRAM, and utilization in the health report. Utilization above **20%** sets the GPU busy flag in that report. A new request is rejected when an inference slot is full. See [How it works](how-it-works.md).
+- The install script does not install the driver.
+
+## Blackwell GPUs
+
+vLLM on a GPU with compute capability **10.0** or higher also needs FlashInfer kernels. That includes datacenter Blackwell and RTX 50-series. Hopper (**9.0**), Ada, and Ampere (for example an RTX 3090 or RTX 4090) skip this step.
+
+When the wizard installs vLLM, it reads compute capability from `nvidia-smi`. At **10.0** or higher it prints **Blackwell GPU detected. Downloading FlashInfer kernels...** and downloads the kernels before setup continues. If that download fails, setup stops with **vLLM kernel download failed**.
+
+If `nvidia-smi` cannot report compute capability, setup prints **Skipping vLLM kernel download** and continues. On a Blackwell GPU, vLLM can then fail to start. Fix `nvidia-smi`, then run `inferoute-client setup` again.
+
+Check the value yourself:
+
+```bash
+nvidia-smi --query-gpu=compute_cap --format=csv,noheader
+```
 
 ## Manual install from source
 

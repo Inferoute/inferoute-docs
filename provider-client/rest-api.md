@@ -28,13 +28,13 @@ Whether the client considers itself busy.
 { "busy": false }
 ```
 
-`busy` is `true` when NVIDIA utilization is above **20%**, or when an inference request is already in flight (including on macOS).
+`busy` is `true` only when every inference slot is full. The default is **1** slot (`max_concurrent_inference`). The same rule applies on Linux, Windows, and macOS. The health report’s GPU `is_busy` flag is a separate check — see [How it works](how-it-works.md).
 
 ## Inference routes (not for operators)
 
 Inferoute sends work to **POST /v1/chat/completions**, **POST /v1/completions**, and **POST /v1/embeddings** over the provider connection. Those routes require a signed `X-Request-Id` from the platform. Do not call them yourself — you will get **401**.
 
-When the GPU is busy and the request is not a follow-up for the same session, the client returns **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. Unverified models return **403**. LLM failures return **502**.
+When every inference slot is full and the request is not a follow-up for the same session, the client returns **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. Unverified models return **403**. LLM failures return **502**.
 
 ## Platform: client version
 

@@ -40,7 +40,7 @@ Then set **Cluster type**:
 The engine depends on your operating system. You do not install it in this step.
 
 - **Linux:** vLLM. You need an NVIDIA GPU.
-- **macOS:** vLLM Metal. Apple Silicon only. Intel Macs are not supported.
+- **macOS:** vLLM Metal. Apple Silicon only. Intel Macs are not supported. The client [setup wizard](../provider-client/setup.md) on a Mac also offers llama.cpp. See [Setup: macOS](../provider-client/setup-mac.md).
 - **Windows:** llama.cpp. It does not serve every catalog model. Encoder and embedding models such as `baai/bge-m3` stay off Windows.
 
 Skip any vendor install links. The client [setup wizard](../provider-client/setup.md) installs the engine after you run the install command.

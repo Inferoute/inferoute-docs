@@ -14,9 +14,9 @@ A lightweight service that runs next to a local LLM engine (vLLM, vLLM Metal, or
 
 ### What platforms are supported?
 
-- **Linux with NVIDIA GPU:** At least **32 GB** of system memory and **24 GB** of VRAM. Full GPU monitoring and busy status from utilization. See [Setup: Linux](setup-linux.md).
-- **macOS with Apple Silicon:** At least **48 GB** of unified memory for approved vLLM Metal models. Intel Macs are not supported. Basic GPU info (model, core count). Utilization is not reported, but the client still reports busy while a request is in flight. See [Setup: macOS](setup-mac.md).
-- **Windows amd64:** **32 GB** of RAM and an NVIDIA GPU with **24 GB** of VRAM. llama.cpp only. It only lists catalog rows tagged `llama_cpp`. Encoder and embedding models such as `baai/bge-m3` stay off Windows. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
+- **Linux with NVIDIA GPU:** At least **32 GB** of system memory and **24 GB** of VRAM. vLLM. The health report includes utilization. See [Setup: Linux](setup-linux.md).
+- **macOS with Apple Silicon:** At least **48 GB** of unified memory for approved vLLM Metal models. The wizard also offers llama.cpp. Intel Macs are not supported. Basic GPU info (model, core count). Utilization is not reported. A request in flight still marks the client busy. See [Setup: macOS](setup-mac.md).
+- **Windows amd64:** **32 GB** of RAM plus a **fixed 64 GB page file** (or **64 GB** of RAM), and an NVIDIA GPU with **24 GB** of VRAM. llama.cpp only. It only lists catalog rows tagged `llama_cpp`. Encoder and embedding models such as `baai/bge-m3` stay off Windows. GPU monitoring via `nvidia-smi` when the NVIDIA driver is installed. See [Setup: Windows](setup-windows.md).
 
 ### How do I configure the client?
 
@@ -100,16 +100,18 @@ Cluster **country** is not part of the health payload. Inferoute resolves it fro
 
 ### How is “GPU busy” determined?
 
-- **Linux and Windows (NVIDIA):** Utilization above 20% → busy (`nvidia-smi`).
-- **Every platform:** Busy while an inference request is already in flight (default one at a time), including macOS.
-- No GPU monitoring and nothing in flight: not busy.
+There are two signals. See [How it works](how-it-works.md).
+
+- **Rejecting a new request** (`GET /api/busy` and **503**): every inference slot is full. The default is one request at a time.
+- **Health report** GPU `is_busy`: on Linux and Windows with NVIDIA, utilization above **20%**, or a slot is full. On macOS, a slot is full.
+- No GPU monitoring and nothing in flight: the health report does not mark the GPU busy from utilization.
 
 ## Inference requests
 
 ### How are inference requests handled?
 
 1. The request signature in `X-Request-Id` is validated with Inferoute; missing or invalid requests get **401**.
-2. If the GPU is busy → **503 Service Unavailable** (Inferoute can try another provider). Same-session follow-ups can wait for the slot instead.
+2. If every inference slot is full → **503** `{"error":"GPU is busy"}` (Inferoute can try another provider). Same-session follow-ups can wait for the slot instead. The **20%** utilization flag is on the health report.
 3. Valid requests are proxied to the local LLM server.
 
 ### What endpoints does the client expose for inference?
@@ -118,6 +120,7 @@ OpenAI-compatible:
 
 - **POST /v1/chat/completions**
 - **POST /v1/completions**
+- **POST /v1/embeddings**
 
 ## Logging
 
@@ -127,7 +130,7 @@ In `config.yaml`, under **logging:** set level (`debug`, `info`, `warn`, `error`
 
 ### What if GPU monitoring isn’t available?
 
-The client still runs: health reports omit or null out GPU data and the GPU is reported as not busy. You can monitor activity via the console UI and log files.
+The client still runs. Health reports omit GPU utilization, so that flag stays clear unless a request is in flight. You can monitor activity via the console UI and log files.
 
 ## Related
 
