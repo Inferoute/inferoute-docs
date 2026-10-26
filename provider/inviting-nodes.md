@@ -32,11 +32,19 @@ They can **Cancel request** while it is still pending. Then it disappears from *
 
 ## After they join
 
-**Nodes** lists each machine: role (**Master** or **Worker**), whether they are in the cluster, and health. A worker stays **Waiting to join** until setup on their machine finishes.
+**Nodes** lists each machine: role (**Master** or **Worker**), whether they are in the cluster, and health. A worker shows up there after setup uses the code. Before that, they stay under **Invited**.
 
 The join code works **once**. After setup uses it, that code cannot be used again.
 
-If they lose the code before setup, neither of you can open it again. **Accept** does not mint a replacement. **Request invite** stays closed while that accepted code is still unused. Copy the code as soon as you accept, and send it to them if they do not copy it from **Show join code**.
+**Invited** lists people you accepted who have not finished setup. It shows the same contact as the request. It does not show the code.
+
+If they lose the code before setup, click **New code**. That kills the old code and shows a new one once, on that page. They can also open it once from **Explore** → **Clusters**. Inferoute emails them to look there. The code is not in the email.
+
+**Revoke** withdraws an invite that has not been used. They can **Request invite** again.
+
+## Remove a worker
+
+On a machine that already joined, **Remove** takes that worker out of the cluster. Their machine can no longer serve it, and they stop earning from it. They can ask to join again. You cannot remove the master from this list. Deleting the cluster is still how you shut the whole thing down.
 
 ## Related
 

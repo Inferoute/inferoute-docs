@@ -53,6 +53,7 @@ Join mail is separate from the toggles above. You cannot turn it off on **Notifi
 | --- | --- |
 | Someone clicks **Request invite** | The cluster owner and the person who asked |
 | The owner clicks **Accept** or **Reject** | The person who asked |
+| The owner clicks **New code**, **Revoke**, or **Remove** | The person who asked or the worker who was removed |
 
 The owner’s email links to that cluster’s **Nodes** tab and includes the requester’s preferred contact (account email, Telegram, or Discord). The requester’s accept email tells them to open **Explore** → **Clusters** and use **Show join code**. That code is shown once in the dashboard.
 

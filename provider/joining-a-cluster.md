@@ -34,12 +34,16 @@ You cannot request to join a cluster you own.
 | Result | What you see | Email |
 | --- | --- | --- |
 | Still waiting | **Cancel request** | “We sent your request…” |
-| Accepted | **Show join code** | Tells you to open **Explore** → **Clusters**. The code is not in the email. |
+| Accepted | **Show join code** and **Cancel invite** | Tells you to open **Explore** → **Clusters**. The code is not in the email. |
 | Rejected | **Request invite** again | The owner declined. |
 
-**Show join code** displays the code **once**. Copy it. A second visit does not show it. The button then says **Accepted** and stays disabled.
+**Show join code** displays the code **once**. Copy it. A second visit does not show it.
 
-There is no way to reveal that code again, and the owner cannot create a replacement for the same accept. If you close the page before you copy it, you cannot get it back from the dashboard.
+**Cancel invite** withdraws an accepted code that setup has not used yet. You can **Request invite** again.
+
+If you close the page before you copy the code, ask the owner for a **New code**. That replaces the old one. The new code shows once for the owner and once for you under **Show join code**. The old code stops working.
+
+After setup has used the code, this cluster shows **In this cluster**. Only the owner can remove you. You can request again after that.
 
 ## Run setup
 
