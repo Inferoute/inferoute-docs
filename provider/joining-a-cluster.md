@@ -20,7 +20,7 @@ This is not a second login. Inferoute still emails your account address.
 
 1. Open the cluster link the owner sent you, or go to **Explore** → **GPU clusters** and open a card.
 2. The list is only multi-node clusters. It is not **My Clusters** under **Inference** (those are clusters you own or already joined).
-3. On the cluster page, read the model, VRAM minimum, open slots (for example `1/2`), and the owner’s commission.
+3. On the cluster page, read the model, OS, engine, VRAM minimum, open slots (for example `1/2`), and the owner’s commission. Every machine uses the OS and engine shown on that page.
 4. Click **Request invite**. The list itself has no invite button.
 
 You and the owner each get an email. The email does not include a join code. On the cluster page the button changes to **Cancel request**.

@@ -41,7 +41,7 @@ The master has to finish setup before workers can be useful. On **Nodes**, a mac
 
 ## Start every machine together
 
-A multi-node model does not start one machine at a time. vLLM waits until **every** planned node is up. Do this:
+A multi-node model does not start one machine at a time. vLLM waits until **every** planned node is up. Every machine uses the OS and engine shown on the cluster page. Do this:
 
 1. Deploy the cluster and save the intended model and VRAM per node on **Nodes**. That sets how many machines the model needs.
 2. Copy the cluster link from **Nodes** and send it to the people you want. They can also find it under **Explore** → **GPU clusters**.
