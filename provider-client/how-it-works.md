@@ -17,10 +17,11 @@ If **auto_start** is on (the wizard turns this on when it finds the engine binar
 
 ## Health monitoring
 
-Every **3 minutes**, the client sends a health report to Inferoute. It also sends one immediately when it becomes busy or free (with a short cooldown). The report includes:
+Every **3 minutes**, the client sends a health report to Inferoute. It also sends one when an inference slot fills or frees, after a **10 second** cooldown so a burst of requests does not flood the platform. The report includes:
 
-- GPU type, memory, and utilization (on Linux with NVIDIA).
+- GPU type, memory, and utilization (on Linux and Windows with NVIDIA).
 - Which models your local server exposes.
+- A GPU busy flag. See **When the client is busy** below.
 
 Inferoute detects **cluster country** from the public IP of your connection. You do not send location from the client. See [Cluster location](../provider/cluster-location.md).
 
@@ -28,10 +29,23 @@ You can also check status locally anytime (these URLs stay on your machine):
 
 - Open **http://localhost:8080/** in a browser (or whatever port you configured) for a live status page.
 - **GET /api/status** — JSON snapshot of that page.
-- **GET /api/health** — full health snapshot.
-- **GET /api/busy** — `{"busy": true}` or `{"busy": false}`.
+- **GET /api/health** — full health snapshot, including the GPU busy flag.
+- **GET /api/busy** — `{"busy": true}` or `{"busy": false}`. This is the slot check only. It does not read `nvidia-smi`.
 
-On Linux or Windows with NVIDIA, utilization above **20%** is treated as busy. On every platform, including macOS, the client also treats itself as busy while an inference request is already in flight (default one at a time). Follow-up turns for the same session can wait up to **90 seconds** for that slot instead of getting **503**. See [Configuration](configuration.md).
+## When the client is busy
+
+The client keeps two busy signals. Each one answers a different question.
+
+| Signal | Busy when |
+| --- | --- |
+| **New request** (`GET /api/busy`, and **503**) | Every inference slot is taken. The default is **1** slot (`max_concurrent_inference`). NVIDIA utilization is not used. |
+| **Health report** GPU `is_busy` | On NVIDIA, utilization is above **20%**, or an inference slot is full. On macOS, only when a slot is full. |
+
+A different session that arrives while a slot is full gets **503** `{"error":"GPU is busy"}`. Inferoute can try another provider. A follow-up for the same session waits up to **90 seconds** (`session_queue_wait_seconds`) for that slot instead of **503**.
+
+Utilization above **20%** sets the GPU busy flag in the health report. That update waits for the **3 minute** report. A request already on the machine is rejected when a slot is full. Another program using the GPU can set the flag. After your own request finishes and the slot is free, the next request is accepted while `nvidia-smi` is still high for a moment.
+
+See [Configuration](configuration.md).
 
 ## Model pricing and registration
 
@@ -50,8 +64,8 @@ The client reads the served model id and finds weights in the HuggingFace hub ca
 When Inferoute sends a request to your cluster:
 
 1. **Authentication** — Valid requests include a signed header; missing or invalid requests get **401 Unauthorized**.
-2. **Busy** — If the GPU is busy, or the client is already running an inference request, it responds with **503 Service Unavailable** so Inferoute can try another provider. Same-session follow-ups can wait for the slot instead.
-3. **Proxy** — Valid requests are forwarded to your local LLM server. The client supports OpenAI-compatible **POST /v1/chat/completions** and **POST /v1/completions**.
+2. **Busy** — If every inference slot is full, and this is not a same-session follow-up, the client responds with **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. Same-session follow-ups can wait for the slot instead.
+3. **Proxy** — Valid requests are forwarded to your local LLM server. The client supports **POST /v1/chat/completions**, **POST /v1/completions**, and **POST /v1/embeddings**.
 
 ## Connection to Inferoute
 

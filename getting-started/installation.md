@@ -23,7 +23,7 @@ The wizard installs:
 | OS | Engine |
 | --- | --- |
 | **Linux** | vLLM (needs an NVIDIA GPU) |
-| **macOS** | vLLM Metal (Apple Silicon) |
+| **macOS** | vLLM Metal or llama.cpp (Apple Silicon) |
 
 ## Windows (PowerShell)
 

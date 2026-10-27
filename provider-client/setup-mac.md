@@ -11,7 +11,7 @@ Use this guide when you run the provider client natively on a Mac with Apple Sil
    curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
    ```
 
-The [setup wizard](setup.md) installs **vLLM Metal** if it is missing, and shows which models fit this Mac. Re-run anytime:
+The [setup wizard](setup.md) offers **vLLM Metal** or **llama.cpp**. It installs the one you pick if it is missing, and shows which models fit this Mac. vLLM Metal serves on `http://127.0.0.1:8000`. llama.cpp installs into `~/.local/share/inferoute/llama.cpp` and serves on `http://127.0.0.1:8081`. Re-run anytime:
 
 ```bash
 inferoute-client setup
@@ -29,9 +29,9 @@ Default config: `~/.config/inferoute/config.yaml`. Logs: `~/.local/state/inferou
 
 ## Apple GPU monitoring
 
-On macOS the client reports basic GPU information (model name and core count). It does **not** report GPU memory or utilization, so load from other processes is invisible. The client still reports **busy** while it is already running an inference request (default one at a time).
+On macOS the client reports basic GPU information (model name and core count). It does **not** report GPU memory or utilization, so load from other processes does not set the health-report busy flag. A request in flight still does (default one at a time). See [How it works](how-it-works.md).
 
-For production provider workloads with utilization-based busy detection, use **Linux with an NVIDIA GPU** — see [Setup: Linux](setup-linux.md).
+On Linux with NVIDIA, the health report also marks the GPU busy when utilization is above **20%**. See [Setup: Linux](setup-linux.md).
 
 ## Manual install from source
 
