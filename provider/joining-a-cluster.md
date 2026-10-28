@@ -55,7 +55,7 @@ inferoute-client setup
 
 When setup asks for a provider API key, paste the join code (`join-…`). Setup does not ask you to pick a model. It uses the model the owner saved, installs the engine, and joins that cluster as a worker.
 
-The code is spent when setup succeeds. Running setup again with the same code fails.
+The code is spent when this machine enrolls, not when the engine is healthy. Setup saves that result on this machine. Running setup again uses the saved config and does not ask for a code. You need a new code only if setup never finished saving, or if the owner removed this machine.
 
 If the owner has not saved an intended model, setup stops and tells you to wait until they pick one.
 

@@ -44,6 +44,8 @@ Under `log_dir` (default `~/.local/state/inferoute/log`):
 - **error.log** — Error-level entries only.
 - **engine.log** — Stdout/stderr from an auto-started vLLM, vLLM Metal, or llama.cpp process.
 
+The terminal and the status page show status and inference requests only. When something fails, read **error.log**.
+
 ## Overriding defaults
 
 Prefer `inferoute-client setup` to change engine, model, and API key.

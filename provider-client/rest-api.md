@@ -14,7 +14,7 @@ Browser status page with the same information as the terminal UI (session, model
 
 ## GET /api/status
 
-JSON snapshot of that status page. Includes session status, a masked provider API key, models, GPU, recent requests, errors, last health update, and whether the client is connected to Inferoute.
+JSON snapshot of that status page. Includes session status, a masked provider API key, models, GPU, recent inference requests, last health update, and whether the client is connected to Inferoute.
 
 ## GET /api/health
 
