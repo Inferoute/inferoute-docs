@@ -41,13 +41,15 @@ The master has to finish setup before workers can be useful. On **Nodes**, a mac
 
 ## Start every machine together
 
-A multi-node model does not start one machine at a time. vLLM waits until **every** planned node is up. Every machine uses the OS and engine shown on the cluster page. Do this:
+vLLM waits until **every** planned node is up. Start the master first, then the workers, inside the same window. Every machine uses the OS and engine shown on the cluster page. Do this:
 
 1. Deploy the cluster and save the intended model and VRAM per node on **Nodes**. That sets how many machines the model needs.
 2. Copy the cluster link from **Nodes** and send it to the people you want. They can also find it under **Explore** → **GPU clusters**.
 3. They open that page and click **Request invite**. You accept on **Nodes**. They run setup with the join code.
-4. When enough machines are in the cluster, tell everyone to start the client (and the engine) **at the same time**.
-5. All nodes have **60 minutes** to come up together. The clock starts when the first engine begins waiting for the others.
+4. Setup does not start the engine. It prints the command for that machine. The command uses the full path to the engine, so you do not have to activate a virtual environment first.
+5. Run the command on the **master** first. When it is waiting for the other machines, each worker runs the command setup printed for them.
+6. Then each person starts the client (`inferoute-client`). If the engine is not running, the client prints the command again. It does not start the engine for you.
+7. All nodes have **60 minutes** to come up together. The clock starts when the first engine begins waiting for the others.
 
 If a machine is late, the engines stop. Start them again, together. The **2 hour** wait during setup is only the first model download. It is not this 60 minute window.
 

@@ -61,7 +61,17 @@ If the owner has not saved an intended model, setup stops and tells you to wait 
 
 ## Start when the owner says
 
-Do not start the engine on your own schedule. The owner waits until enough machines have joined, then tells everyone to start together. vLLM gives the cluster **60 minutes** from the first engine. If you are late, every engine stops and the owner has to start the group again.
+Setup does not start the engine. It prints the command for your machine and saves it. The command uses the full path to the engine, so you do not have to activate a virtual environment first.
+
+Do not run that command on your own schedule. The owner starts the master first, then tells you when to run yours. vLLM gives the cluster **60 minutes** from the first engine. If you are late, every engine stops and the owner has to start the group again.
+
+After the command is running, start the client:
+
+```bash
+inferoute-client
+```
+
+If the engine is not running, the client prints the command again. It does not start the engine for you.
 
 The long wait you may see during setup (up to **2 hours**) is the model download. It is not the 60 minute start window.
 
