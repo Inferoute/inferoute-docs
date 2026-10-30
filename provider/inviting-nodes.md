@@ -36,7 +36,7 @@ They can **Cancel request** while it is still pending. Then it disappears from *
 
 The join code works **once**. After setup uses it, that code cannot be used again.
 
-When enough machines are in, tell everyone to start the client together. All nodes have **60 minutes**. See [Start every machine together](multi-node-clusters.md#start-every-machine-together). Copy the cluster link on **Nodes** and send that page before they request an invite, so they can read the model and VRAM first.
+When enough machines are in, start the master first. Once it is up, tell the workers. They have **60 minutes** to join. See [Start the master first](multi-node-clusters.md#start-the-master-first). Copy the cluster link on **Nodes** and send that page before they request an invite, so they can read the model and VRAM first.
 
 **Invited** lists people you accepted who have not finished setup. It shows the same contact as the request. It does not show the code.
 

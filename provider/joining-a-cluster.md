@@ -63,7 +63,7 @@ If the owner has not saved an intended model, setup stops and tells you to wait 
 
 Setup does not start the engine. It prints the command for your machine and saves it. The command uses the full path to the engine, so you do not have to activate a virtual environment first.
 
-Do not run that command on your own schedule. The owner starts the master first, then tells you when to run yours. vLLM gives the cluster **60 minutes** from the first engine. If you are late, every engine stops and the owner has to start the group again.
+Do not run that command until the owner says the master is up. You have **60 minutes** from then to join. If you are late, the engines stop and the owner starts the master again.
 
 After the command is running, start the client:
 
@@ -72,6 +72,8 @@ inferoute-client
 ```
 
 If the engine is not running, the client prints the command again. It does not start the engine for you.
+
+Your engine starting does not mean the cluster is live. The owner waits until vLLM on the master prints `Application startup complete.`, `/v1/models` lists a model, and the next health sync lands. See [Wait for the cluster to come live](multi-node-clusters.md#wait-for-the-cluster-to-come-live).
 
 The long wait you may see during setup (up to **2 hours**) is the model download. It is not the 60 minute start window.
 

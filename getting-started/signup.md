@@ -33,7 +33,7 @@ Confirm your machine matches [Software and hardware requirements](requirements.m
 Then set **Cluster type**:
 
 - **Single node** — one machine.
-- **Multi-node** — this key is the master. Share the cluster page so workers can request an invite. When the slots are filled, everyone starts together. See [Multi-node clusters](../provider/multi-node-clusters.md).
+- **Multi-node** — this key is the master. Share the cluster page so workers can request an invite. When the slots are filled, start the master first. Workers then have 60 minutes to join. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
 ### 2. Software
 

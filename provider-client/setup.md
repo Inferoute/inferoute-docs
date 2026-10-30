@@ -47,7 +47,7 @@ vLLM and vLLM Metal set **provider_type** to `vllm`. llama.cpp sets it to `llama
 
 First-run model download and load can take a long time. Setup waits up to **2 hours**. If the engine is still fetching weights, check `engine.log` under the [log directory](configuration.md#log-files) and re-run setup or start the client after it is up.
 
-On a multi-node cluster, that **2 hour** wait is the download. It is not the peer wait. After the owner says to start, every machine must come up within **60 minutes** of each other. Start together. If one node is late, the engines stop and the group starts again. See [Multi-node clusters](../provider/multi-node-clusters.md).
+On a multi-node cluster, that **2 hour** wait is the download. It is not the peer wait. The owner starts the master first. Once it is up, workers have **60 minutes** to join. If a worker is late, the engines stop. Start the master again, then the workers. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
 ## After the wizard
 

@@ -39,21 +39,41 @@ Setup connects each machine into the cluster. Inferoute still reaches you throug
 
 The master has to finish setup before workers can be useful. On **Nodes**, a machine stays **Waiting to join** until that setup completes. **Test cluster** stays off until the master is healthy.
 
-## Start every machine together
+## Start the master first
 
-vLLM waits until **every** planned node is up. Start the master first, then the workers, inside the same window. Every machine uses the OS and engine shown on the cluster page. Do this:
+Start the master first. Once it is up, workers have **60 minutes** to join. vLLM waits that long for the last worker. Every machine uses the OS and engine shown on the cluster page. Do this:
 
 1. Deploy the cluster and save the intended model and VRAM per node on **Nodes**. That sets how many machines the model needs.
 2. Copy the cluster link from **Nodes** and send it to the people you want. They can also find it under **Explore** → **GPU clusters**.
 3. They open that page and click **Request invite**. You accept on **Nodes**. They run setup with the join code.
 4. Setup does not start the engine. It prints the command for that machine. The command uses the full path to the engine, so you do not have to activate a virtual environment first.
-5. Run the command on the **master** first. When it is waiting for the other machines, each worker runs the command setup printed for them.
-6. Then each person starts the client (`inferoute-client`). If the engine is not running, the client prints the command again. It does not start the engine for you.
-7. All nodes have **60 minutes** to come up together. The clock starts when the first engine begins waiting for the others.
+5. Run the command on the **master** first. Wait until it is up and waiting for the other machines.
+6. Each worker then runs the command setup printed for them. They have **60 minutes** from when the master is up.
+7. Then each person starts the client (`inferoute-client`). If the engine is not running, the client prints the command again. It does not start the engine for you.
 
-If a machine is late, the engines stop. Start them again, together. The **2 hour** wait during setup is only the first model download. It is not this 60 minute window.
+If a worker misses that window, the engines stop. Start the master again, then the workers. The **2 hour** wait during setup is only the first model download. It is not this 60 minute window.
 
-For example, **inferoute-cluster1** needs 4 nodes. You start it, three people join, and you message them when the fourth slot is filled. Everyone starts within that hour.
+For example, **inferoute-cluster1** needs 4 nodes. You start the master. When it is up, tell the three workers. They join within that hour. The cluster is still not live. Wait for the steps below.
+
+## Wait for the cluster to come live
+
+Workers joining does not make the cluster ready. vLLM still loads the model across every machine. That can take a while after the last worker connects. **Test cluster** on **Nodes** stays off until the master is healthy.
+
+On the **master**, watch the vLLM log. Loading is finished when you see:
+
+```
+INFO:     Application startup complete.
+```
+
+Then check the models API on the master (default port **8000**). It has to list at least one model:
+
+```bash
+curl http://127.0.0.1:8000/v1/models
+```
+
+An empty list is not ready. vLLM can answer that URL while weights are still loading.
+
+Keep `inferoute-client` running on each machine. The client status shows **(awaiting health sync)** until the next health report. That report runs about every **3 minutes**. After it, the model name replaces that line and the cluster can take traffic. See [Health monitoring](../provider-client/how-it-works.md#health-monitoring).
 
 ## Related
 
