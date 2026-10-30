@@ -46,7 +46,7 @@ Start the master first. Once it is up, workers have **60 minutes** to join. vLLM
 1. Deploy the cluster and save the intended model and VRAM per node on **Nodes**. That sets how many machines the model needs.
 2. Copy the cluster link from **Nodes** and send it to the people you want. They can also find it under **Explore** → **GPU clusters**.
 3. They open that page and click **Request invite**. You accept on **Nodes**. They run setup with the join code.
-4. Setup does not start the engine. It prints the command for that machine. The command uses the full path to the engine, so you do not have to activate a virtual environment first.
+4. Setup does not start the engine. It prints the command for that machine. The command uses the full path to the engine, so you do not have to activate a virtual environment first. **Copy vLLM command** on **Nodes** is different: it starts with `vllm`. If the shell says `vllm: command not found`, setup installed it in `~/.venv-vllm`. Activate that folder, or replace `vllm` with `~/.venv-vllm/bin/vllm`.
 5. Run the command on the **master** first. Wait until it is up and waiting for the other machines.
 6. Each worker then runs the command setup printed for them. They have **60 minutes** from when the master is up.
 7. Then each person starts the client (`inferoute-client`). If the engine is not running, the client prints the command again. It does not start the engine for you.

@@ -61,7 +61,7 @@ If the owner has not saved an intended model, setup stops and tells you to wait 
 
 ## Start when the owner says
 
-Setup does not start the engine. It prints the command for your machine and saves it. The command uses the full path to the engine, so you do not have to activate a virtual environment first.
+Setup does not start the engine. It prints the command for your machine and saves it. The command uses the full path to the engine, so you do not have to activate a virtual environment first. **Copy vLLM command** on **Nodes** is different: it starts with `vllm`. If the shell says `vllm: command not found`, setup installed it in `~/.venv-vllm`. Activate that folder, or replace `vllm` with `~/.venv-vllm/bin/vllm`.
 
 Do not run that command until the owner says the master is up. You have **60 minutes** from then to join. If you are late, the engines stop and the owner starts the master again.
 
