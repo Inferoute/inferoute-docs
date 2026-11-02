@@ -19,12 +19,11 @@ Peers can be other people's machines. Joining or accepting a join is like pluggi
 ## Required engine ports
 
 {% hint style="warning" %}
-On a multi-node cluster, vLLM must listen on **8000** and llama.cpp must listen on **8081**. Do not change `--port`. Other machines in the cluster can reach only those ports. A different port stays on this machine.
+On a multi-node cluster, vLLM listens on **8000** and llama.cpp listens on **8081**. Leave `--port` alone. Those two, plus a few other ports in the table below, are how the machines find each other. Pick a different port and the engine stays home on this machine.
 {% endhint %}
 
-Setup and **Copy vLLM command** already use those ports. The private network does not open whatever `--port` you type. The high-port range below is GPU-to-GPU traffic. It is not a place to move the HTTP API.
+Setup and **Copy vLLM command** already use those ports. Change them and the other machines walk right past you. These are not the droids you are looking for. 
 
-## What other machines can reach
 
 | Traffic | Why it is open |
 | --- | --- |
@@ -36,16 +35,7 @@ Setup and **Copy vLLM command** already use those ports. The private network doe
 
 ## What stays closed
 
-These are examples, not a promise that every other port is safe.
-
-| Port | Typical use |
-| --- | --- |
-| **22** | SSH. You cannot SSH between nodes over this network. |
-| **80**, **443** | Typical web admin. |
-| **445** | SMB file sharing. |
-| **3389** | Remote desktop. |
-| **5432**, **3306**, **6379** | Postgres, MySQL, Redis, and other well-known service ports. |
-| UDP | Not open on this network. |
+Everythong else should remain closed
 
 ## What is still on you
 
