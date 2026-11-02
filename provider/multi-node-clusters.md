@@ -35,7 +35,7 @@ Open **My Clusters** (under **Inference**), select the cluster, and open **Nodes
 
 ## How the machines connect
 
-Setup connects each machine into the cluster. Inferoute still reaches you through the outbound connection the client already opens. You do not open firewall ports, and you do not paste a network key yourself. A join code or the master API key is enough.
+Setup puts each machine on a private network for this cluster. That network works like Tailscale and uses WireGuard. Each machine opens the tunnel outbound, so you do not install Tailscale, open firewall ports, or paste a network key. A join code or the master API key is enough. Inferoute still reaches you through the outbound connection the client already opens.
 
 On a multi-node cluster, vLLM must listen on **8000** and llama.cpp must listen on **8081**. Do not change `--port`. Other machines in the cluster can reach only those ports. A different port stays on this machine. See [Multi-node networking](multi-node-networking.md).
 
