@@ -35,7 +35,7 @@ Open **My Clusters** (under **Inference**), select the cluster, and open **Nodes
 
 ## How the machines connect
 
-Setup joins each machine to a private network so the nodes can reach each other. The program is **inferscale**. You do not paste a network key, and you do not open firewall ports. A join code or the master API key is enough. Inferoute still reaches the master through the outbound connection the client already opens.
+Setup joins each machine to a private network so the nodes can reach each other. The program is **inferscale**. It works like Tailscale and uses WireGuard. Each machine opens the tunnel outbound, so you do not install Tailscale, open firewall ports, or paste a network key. A join code or the master API key is enough. Inferoute still reaches the master through the outbound connection the client already opens.
 
 On Linux, setup may ask for your password. It prints:
 
