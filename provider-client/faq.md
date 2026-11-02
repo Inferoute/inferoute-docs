@@ -100,6 +100,14 @@ No. On startup the client opens an outbound connection to Inferoute. Inferoute s
 
 The client reconnects on its own. Check the client logs if it stays disconnected.
 
+### Can other providers SSH into my machine?
+
+No, not over the private network a multi-node cluster uses. Port **22** is blocked there. That does not mean the other node is safe. Only share a cluster with people you intend to share GPUs with. See [Multi-node networking](../provider/multi-node-networking.md).
+
+### What can other nodes in a multi-node cluster reach?
+
+vLLM on **8000**, llama.cpp on **8081**, the distributed setup port **29501**, ping, and TCP **32768–60999** for GPU-to-GPU traffic. SSH, typical web admin, and database ports stay closed. The high-port window is wide on purpose. A service you bind there on all interfaces is reachable by every node in the cluster. See [Multi-node networking](../provider/multi-node-networking.md).
+
 ### The client failed to start because of the API key
 
 The provider API key in **config.yaml** (`api_key`) must be the key for **that cluster**, copied from **My Clusters** → select the cluster → **Settings**. A consumer key, an old rotated key, or a typo is rejected at startup with an “Invalid provider API key” message.

@@ -35,6 +35,8 @@ Then set **Cluster type**:
 - **Single node** — one machine.
 - **Multi-node** — this key is the master. Share the cluster page so workers can request an invite. When the slots are filled, start the master first. Workers then have 60 minutes to join. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
+If you pick **Multi-node**, those machines share a private network. Only create or join one with people you intend to share GPUs with. Read [Multi-node networking](../provider/multi-node-networking.md) before you generate a key or accept a join.
+
 ### 2. Software
 
 The engine depends on your operating system. You do not install it in this step.

@@ -43,6 +43,8 @@ It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_star
 
 Intel Macs are not supported.
 
+On a multi-node cluster those ports are fixed. vLLM must stay on **8000** and llama.cpp on **8081**. See [Multi-node clusters](../provider/multi-node-clusters.md).
+
 vLLM and vLLM Metal set **provider_type** to `vllm`. llama.cpp sets it to `llama_cpp`. Change engine with the wizard, not by editing YAML.
 
 First-run model download and load can take a long time. Setup waits up to **2 hours**. If the engine is still fetching weights, check `engine.log` under the [log directory](configuration.md#log-files) and re-run setup or start the client after it is up.

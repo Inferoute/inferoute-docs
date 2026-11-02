@@ -40,6 +40,8 @@ vLLM and Windows llama.cpp expect a CUDA-capable NVIDIA GPU. The wizard will not
 | **macOS** (Apple Silicon) | Basic via `system_profiler` | vLLM Metal or llama.cpp |
 | **Windows amd64** | `nvidia-smi` when the NVIDIA driver is installed | llama.cpp |
 
+Linux multi-node clusters share a private network between the machines in that cluster. See [Multi-node networking](../provider/multi-node-networking.md).
+
 ## What the Inferoute client adds
 
 Once the LLM server is up, the client:
