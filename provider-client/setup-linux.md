@@ -67,9 +67,14 @@ nvidia-smi --query-gpu=compute_cap --format=csv,noheader
 
 The client opens an outbound connection to Inferoute. No need to install ngrok or open firewall ports.
 
+## Multi-node clusters
+
+Linux is the only platform for a multi-node cluster. Setup downloads **inferscale**, may ask for your password (`inferscale needs root to create inferscale0`), and prints **Inferscale address** when this machine is on the private network. It does not start vLLM. See [Multi-node clusters](../provider/multi-node-clusters.md).
+
 ## Related
 
 - [Setup wizard](setup.md)
+- [Multi-node clusters](../provider/multi-node-clusters.md)
 - [Installation](../getting-started/installation.md)
 - [Configuration](configuration.md)
 - [Setup: macOS](setup-mac.md)

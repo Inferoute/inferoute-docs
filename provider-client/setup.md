@@ -16,7 +16,7 @@ If you have not installed the client yet, start with [Installation](../getting-s
 
 ## What the wizard asks
 
-1. **Provider API key** — from **My Clusters** → **Settings**. Required. See [Sign up and create a cluster](../getting-started/signup.md). A **join code** (`join-…`) goes in this same field. Setup then joins that multi-node cluster as a worker and does not ask you to pick a model. See [Joining a cluster](../provider/joining-a-cluster.md).
+1. **Provider API key or join code** — the prompt label. The key is on **My Clusters** → **Settings**. Required. See [Sign up and create a cluster](../getting-started/signup.md). A **join code** (`join-…`) goes in this same field. Setup then joins that multi-node cluster as a worker and does not ask you to pick an engine or a model. See [Joining a cluster](../provider/joining-a-cluster.md).
 2. **Inference engine** — vLLM on Linux, vLLM Metal or llama.cpp on Apple Silicon, or llama.cpp on Windows.
 3. **Install if missing** — if the engine is not on the machine, the wizard offers to install it. On Linux, a GPU with compute capability **10.0** or higher (Blackwell, including RTX 50-series) also downloads FlashInfer kernels during the vLLM install. See [Setup: Linux](setup-linux.md).
 4. **Model** — fetches the approved catalog, **keeps only rows tagged for this engine** (`engines`), scores the rest against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table. Windows only shows builds that include `llama_cpp`. See [Approved model builds](approved-models.md).
@@ -51,6 +51,8 @@ First-run model download and load can take a long time. Setup waits up to **2 ho
 
 On a multi-node cluster, that **2 hour** wait is the download. It is not the peer wait. The owner starts the master first. Once it is up, workers have **60 minutes** to join. If a worker is late, the engines stop. Start the master again, then the workers. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
+On a multi-node master or worker, setup leaves **auto_start** off. It prints the vLLM command and does not start the engine. A worker with no vLLM binary gets the install without an extra question. The wizard also downloads **inferscale** and may ask for your password (`inferscale needs root to create inferscale0`).
+
 ## After the wizard
 
 Start the Inferoute client (not just the LLM engine):
@@ -67,7 +69,7 @@ Then set prices on **My Clusters** → **Models**. See [Model pricing](../provid
 
 ## Non-interactive setup
 
-For scripts, pass flags instead of answering prompts. `--yes` does **not** install a missing engine unless you also pass `--install`.
+For scripts, pass flags instead of answering prompts. `--yes` does **not** install a missing engine unless you also pass `--install`. A worker join installs a missing vLLM even without `--install`.
 
 ```bash
 inferoute-client setup --yes --engine vllm --model Qwen/Qwen2.5-7B-Instruct --api-key "your-provider-api-key"

@@ -35,11 +35,42 @@ Open **My Clusters** (under **Inference**), select the cluster, and open **Nodes
 
 ## How the machines connect
 
-Setup connects each machine into the cluster. Inferoute still reaches you through the outbound connection the client already opens. You do not open firewall ports, and you do not paste a network key yourself. A join code or the master API key is enough.
+Setup joins each machine to a private network so the nodes can reach each other. The program is **inferscale**. You do not paste a network key, and you do not open firewall ports. A join code or the master API key is enough. Inferoute still reaches the master through the outbound connection the client already opens.
+
+On Linux, setup may ask for your password. It prints:
+
+```text
+inferscale needs root to create inferscale0
+```
+
+That creates the network device. Enter the password for `sudo`. If `sudo` is not installed, setup stops with `inferscale needs root to create inferscale0, and sudo is not installed`.
+
+While it joins, the wizard prints **Downloading inferscale**, **Starting inferscale**, and **Joining the tailnet**. When this machine is on the network, it prints **Inferscale address:** and an address.
+
+A worker does not serve HTTP. Its engine joins the master. Only the master answers `/v1/models` and takes inference.
 
 On a multi-node cluster, vLLM must listen on **8000** and llama.cpp must listen on **8081**. Do not change `--port`. Other machines in the cluster can reach only those ports. A different port stays on this machine. See [Multi-node networking](multi-node-networking.md).
 
 The master has to finish setup before workers can be useful. On **Nodes**, a machine stays **Waiting to join** until that setup completes. **Test cluster** stays off until the master is healthy.
+
+If the wizard still asks you to pick an engine and a model, it did not see this multi-node cluster. Look for `could not read cluster mode` and run setup again. Do not start vLLM from that run.
+
+These messages mean this machine is not on the network, and the one-shot network key is gone:
+
+- `inferscale is not connected and the one-shot key was already used`
+- `inferscale up: one-shot key was rejected`
+
+On the **master**, run `inferoute-client setup` again. Setup requests a new key.
+
+On a **worker**, the join code is already spent. Ask the owner for a **New code**. A later `inferoute-client setup` prints `This machine is already in the cluster.` and does not ask again. Pass the new code yourself:
+
+```bash
+inferoute-client setup --api-key "join-…"
+```
+
+If the owner removed the machine, the client says `the owner removed this machine from the cluster. Re-run setup and paste a new join code`. The next setup asks for the code.
+
+If setup stops with `inferscaled did not answer`, read `~/.local/state/inferoute/log/inferscaled.log`, then run setup again.
 
 ## Start the master first
 
@@ -78,6 +109,24 @@ curl http://127.0.0.1:8000/v1/models
 An empty list is not ready. vLLM can answer that URL while weights are still loading.
 
 Keep `inferoute-client` running on each machine. The client status shows **(awaiting health sync)** until the next health report. That report runs about every **3 minutes**. After it, the model name replaces that line and the cluster can take traffic. See [Health monitoring](../provider-client/how-it-works.md#health-monitoring).
+
+## Read status on the machine
+
+Open **http://localhost:8080/** or look at the terminal where `inferoute-client` is running. **CLUSTER STATUS** shows:
+
+| Label | What it means |
+| --- | --- |
+| **Cluster** | `master`, `worker`, or `single` |
+| **Engine** | Terminal only. Master: `not started`, `waiting for workers (0/3)`, `loading`, or `ready`. Worker: `running` or `not started`. |
+| **Nodes** | This machine plus other machines that are online, out of the cluster size. For example, `1/4` means only this machine is on the network. |
+| **Tailnet IP** | This machine's address on the private network. |
+| **Peers** | How many other machines are online. For example, `3 online`. |
+
+**Nodes** includes this machine. **waiting for workers** counts the other machines only. For example, a 4-node cluster with only the master up shows **Nodes** `1/4` and **Engine** `waiting for workers (0/3)`. The client also prints `Waiting for workers to join (0/3).`
+
+Starting the client before vLLM prints the saved command and `Start it in another terminal. This client keeps running.` When the worker engine is up, the client prints `Worker is running. It joins the master and does not serve HTTP.` On the master, once vLLM is serving, it prints `vLLM is ready at` the local URL.
+
+The next client start reconnects inferscale when that address is offline.
 
 ## Related
 

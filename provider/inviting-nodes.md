@@ -9,7 +9,9 @@ You invite workers to a multi-node cluster you own. They ask to join. You accept
 3. On **Check Compatibility**, set **Cluster type** to **Multi-node**.
 4. Finish the wizard and copy the provider API key. That key is the **master**. It is shown once.
 
-Run `inferoute-client setup` on your machine with that key. Setup sees a multi-node cluster and installs this machine as the master. It uses the **intended model** you saved on **Nodes**. If no model is saved, setup stops and tells you to pick one in the dashboard.
+Run `inferoute-client setup` on your machine with that key. The prompt is **Provider API key or join code**. Setup sees a multi-node cluster and installs this machine as the master. It uses the **intended model** you saved on **Nodes**. If no model is saved, setup stops with `cluster … has no model set. Choose one in the dashboard, then re-run setup`.
+
+Setup downloads **inferscale** and may ask for your password (`inferscale needs root to create inferscale0`). It prints the vLLM command and does not start the engine. See [How the machines connect](multi-node-clusters.md#how-the-machines-connect).
 
 ## Review a request
 

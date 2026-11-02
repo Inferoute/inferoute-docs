@@ -62,6 +62,28 @@ For example, `VLLM_USE_FLASHINFER_SAMPLER=0 vllm serve ...`. Sampling is a littl
 
 On a multi-node cluster, one crashed machine leaves the others waiting. Stop vLLM on every machine, then start the master, then the workers. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
+### Setup asks for my password (`inferscale0`)
+
+Multi-node setup joins a private network. It prints `inferscale needs root to create inferscale0` and runs `sudo`. Enter your password. If the machine has no `sudo`, setup stops with `inferscale needs root to create inferscale0, and sudo is not installed`. This step runs on Linux only. See [How the machines connect](../provider/multi-node-clusters.md#how-the-machines-connect).
+
+### "one-shot key was rejected" or "one-shot key was already used"
+
+This machine is not on the private network, and the one-shot network key is gone.
+
+On the **master**, run `inferoute-client setup` again. Setup requests a new key.
+
+On a **worker**, the join code was spent. Ask the owner for a **New code**. Then run:
+
+```bash
+inferoute-client setup --api-key "join-…"
+```
+
+`inferoute-client setup` alone prints `This machine is already in the cluster.` and will not ask for the new code.
+
+### "the owner removed this machine from the cluster"
+
+The owner clicked **Remove** on **Nodes**. Run `inferoute-client setup` and paste a new join code. See [Joining a cluster](../provider/joining-a-cluster.md).
+
 ### How do I delete a cluster from my account?
 
 Use the dashboard: **My Clusters** → select your cluster → **Settings** → **Delete cluster** (Danger zone). That stops inference and revokes API keys; it does not uninstall the client on your machine. See [Deleting and managing clusters](../provider/deleting-clusters.md).
@@ -170,3 +192,5 @@ The client still runs. Health reports omit GPU utilization, so that flag stays c
 - [Approved model builds](approved-models.md)
 - [Model pricing](../provider/model-pricing.md)
 - [Deleting and managing clusters](../provider/deleting-clusters.md)
+- [Multi-node clusters](../provider/multi-node-clusters.md)
+- [Joining a cluster](../provider/joining-a-cluster.md)
