@@ -53,6 +53,8 @@ Start the master first. Once it is up, workers have **60 minutes** to join. vLLM
 
 If a worker misses that window, the engines stop. Start the master again, then the workers. The **2 hour** wait during setup is only the first model download. It is not this 60 minute window.
 
+If vLLM crashes on any machine, stop it on every machine in the cluster and start again in that order. See [vLLM crashes at startup with "Could not find nvcc"](../provider-client/faq.md#vllm-crashes-at-startup-with-could-not-find-nvcc).
+
 For example, **inferoute-cluster1** needs 4 nodes. You start the master. When it is up, tell the three workers. They join within that hour. The cluster is still not live. Wait for the steps below.
 
 ## Wait for the cluster to come live

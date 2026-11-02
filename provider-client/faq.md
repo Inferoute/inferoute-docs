@@ -40,6 +40,28 @@ Auto-start only replays `config.yaml`. It does not notice that the catalog row c
 
 Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call_parser`, do not pass `--enable-auto-tool-choice` (vLLM) or `--jinja` (llama.cpp). If the catalog sets `max_model_len`, serve at least that context or verification fails. Safer: let setup start the engine. See [Approved model builds](approved-models.md).
 
+### vLLM crashes at startup with "Could not find nvcc"
+
+vLLM tried to compile a missing kernel on first start. The machine has a GPU driver and no CUDA compiler. Rented GPU boxes often look like this.
+
+Run this, then start vLLM again:
+
+```bash
+~/.venv-vllm/bin/vllm download-kernels
+```
+
+Setup runs that command on a new install. If vLLM was already installed, run it once yourself.
+
+If the same crash remains, put this in front of the command setup printed:
+
+```bash
+VLLM_USE_FLASHINFER_SAMPLER=0
+```
+
+For example, `VLLM_USE_FLASHINFER_SAMPLER=0 vllm serve ...`. Sampling is a little slower. Use it only while `download-kernels` still leaves the crash.
+
+On a multi-node cluster, one crashed machine leaves the others waiting. Stop vLLM on every machine, then start the master, then the workers. See [Multi-node clusters](../provider/multi-node-clusters.md).
+
 ### How do I delete a cluster from my account?
 
 Use the dashboard: **My Clusters** → select your cluster → **Settings** → **Delete cluster** (Danger zone). That stops inference and revokes API keys; it does not uninstall the client on your machine. See [Deleting and managing clusters](../provider/deleting-clusters.md).
