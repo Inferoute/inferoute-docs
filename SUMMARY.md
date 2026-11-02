@@ -17,6 +17,7 @@
   - [Cluster location](provider/cluster-location.md)
   - [Model pricing](provider/model-pricing.md)
   - [Multi-node clusters](provider/multi-node-clusters.md)
+  - [Multi-node networking](provider/multi-node-networking.md)
   - [Inviting nodes](provider/inviting-nodes.md)
   - [Joining a cluster](provider/joining-a-cluster.md)
   - [Cluster earnings](provider/cluster-earnings.md)

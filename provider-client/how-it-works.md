@@ -67,6 +67,10 @@ When Inferoute sends a request to your cluster:
 2. **Busy** — If every inference slot is full, and this is not a same-session follow-up, the client responds with **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. Same-session follow-ups can wait for the slot instead.
 3. **Proxy** — Valid requests are forwarded to your local LLM server. The client supports **POST /v1/chat/completions**, **POST /v1/completions**, and **POST /v1/embeddings**.
 
+## Multi-node clusters
+
+Inference still arrives over the outbound connection to Inferoute. Machines in one multi-node cluster also join a private network so they can run one model together. Other clusters are not on that network. See [Multi-node networking](../provider/multi-node-networking.md).
+
 ## Connection to Inferoute
 
 On startup the client opens an outbound connection to Inferoute. If the connection drops, the client reconnects on its own. You do not configure a public URL.
@@ -75,6 +79,7 @@ On shutdown, the client closes the connection.
 
 ## Related
 
+- [Multi-node networking](../provider/multi-node-networking.md)
 - [Setup wizard](setup.md)
 - [Configuration](configuration.md)
 - [FAQ](faq.md)

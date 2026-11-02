@@ -37,6 +37,8 @@ Open **My Clusters** (under **Inference**), select the cluster, and open **Nodes
 
 Setup connects each machine into the cluster. Inferoute still reaches you through the outbound connection the client already opens. You do not open firewall ports, and you do not paste a network key yourself. A join code or the master API key is enough.
 
+On a multi-node cluster, vLLM must listen on **8000** and llama.cpp must listen on **8081**. Do not change `--port`. Other machines in the cluster can reach only those ports. A different port stays on this machine. See [Multi-node networking](multi-node-networking.md).
+
 The master has to finish setup before workers can be useful. On **Nodes**, a machine stays **Waiting to join** until that setup completes. **Test cluster** stays off until the master is healthy.
 
 ## Start the master first
@@ -67,7 +69,7 @@ On the **master**, watch the vLLM log. Loading is finished when you see:
 INFO:     Application startup complete.
 ```
 
-Then check the models API on the master (default port **8000**). It has to list at least one model:
+Then check the vLLM models API on the master. vLLM must be on **8000**. llama.cpp must be on **8081**. Do not change `--port`. It has to list at least one model:
 
 ```bash
 curl http://127.0.0.1:8000/v1/models
@@ -79,6 +81,7 @@ Keep `inferoute-client` running on each machine. The client status shows **(awai
 
 ## Related
 
+- [Multi-node networking](multi-node-networking.md)
 - [Inviting nodes](inviting-nodes.md)
 - [Joining a cluster](joining-a-cluster.md)
 - [Cluster earnings](cluster-earnings.md)

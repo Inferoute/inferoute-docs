@@ -50,6 +50,7 @@ When you confirm deletion:
 2. **Inference stops** — the cluster is paused, marked unavailable, and health is set to red so Inferoute will not route requests to it.
 3. **All active API keys for that cluster are revoked** — your provider client can no longer authenticate with those keys.
 4. **Historical data is kept** — past earnings and transactions stay in your account history for billing and audit. The cluster no longer appears in the dashboard, but we retain records tied to past payouts.
+5. **A multi-node machine leaves the private network** — deleting the cluster, or leaving it, drops that machine from the network the cluster used. Stop the client on the machine too. See [Multi-node networking](multi-node-networking.md).
 
 ### What delete does not do
 
@@ -83,4 +84,5 @@ Use **pause** for temporary downtime. Use **delete** when you are done with that
 - [Cluster location](cluster-location.md)
 - [Model pricing](model-pricing.md)
 - [Multi-node clusters](multi-node-clusters.md)
+- [Multi-node networking](multi-node-networking.md)
 - [Provider client introduction](../provider-client/introduction.md)

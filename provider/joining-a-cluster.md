@@ -65,6 +65,8 @@ Setup does not start the engine. It prints the command for your machine and save
 
 Do not run that command until the owner says the master is up. You have **60 minutes** from then to join. If you are late, the engines stop and the owner starts the master again.
 
+On a multi-node cluster, vLLM must listen on **8000** and llama.cpp must listen on **8081**. Do not change `--port`. Other machines in the cluster can reach only those ports. A different port stays on this machine. Keep the port the printed command already has. See [Multi-node networking](multi-node-networking.md).
+
 After the command is running, start the client:
 
 ```bash
@@ -80,6 +82,7 @@ The long wait you may see during setup (up to **2 hours**) is the model download
 ## Related
 
 - [Multi-node clusters](multi-node-clusters.md)
+- [Multi-node networking](multi-node-networking.md)
 - [Inviting nodes](inviting-nodes.md)
 - [Cluster earnings](cluster-earnings.md)
 - [Setup wizard](../provider-client/setup.md)
