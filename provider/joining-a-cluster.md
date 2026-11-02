@@ -53,11 +53,27 @@ On the worker machine:
 inferoute-client setup
 ```
 
-When setup asks for a provider API key, paste the join code (`join-…`). Setup does not ask you to pick a model. It uses the model the owner saved, installs the engine, and joins that cluster as a worker.
+When setup asks **Provider API key or join code**, paste the join code (`join-…`). You can paste it with quotes or a label. Setup keeps the `join-` token.
 
-The code is spent when this machine enrolls, not when the engine is healthy. Setup saves that result on this machine. Running setup again uses the saved config and does not ask for a code. You need a new code only if setup never finished saving, or if the owner removed this machine.
+Setup prints **Joining cluster** and the model name. It does not ask you to pick an engine or a model. It uses the model the owner saved. If vLLM is missing, setup installs it. It then joins the private network. Enter your password when it prints `inferscale needs root to create inferscale0`. See [How the machines connect](multi-node-clusters.md#how-the-machines-connect).
 
-If the owner has not saved an intended model, setup stops and tells you to wait until they pick one.
+If the owner has not saved an intended model, setup stops with `cluster … has no model set. Choose one in the dashboard, then re-run setup`.
+
+The code is spent when this machine enrolls, not when the engine is healthy. Setup saves that result on this machine. Running setup again prints `This machine is already in the cluster.` and does not ask for a code.
+
+You need a new code when:
+
+- Setup never finished saving.
+- The owner removed this machine. The client says `the owner removed this machine from the cluster. Re-run setup and paste a new join code`.
+- Setup says `one-shot key was rejected` or `the one-shot key was already used`.
+
+For those last two, pass the new code yourself. A plain re-run will not ask:
+
+```bash
+inferoute-client setup --api-key "join-…"
+```
+
+Ask the owner for **New code** first. The old code stops working.
 
 ## Start when the owner says
 

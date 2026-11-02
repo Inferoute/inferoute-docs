@@ -16,7 +16,7 @@ Works on Linux (amd64/arm64) and macOS (Apple Silicon). Intel Macs are not suppo
 curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
 ```
 
-The wizard asks for your **provider API key** if you did not set `PROVIDER_API_KEY`.
+The wizard asks **Provider API key or join code**. `PROVIDER_API_KEY` fills the default. It skips the question only when you also pass `--yes` or `--api-key`.
 
 The wizard installs:
 

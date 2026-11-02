@@ -19,7 +19,7 @@ Prefer **`inferoute-client setup`** to change engine, model, or API key — see 
   - **engine** — Local program: `vllm`, `vllm-metal`, or `llama_cpp`. Change this with `inferoute-client setup`.
   - **engine_bin** — Absolute path to the engine binary when it is not on `PATH` (typical for llama.cpp on Windows).
   - **model** — Catalog alias the client auto-starts (for example `Qwen/Qwen2.5-7B-Instruct`).
-  - **auto_start** — When **true**, start the engine if **llm_url** is down, using the serve flags already in this file. Setup turns this on when it can find the binary. Existing configs without this field stay off. A process already bound on **llm_url** is not restarted.
+  - **auto_start** — When **true**, start the engine if **llm_url** is down, using the serve flags already in this file. Setup turns this on when it can find the binary on a single-node machine. On a multi-node master or worker, setup leaves this off. Existing configs without this field stay off. A process already bound on **llm_url** is not restarted.
   - **llm_url** — Local LLM API URL. For example, `http://127.0.0.1:8000` for vLLM and vLLM Metal, or `http://127.0.0.1:8081` for llama.cpp.
   - **gguf_file** — llama.cpp filename from the catalog, for example `qwen2.5-7b-instruct-q4_k_m.gguf`. Setup writes this.
   - **llm_timeout_seconds** — Timeout for requests forwarded to the local engine (default **120**).
@@ -43,6 +43,7 @@ Under `log_dir` (default `~/.local/state/inferoute/log`):
 - **inferoute.log** — Main application log (all levels).
 - **error.log** — Error-level entries only.
 - **engine.log** — Stdout/stderr from an auto-started vLLM, vLLM Metal, or llama.cpp process.
+- **inferscaled.log** — inferscale daemon output on a multi-node machine. Read this when setup says `inferscaled did not answer`.
 
 The terminal and the status page show status and inference requests only. When something fails, read **error.log**.
 
