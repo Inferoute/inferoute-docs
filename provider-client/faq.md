@@ -42,25 +42,25 @@ Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call
 
 ### vLLM crashes at startup with "Could not find nvcc"
 
-vLLM tried to compile a missing kernel on first start. The machine has a GPU driver and no CUDA compiler. Rented GPU boxes often look like this.
+vLLM tried to compile the FlashInfer sampling kernel on first start. The machine has a GPU driver and no CUDA compiler (`nvcc`). Rented GPU boxes often look like this.
 
-Run this, then start vLLM again:
+`download-kernels` installs other FlashInfer kernels. It does not install this sampler. Setup still runs it on a new install. If vLLM was already installed, run it once yourself:
 
 ```bash
-~/.venv-vllm/bin/vllm download-kernels
+~/.venv-vllm/bin/python -m flashinfer download-kernels
 ```
 
-Setup runs that command on a new install. If vLLM was already installed, run it once yourself.
-
-If the same crash remains, put this in front of the command setup printed:
+On a machine with no `nvcc`, put this in front of the command setup printed. Set it on every machine in the cluster:
 
 ```bash
 VLLM_USE_FLASHINFER_SAMPLER=0
 ```
 
-For example, `VLLM_USE_FLASHINFER_SAMPLER=0 vllm serve ...`. Sampling is a little slower. Use it only while `download-kernels` still leaves the crash.
+For example, `VLLM_USE_FLASHINFER_SAMPLER=0 vllm serve ...`. Sampling is a little slower.
 
-On a multi-node cluster, one crashed machine leaves the others waiting. Stop vLLM on every machine, then start the master, then the workers. See [Multi-node clusters](../provider/multi-node-clusters.md).
+A machine with the CUDA toolkit installed can compile the sampler instead, so skip the variable there. `nvcc --version` has to succeed for the user that starts vLLM. The first start takes longer. Later starts reuse the compiled sampler. On a GPU with compute capability **10.0** or higher, install CUDA **12.9** or newer. Check the toolkit with `nvcc --version`. The CUDA version printed by `nvidia-smi` is the driver.
+
+On a multi-node cluster, one crashed machine leaves the others waiting. The master often logs `No available shared memory broadcast block found in 60 seconds` while a worker is still compiling, or stuck waiting for that machine. That line is the wait. The worker crash is the failure. Stop vLLM on every machine, then start the master, then the workers. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
 ### Setup asks for my password (`inferscale0`)
 
