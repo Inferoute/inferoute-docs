@@ -29,9 +29,22 @@ Open **My Clusters** (under **Inference**), select the cluster, and open **Nodes
 
 - **Intended model** — the catalog model setup installs. Save it before anyone runs setup. The page treats it as a reminder: it does not stop other models the client might register later.
 - **VRAM per node** — the minimum VRAM you expect on every machine. The page uses this, with the model, to say how many nodes you need.
+- **vLLM version** — optional. Setup installs this release on every Linux machine, with its own Python 3.12 through uv, so machines on different Linux releases can join the same cluster. The NVIDIA driver on each machine is the only host requirement. Leave it empty and the master's setup writes the release it installed. Workers then install that release. A machine that already has another release asks before it reinstalls. Workers install the pinned release without that question. A worker that runs setup before the master has reported a release stops and tells you to run the master first. Changing the pin does not reinstall a machine that already finished setup. Run setup again on that machine.
 - **Commission** — your cut of each payout. See [Cluster earnings](cluster-earnings.md).
 
-**Explore** → **GPU clusters** lists multi-node clusters as cards. Open a cluster to see the model, the VRAM minimum, open slots (for example `1/2`), and your commission. People request an invite on that page, not on the list. Share the page link so someone can read the requirements before they ask to join.
+**Explore** → **GPU clusters** lists multi-node clusters as cards. Open a cluster to see the model, the GPU on the master, the vLLM version, the VRAM minimum, open slots (for example `1/2`), and your commission. People request an invite on that page, not on the list. Share the page link so someone can read the requirements before they ask to join.
+
+## GPUs across nodes
+
+Inferoute tests clusters where every machine has the same GPU model. Mixing GPUs is possible, and you can try it. We have not tested that, and the cluster may not start.
+
+Setup on a worker reads this machine with `nvidia-smi` and compares it to the GPU the master reported. When they differ, setup prints a warning and continues. For example:
+
+```text
+This machine has NVIDIA GeForce RTX 5090. The master has NVIDIA GeForce RTX 4090. Mixed GPUs are untested on Inferoute and the cluster may not start.
+```
+
+The master's GPU is sent when the master runs setup, before vLLM starts. Until that setup finishes, the cluster page says the GPU is not reported yet, and a worker setup stays quiet. **Nodes** shows each machine's GPU and the vLLM release it has. A release that does not match the pin, or a GPU that does not match the master, is marked on that row.
 
 ## How the machines connect
 

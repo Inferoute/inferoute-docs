@@ -16,6 +16,8 @@ The wizard installs one engine for this machine:
 
 Intel Macs are not supported.
 
+**uv** on Linux for vLLM. Setup installs it to `~/.local/bin` if it is missing. No system Python is needed; uv downloads Python 3.12 for the vLLM environment. The NVIDIA driver is the only host requirement. You do not install a CUDA toolkit.
+
 Windows does not serve every catalog model. It only serves rows whose `engines` include `llama_cpp`. Encoder and embedding models such as `baai/bge-m3` stay off Windows. See [Approved model builds](../provider-client/approved-models.md).
 
 ## Hardware

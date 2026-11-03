@@ -51,7 +51,7 @@ First-run model download and load can take a long time. Setup waits up to **2 ho
 
 On a multi-node cluster, that **2 hour** wait is the download. It is not the peer wait. The owner starts the master first. Once it is up, workers have **60 minutes** to join. If a worker is late, the engines stop. Start the master again, then the workers. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
-On a multi-node master or worker, setup leaves **auto_start** off. It prints the vLLM command and does not start the engine. A worker with no vLLM binary gets the install without an extra question. The wizard also downloads **inferscale** and may ask for your password (`inferscale needs root to create inferscale0`).
+On a multi-node master or worker, setup leaves **auto_start** off. It prints the vLLM command and does not start the engine. A worker with no vLLM binary gets the install without an extra question. If the cluster has a **vLLM version** on **Nodes**, setup installs that release. A machine that already has a different release is asked before it is replaced. The wizard also downloads **inferscale** and may ask for your password (`inferscale needs root to create inferscale0`).
 
 ## After the wizard
 

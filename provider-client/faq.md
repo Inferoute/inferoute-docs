@@ -40,6 +40,14 @@ Auto-start only replays `config.yaml`. It does not notice that the catalog row c
 
 Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call_parser`, do not pass `--enable-auto-tool-choice` (vLLM) or `--jinja` (llama.cpp). If the catalog sets `max_model_len`, serve at least that context or verification fails. Safer: let setup start the engine. See [Approved model builds](approved-models.md).
 
+### Setup says this machine's GPU differs from the master
+
+The worker GPU is not the same model as the master's. Setup prints the two names and continues. Inferoute tests clusters where every machine has the same GPU. Mixing can work, and it can also leave vLLM stuck during startup. Use the same GPU when you can. See [GPUs across nodes](../provider/multi-node-clusters.md#gpus-across-nodes).
+
+### Setup wants to reinstall vLLM
+
+The cluster owner set a **vLLM version** on **Nodes**, and this machine has a different release. Pipeline parallel needs the same vLLM on every machine. Say yes and setup removes `~/.venv-vllm` and installs the pinned release. That takes several minutes. Say no and setup leaves the old release in place. The cluster may not start. A worker install does not ask. `--yes` also accepts the reinstall.
+
 ### vLLM crashes at startup with "Could not find nvcc"
 
 vLLM tried to compile the FlashInfer sampling kernel on first start. The machine has a GPU driver and no CUDA compiler (`nvcc`). Rented GPU boxes often look like this.
