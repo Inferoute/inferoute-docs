@@ -80,6 +80,17 @@ inferoute-client setup --api-key "join-…"
 
 `inferoute-client setup` alone prints `This machine is already in the cluster.` and will not ask for the new code.
 
+### Can I move a machine to another cluster?
+
+Yes. Run `inferoute-client setup --api-key "…"` with the new cluster's join code or provider API key. Setup logs the machine out of the old private network before it joins the new one. You do not need to clean anything up by hand.
+
+If the machine still shows the old address after setup, log out yourself and run setup again:
+
+```bash
+sudo inferscale logout
+inferoute-client setup --api-key "…"
+```
+
 ### "the owner removed this machine from the cluster"
 
 The owner clicked **Remove** on **Nodes**. Run `inferoute-client setup` and paste a new join code. See [Joining a cluster](../provider/joining-a-cluster.md).
