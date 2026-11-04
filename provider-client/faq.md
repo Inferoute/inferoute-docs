@@ -95,7 +95,7 @@ Yes. Run `inferoute-client setup --api-key "…"` with the new cluster's join co
 If the machine still shows the old address after setup, log out yourself and run setup again:
 
 ```bash
-sudo inferscale logout
+sudo /usr/local/libexec/inferoute/inferscale logout
 inferoute-client setup --api-key "…"
 ```
 
