@@ -35,7 +35,7 @@ Setup and **Copy vLLM command** already use those ports. Change them and the oth
 
 ## What stays closed
 
-Everythong else should remain closed
+Everythong else should remain closed.
 
 ## What is still on you
 
