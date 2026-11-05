@@ -52,7 +52,7 @@ Also supported:
 
 - `POST /v1/completions` — send `prompt` instead of `messages`.
 - `POST /v1/embeddings` — send `input` as a string or an array of strings.
-- `GET /v1/models` — a short list of model ids. It is the busiest models, not every model a provider is serving.
+- `GET /v1/models` — every model id at least one provider is serving right now.
 
 Send one of `messages`, `prompt`, or `input`. Do not send more than one.
 
