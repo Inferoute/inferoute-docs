@@ -6,8 +6,8 @@ Create an Inferoute account, deploy a provider cluster, and copy the **provider 
 
 1. Open [www.inferoute.com](https://www.inferoute.com).
 2. Click **Sign-up**.
-3. Enter your email, then a password (at least **8** characters), or continue with **Google** or **GitHub**.
-4. Confirm your email if you are sent to **Verify your email**.
+3. Enter your email, or continue with **Google** or **GitHub**.
+4. Open the **Complete your signup** email and choose a password (at least **8** characters). You land in the dashboard.
 
 ## Choose Provider
 
