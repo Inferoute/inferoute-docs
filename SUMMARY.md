@@ -35,3 +35,17 @@
   - [Approved model builds](provider-client/approved-models.md)
   - [Local REST API](provider-client/rest-api.md)
 - [Email notifications](email-notifications.md)
+
+## API reference
+
+* ```yaml
+  type: builtin:openapi
+  props:
+    models: true
+    downloadLink: true
+  dependencies:
+    spec:
+      ref:
+        kind: openapi
+        spec: inferoute-api
+  ```
