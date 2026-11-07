@@ -111,19 +111,19 @@ Use the dashboard: **My Clusters** → select your cluster → **Settings** → 
 
 ### When I add new models, does the client pick them up?
 
-Yes. New models are detected on each health check (every **3 minutes**) and automatically registered with pricing from the Inferoute API. Marketplace routing still requires an [approved model build](approved-models.md). Re-run setup to switch the engine to a different approved model.
+Yes. New models are detected on each health check (every **3 minutes**). The client advertises at most 5 approved models per cluster. Marketplace routing still requires an [approved model build](approved-models.md). Re-run setup to switch the engine to a different approved model.
 
 ### How does model pricing work?
 
-Pricing is **per cluster**, not account-wide. At startup the client discovers local models, applies default prices from Inferoute, and registers each model for **that cluster only**. For example, **inferoute-cluster1** and **inferoute-cluster2** can charge different prices for the same model name.
+Pricing is **per cluster**, not account-wide. A new model starts at the market-average price. You can change it once the model shows **Verified**, whether or not it shows **Serving**. A model that shows **Not verified** keeps the market-average price. For example, **inferoute-cluster1** and **inferoute-cluster2** can charge different prices for the same model name.
 
-New models added later are registered during the next health cycle (every **3 minutes**).
+The client advertises at most 5 approved models. Each model has a maximum price.
 
 See [Model pricing](../provider/model-pricing.md) for editing prices in the dashboard.
 
 ### Can I change model pricing after registration?
 
-Yes. Open **My Clusters** → select a cluster → **Models** tab to edit prices for that cluster only. You can also call `PUT /api/provider/models/{model_id}` on `https://core.inferoute.com` with that cluster’s provider API key (per-token units). See [Model pricing](../provider/model-pricing.md).
+Yes, once the model shows **Verified**. Open **My Clusters** → select a cluster → **Models** tab. You can also call `PATCH /api/provider/models/{model_id}/pricing` on `https://core.inferoute.com` with that cluster’s provider API key. Prices are $/1M with up to 2 decimals. See [Model pricing](../provider/model-pricing.md).
 
 Changing prices on one cluster does not change another. See [Model pricing](../provider/model-pricing.md).
 

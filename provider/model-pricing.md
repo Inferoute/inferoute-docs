@@ -12,7 +12,17 @@ For example, if **inferoute-cluster1** and **inferoute-cluster2** both serve `Qw
 4. Edit **Input / 1M** and **Output / 1M**.
 5. Click **Save** on that row.
 
-The **Market avg** column is a reference from public pricing data. It does not change your prices until you edit and save, or use **Apply market averages to all**.
+New models start at the market-average price. You can change a model's price once it shows **Verified**, whether or not it shows **Serving** right now. A model that shows **Not verified** keeps the market-average price and can't be repriced.
+
+| Verification | Serving | Gets traffic | Can reprice |
+|---|---|---|---|
+| Verified | Serving | Yes | Yes |
+| Verified | Not serving | No | Yes |
+| Not verified | Not serving | No | No |
+
+Each model has a maximum price. Saving above it returns an error that states the maximum. Prices are in $/1M with up to 2 decimals.
+
+**Apply market averages to all** fills only the rows you can edit. It does not save automatically. If your prices differ a lot from the market average, you may see a confirmation before saving a single row.
 
 ## Pricing is per cluster, not global
 
@@ -33,42 +43,39 @@ All editable prices in the cluster **Models** tab are **per 1 million tokens** (
 
 That matches how **Models & Prices** displays prices elsewhere in the dashboard.
 
-## Apply market averages
-
-**Apply market averages to all** fills every row on that cluster’s Models tab with the **Market avg** values. It does not save automatically — review each row and click **Save**, or save rows individually after applying.
-
-If your prices differ a lot from market averages, you may see a confirmation before saving a single row.
-
 ## Deploy wizard
 
-When you deploy a new cluster, the wizard does **not** set model prices. You set them **after** the cluster is running, on that cluster’s **Models** tab (once health reports which models are available).
+When you deploy a new cluster, the client starts models at the market-average price. After a model shows **Verified**, change its price on that cluster’s **Models** tab.
 
 ## Provider API (automation)
 
 If you automate with a **provider API key**, prices are still **per cluster** (one key per cluster). Call the platform at `https://core.inferoute.com` — not the [local REST API](../provider-client/rest-api.md) on the machine.
 
-Authenticate with `Authorization: Bearer <provider API key>`. The HTTP API uses **per-token** decimals (`input_price_tokens`, `output_price_tokens`), not $/1M:
+Authenticate with `Authorization: Bearer <provider API key>`. Prices are $/1M, the same numbers as the dashboard. Get `model_id` from `GET /api/provider/models`.
 
-| Dashboard (Models tab) | Provider API (`POST` / `PUT /api/provider/models`) |
-|------------------------|-------------------------------------|
-| $0.15 / 1M input | `0.00000015` per input token |
-| $0.60 / 1M output | `0.0000006` per output token |
+`PATCH /api/provider/models/{model_id}/pricing`
 
-Divide your $/1M value by **1,000,000** to get the API value. Updating a model via the API on **inferoute-cluster1** does not change pricing on **inferoute-cluster2**.
+Both fields are required JSON numbers. `0` is allowed. At most 2 decimal places. No exponent. No other fields.
+
+| Code | When |
+|---|---|
+| 400 | Bad number, unknown field, more than 2 decimals, or above the model's maximum |
+| 404 | That model is not on this cluster |
+| 409 | `model_not_verified` — the model is still on the market-average price |
+
+For example, $0.15 input and $0.60 output:
 
 ```bash
-curl -X PUT "https://core.inferoute.com/api/provider/models/{model_id}" \
+curl -X PATCH "https://core.inferoute.com/api/provider/models/{model_id}/pricing" \
   -H "Authorization: Bearer YOUR_PROVIDER_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model_name": "Qwen/Qwen2.5-7B-Instruct",
-    "service_type": "vllm",
-    "input_price_tokens": 0.00000015,
-    "output_price_tokens": 0.0000006
+    "input_price_per_1m": 0.15,
+    "output_price_per_1m": 0.60
   }'
 ```
 
-Also: `POST /api/provider/models` (add), `GET /api/provider/models` (list). Full request/response shapes are in the GitBook **API Reference**.
+Changing the price on **inferoute-cluster1** does not change **inferoute-cluster2**.
 
 ## Related
 
