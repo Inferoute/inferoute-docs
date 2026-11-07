@@ -9,7 +9,7 @@
   - [Using the API](consumer/using-the-api.md)
   - [Monthly spending caps](consumer/monthly-spending-caps.md)
   - [Max price limits](consumer/max-price-limits.md)
-  - [Prefer own providers](consumer/prefer-own-providers.md)
+  - [Using your own clusters](consumer/own-clusters.md)
   - [Request routing options](consumer/request-routing-options.md)
   - [Automatic model selection](consumer/automatic-model-selection.md)
 - [Provider (dashboard)](provider/deleting-clusters.md)

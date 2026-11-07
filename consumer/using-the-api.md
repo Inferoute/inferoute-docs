@@ -84,6 +84,6 @@ Add an `inferoute` object to choose providers without changing the payload the m
 
 - [Max price limits](max-price-limits.md)
 - [Monthly spending caps](monthly-spending-caps.md)
-- [Prefer own providers](prefer-own-providers.md)
+- [Using your own clusters](own-clusters.md)
 - [Request routing options](request-routing-options.md)
 - [Automatic model selection](automatic-model-selection.md)

@@ -39,7 +39,7 @@ Inferoute reads the body:
 
 Only approved models are eligible. A model a provider loaded that is not on the approved list is skipped in this mode. Name that model yourself if you want it.
 
-Your max price (profile, key, and the request) and `min_tokens_per_second` still apply. If **Prefer own providers** is on, your own clusters are tried first when one of them can serve the request.
+Your max price (profile, key, and the request) and `min_tokens_per_second` still apply. Max price doesn't apply to [your own clusters](own-clusters.md).
 
 If nothing qualifies, you get **404**.
 
@@ -48,4 +48,4 @@ If nothing qualifies, you get **404**.
 - [Using the API](using-the-api.md)
 - [Request routing options](request-routing-options.md)
 - [Max price limits](max-price-limits.md)
-- [Prefer own providers](prefer-own-providers.md)
+- [Using your own clusters](own-clusters.md)
