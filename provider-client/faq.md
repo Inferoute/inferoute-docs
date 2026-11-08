@@ -38,7 +38,7 @@ Auto-start only replays `config.yaml`. It does not notice that the catalog row c
 
 ### Can I start vLLM (or llama.cpp) myself?
 
-Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call_parser`, do not pass `--enable-auto-tool-choice` (vLLM) or `--jinja` (llama.cpp). If the catalog sets `max_model_len`, serve at least that context or verification fails. Safer: let setup start the engine. See [Approved model builds](approved-models.md).
+Yes. Use the same flags the wizard printed. If the catalog row has no `tool_call_parser`, do not pass `--enable-auto-tool-choice` (vLLM) or `--jinja` (llama.cpp). If the catalog sets `max_model_len`, serve at least that context or verification fails. Memory and batching flags, such as `--gpu-memory-utilization` and `--max-num-seqs`, are fine as long as the live context stays at least the catalog `max_model_len`. Safer: let setup start the engine. See [Which flags change verification](approved-models.md#which-flags-change-verification).
 
 ### Setup says this machine's GPU differs from the master
 

@@ -117,6 +117,26 @@ Consumers call Inferoute with the catalog **`alias`**. For example, `Qwen/Qwen2.
 | **vLLM / vLLM Metal** | `GET /v1/models` → model card `max_model_len` |
 | **llama.cpp** | `GET /props` → `default_generation_settings.n_ctx` |
 
+### Which flags change verification
+
+If you start the engine yourself, keep the settings in this table. Changing them makes verification **failed**, and Inferoute will not route to that model.
+
+| Setting | vLLM and vLLM Metal | llama.cpp |
+|---------|---------------------|-----------|
+| Served model id | The id in `GET /v1/models` must be the catalog `alias`. For example, `Qwen/Qwen2.5-7B-Instruct`. | The `--alias` you pass must be the catalog `alias`. |
+| Weights | Serve `hf_repo` at `hf_ref`. A different repo, revision, quant, or finetune fails. | Serve the catalog `gguf_file`. A different file fails. |
+| Context | `--max-model-len` must be **at least** the catalog `max_model_len`. A higher value is fine. A lower value fails. | `-c` must be **at least** the catalog `max_model_len`. A higher value is fine. A lower value fails. |
+| YaRN | When the row sets `rope_type` and `rope_base_context_len`, keep the `--hf-overrides` from setup. Without them the engine does not reach that context, and verification fails. | RoPE fields are ignored. |
+
+These flags do not change verification on their own:
+
+| Flag | What to know |
+|------|----------------|
+| `--gpu-memory-utilization` | Caps how much memory vLLM reserves. Safe, unless the smaller cache makes `GET /v1/models` report a `max_model_len` below the catalog. |
+| `VLLM_METAL_MEMORY_FRACTION` | Same rule on vLLM Metal. |
+| `--max-num-seqs`, `--host`, `--port` | Batching and the listen address. Verification ignores them. |
+| `--tool-call-parser`, `--enable-auto-tool-choice`, `--jinja` | Not checked. Keep the catalog `tool_call_parser` so tool calls work. A different parser does not make verification **failed**. |
+
 The client **caches** verify results for about **10 minutes** and only re-verifies when the catalog changes or your local model files change. The console UI reads the last health snapshot — it does not call verify on every refresh.
 
 You do not need to call the verify API manually for day-to-day operation.
