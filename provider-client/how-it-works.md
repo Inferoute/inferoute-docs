@@ -34,26 +34,31 @@ You can also check status locally anytime (these URLs stay on your machine):
 
 ## When the client is busy
 
-The client keeps two busy signals. Each one answers a different question.
+The client keeps separate busy signals. Each one answers a different question.
 
 | Signal | Busy when |
 | --- | --- |
-| **New request** (`GET /api/busy`, and **503**) | Every inference slot is taken. The default is **1** slot (`max_concurrent_inference`). NVIDIA utilization is not used. |
+| **GET /api/busy** | Every inference slot is taken. NVIDIA utilization is not used. |
+| **503** on a new request | Every inference slot is taken, or a concurrency measurement is running. |
 | **Health report** GPU `is_busy` | On NVIDIA, utilization is above **20%**, or an inference slot is full. On macOS, only when a slot is full. |
 
 A different session that arrives while a slot is full gets **503** `{"error":"GPU is busy"}`. Inferoute can try another provider. A follow-up for the same session waits up to **90 seconds** (`session_queue_wait_seconds`) for that slot instead of **503**.
 
 Utilization above **20%** sets the GPU busy flag in the health report. That update waits for the **3 minute** report. A request already on the machine is rejected when a slot is full. Another program using the GPU can set the flag. After your own request finishes and the slot is free, the next request is accepted while `nvidia-smi` is still high for a moment.
 
-See [Configuration](configuration.md).
+## How many requests at once
+
+Leave `max_concurrent_inference` out of config. vLLM and vLLM Metal start at **4** slots. The client then measures this GPU and replaces **4** with the number it can hold. llama.cpp stays at **1** and is not measured. Set the field yourself only to override that. **0** means unlimited. A line that is already in an older config is an override: delete it and restart if you want a measurement.
+
+While **Session Status** is `benchmarking`, Inferoute skips this machine. A request that still arrives gets **503**, including a same-session follow-up. The status page and the terminal show **Benchmark** as `benchmarking (1/5)` and then `verified for N concurrent`.
+
+Run `inferoute-client benchmark` to measure again. See [Measuring concurrency](configuration.md#measuring-concurrency).
 
 ## Model pricing and registration
 
-**At startup**, the client discovers models on your local LLM server, looks up default prices from Inferoute, and registers each model for **that cluster**.
+**At startup**, and on each health report, the client tells Inferoute which models the local engine is serving. Inferoute adds a new model to **that cluster** at the market-average price. For example, after you re-run setup with a different approved model, the next health report adds it. You do not restart the client for that.
 
-**Ongoing**, each health cycle checks for new models (for example after you re-run setup with a different approved model). New models are registered automatically — you do not need to restart the client.
-
-Initial prices come from platform averages. You set your own prices **per cluster** in the dashboard — see [Model pricing](../provider/model-pricing.md).
+You set your own prices **per cluster** in the dashboard — see [Model pricing](../provider/model-pricing.md).
 
 Approved marketplace models must match a platform [approved model build](approved-models.md). The public catalog’s **`engines`** field lists which client (vLLM, vLLM Metal, llama.cpp) may serve that row. The client verifies the weight fingerprint against platform records before registration, health reporting, and inference.
 
@@ -64,7 +69,7 @@ The client reads the served model id and finds weights in the HuggingFace hub ca
 When Inferoute sends a request to your cluster:
 
 1. **Authentication** — Valid requests include a signed header; missing or invalid requests get **401 Unauthorized**.
-2. **Busy** — If every inference slot is full, and this is not a same-session follow-up, the client responds with **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. Same-session follow-ups can wait for the slot instead.
+2. **Busy** — If every inference slot is full, and this is not a same-session follow-up, the client responds with **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. Same-session follow-ups can wait for the slot instead. During a concurrency measurement, every request gets that **503**.
 3. **Proxy** — Valid requests are forwarded to your local LLM server. The client supports **POST /v1/chat/completions**, **POST /v1/completions**, and **POST /v1/embeddings**.
 
 ## Multi-node clusters

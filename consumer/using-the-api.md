@@ -79,6 +79,7 @@ Add an `inferoute` object to choose providers without changing the payload the m
 | **402** `Insufficient funds` | Wallet available balance is below **$1.00** |
 | **402** `spending_cap_exceeded` | That key hit its [monthly spending cap](monthly-spending-caps.md) |
 | **404** | No provider can serve that model under your price or throughput limits |
+| **503** | Every provider that can serve this request is busy. The message contains `are busy, retry shortly`. Retry in a few seconds. |
 
 ## Related
 

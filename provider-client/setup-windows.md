@@ -49,7 +49,7 @@ If SmartScreen says **Windows protected your PC**, choose **More info** → **Ru
 
 ## GPU monitoring
 
-Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on **PATH**. You need **24 GB** of VRAM, and **32 GB** of RAM plus a **fixed 64 GB page file** (or **64 GB** of RAM). Then the health report includes GPU name, VRAM, and utilization. Utilization above **20%** marks the GPU busy in that report. **GET /api/busy** and a **503** follow inference slots. See [How it works](how-it-works.md). Without `nvidia-smi` the client still runs; GPU fields are empty, the health report does not mark the GPU busy from utilization, and the wizard will not offer llama.cpp.
+Install the [NVIDIA driver](https://www.nvidia.com/drivers) so `nvidia-smi` is on **PATH**. You need **24 GB** of VRAM, and **32 GB** of RAM plus a **fixed 64 GB page file** (or **64 GB** of RAM). Then the health report includes GPU name, VRAM, and utilization. Utilization above **20%** marks the GPU busy in that report. **GET /api/busy** follows inference slots. Windows uses llama.cpp, which stays at one request at a time. See [How it works](how-it-works.md). Without `nvidia-smi` the client still runs; GPU fields are empty, the health report does not mark the GPU busy from utilization, and the wizard will not offer llama.cpp.
 
 `inferoute-client compatibility` uses the same `nvidia-smi` data, or system RAM if no NVIDIA GPU is present.
 

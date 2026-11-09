@@ -10,7 +10,7 @@ There are no `/health` or `/busy` aliases — use the `/api/...` paths below.
 
 ## GET /
 
-Browser status page with the same information as the terminal UI. It shows session, models, GPU, and recent inference requests. On a multi-node machine, **CLUSTER STATUS** also shows **Cluster**, **Nodes**, **Tailnet IP**, and **Peers**. The terminal adds an **Engine** line. The page refreshes automatically. See [Read status on the machine](../provider/multi-node-clusters.md#read-status-on-the-machine).
+Browser status page with the same information as the terminal UI. It shows session, models, GPU, and recent inference requests. **Session Status** is `benchmarking` while the client is measuring concurrency. **Benchmark** then shows `benchmarking (1/5)` and, when it finishes, `verified for N concurrent`. On a multi-node machine, **CLUSTER STATUS** also shows **Cluster**, **Nodes**, **Tailnet IP**, and **Peers**. The **Benchmark** line sits in that section. The terminal shows **Benchmark** on its own line and adds an **Engine** line. The page refreshes automatically. See [Read status on the machine](../provider/multi-node-clusters.md#read-status-on-the-machine).
 
 ## GET /api/status
 
@@ -27,7 +27,7 @@ On a multi-node machine the same object adds:
 
 ## GET /api/health
 
-Current health snapshot: GPU (when available), models from the local LLM server, and `provider_type`.
+Current health snapshot: GPU (when available), models from the local LLM server, and `provider_type`. After a concurrency measurement, it also includes `benchmark` with `concurrency` and `measured_at`.
 
 ## GET /api/busy
 
@@ -37,13 +37,13 @@ Whether the client considers itself busy.
 { "busy": false }
 ```
 
-`busy` is `true` only when every inference slot is full. The default is **1** slot (`max_concurrent_inference`). The same rule applies on Linux, Windows, and macOS. The health report’s GPU `is_busy` flag is a separate check — see [How it works](how-it-works.md).
+`busy` is `true` only when every inference slot is full. The same rule applies on Linux, Windows, and macOS. Leave `max_concurrent_inference` unset and vLLM measures the slot count. llama.cpp stays at **1**. A measurement does not by itself set `busy` to `true`. The health report’s GPU `is_busy` flag is a separate check — see [How it works](how-it-works.md).
 
 ## Inference routes (not for operators)
 
 Inferoute sends work to **POST /v1/chat/completions**, **POST /v1/completions**, and **POST /v1/embeddings** over the provider connection. Those routes require a signed `X-Request-Id` from the platform. Do not call them yourself — you will get **401**.
 
-When every inference slot is full and the request is not a follow-up for the same session, the client returns **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. Unverified models return **403**. LLM failures return **502**.
+When every inference slot is full and the request is not a follow-up for the same session, the client returns **503** `{"error":"GPU is busy"}` so Inferoute can try another provider. During a concurrency measurement, every request gets that **503**, including a same-session follow-up. Unverified models return **403**. LLM failures return **502**.
 
 ## Platform: client version
 

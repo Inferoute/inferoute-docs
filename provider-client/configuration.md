@@ -9,7 +9,7 @@ Prefer **`inferoute-client setup`** to change engine, model, or API key — see 
 - **server** — HTTP server for the [local REST API](rest-api.md).
   - **port** — Listen port (default **8080**).
   - **host** — Bind address (default **127.0.0.1**). Leave this unless you need the status dashboard from another machine or from the Docker host. Set `0.0.0.0` only in that case, then publish the port to loopback on the host (for example `-p 127.0.0.1:8080:8080`). The connection to Inferoute does not need a published port.
-  - **max_concurrent_inference** — How many inference requests the client will run at once (default **1**). Further requests return **503** so Inferoute can try another provider. Use **0** for unlimited. Follow-up turns for the same session can wait instead of getting 503 — see `session_queue_wait_seconds`.
+  - **max_concurrent_inference** — How many inference requests the client will run at once. Leave this line out and the client measures a limit. See [Measuring concurrency](#measuring-concurrency). Set a number only when you want to override that measurement. **0** means unlimited. Further requests return **503** so Inferoute can try another provider. Follow-up turns for the same session can wait instead of getting 503 — see `session_queue_wait_seconds`. A measurement is the exception: every request gets **503** while it runs, including a same-session follow-up.
   - **session_queue_wait_seconds** — How long a same-session follow-up waits for a free slot instead of **503** (default **90**).
   - **request_timeout_seconds** — HTTP read/write timeout. Must cover the session queue wait plus inference (default **240**).
 - **provider** — Connection to the Inferoute platform.
@@ -36,6 +36,33 @@ Prefer **`inferoute-client setup`** to change engine, model, or API key — see 
 
 The connection to Inferoute is **not** a config section. The client opens it at startup from `provider.url`. See [How it works](how-it-works.md).
 
+## Measuring concurrency
+
+Leave `max_concurrent_inference` out of `config.yaml`. On vLLM and vLLM Metal the client starts at **4** requests at once, then measures how many this GPU can hold. llama.cpp stays at **1** and is not measured. A multi-node worker is not measured. The master is.
+
+The measurement tries **1**, **2**, **4**, **8**, and **16** requests at once and stops when a higher count is worse. The terminal and the status page set **Session Status** to `benchmarking` and show **Benchmark**:
+
+- `benchmarking (1/5)` through `benchmarking (5/5)` while it runs. It can stop before 5.
+- `verified for N concurrent` when it finishes. **N** is the new slot limit.
+
+Inferoute skips this machine until that finishes. A request that still arrives gets **503** `{"error":"GPU is busy"}`. **GET /api/busy** stays the slot check. It does not flip to `true` only because a measurement is running.
+
+The result is saved next to your config as `benchmark.json`. A restart reuses it. The client measures again when the model, the engine version, the weights, or the GPU changes.
+
+If one request finishes but is too slow, the limit stays at **1**. If the run errors, the client uses the recommended concurrency for that model, or **4** when the catalog has none.
+
+If the GPU is already busy, the measured limit can come out low. Wait until it is idle, then measure again.
+
+To measure again while the client is running:
+
+```bash
+inferoute-client benchmark
+```
+
+The command prints `benchmark requested; the running client measures on its next check`. It does not start a second client. The running client picks it up within a few seconds.
+
+If `max_concurrent_inference` is already in your config, the client uses that number and does not measure. Delete the line, restart, and it will measure.
+
 ## Log files
 
 Under `log_dir` (default `~/.local/state/inferoute/log`):
@@ -45,7 +72,7 @@ Under `log_dir` (default `~/.local/state/inferoute/log`):
 - **engine.log** — Stdout/stderr from an auto-started vLLM, vLLM Metal, or llama.cpp process.
 - **inferscaled.log** — inferscale daemon output on a multi-node machine. Read this when setup says `inferscaled did not answer`.
 
-The terminal and the status page show status and inference requests only. When something fails, read **error.log**.
+The terminal and the status page show status, the **Benchmark** line while a measurement is running or has finished, and inference requests. When something fails, read **error.log**.
 
 ## Overriding defaults
 

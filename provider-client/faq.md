@@ -171,18 +171,31 @@ Cluster **country** is not part of the health payload. Inferoute resolves it fro
 
 ### How is “GPU busy” determined?
 
-There are two signals. See [How it works](how-it-works.md).
+See [How it works](how-it-works.md).
 
-- **Rejecting a new request** (`GET /api/busy` and **503**): every inference slot is full. The default is one request at a time.
+- **GET /api/busy**: every inference slot is full. Leave `max_concurrent_inference` unset and vLLM measures that limit. llama.cpp stays at one request at a time.
+- **503** `{"error":"GPU is busy"}`: every slot is full, or a concurrency measurement is running. A measurement rejects same-session follow-ups too.
 - **Health report** GPU `is_busy`: on Linux and Windows with NVIDIA, utilization above **20%**, or a slot is full. On macOS, a slot is full.
 - No GPU monitoring and nothing in flight: the health report does not mark the GPU busy from utilization.
 
 ## Inference requests
 
+### How many requests can this GPU run at once?
+
+Leave `max_concurrent_inference` out of `config.yaml`. vLLM and vLLM Metal measure a limit and show it on the status page as `verified for N concurrent`. llama.cpp stays at **1**. A worker is not measured.
+
+While **Session Status** is `benchmarking`, Inferoute skips this machine. Run this against the client that is already running:
+
+```bash
+inferoute-client benchmark
+```
+
+It prints `benchmark requested; the running client measures on its next check`. If the GPU is busy with other work, wait and run it again. If an older config already sets `max_concurrent_inference`, delete that line and restart or the client will not measure. See [Measuring concurrency](configuration.md#measuring-concurrency).
+
 ### How are inference requests handled?
 
 1. The request signature in `X-Request-Id` is validated with Inferoute; missing or invalid requests get **401**.
-2. If every inference slot is full → **503** `{"error":"GPU is busy"}` (Inferoute can try another provider). Same-session follow-ups can wait for the slot instead. The **20%** utilization flag is on the health report.
+2. If every inference slot is full → **503** `{"error":"GPU is busy"}` (Inferoute can try another provider). Same-session follow-ups can wait for the slot instead. During a concurrency measurement, every request gets that **503**. The **20%** utilization flag is on the health report.
 3. Valid requests are proxied to the local LLM server.
 
 ### What endpoints does the client expose for inference?

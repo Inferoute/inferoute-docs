@@ -22,7 +22,7 @@ If you have not installed the client yet, start with [Installation](../getting-s
 4. **Model** — fetches the approved catalog, **keeps only rows tagged for this engine** (`engines`), scores the rest against this GPU or unified memory, and lists rows that should fit (`runs_well`, `fits`, `tight`). Pick a number from the table. Windows only shows builds that include `llama_cpp`. See [Approved model builds](approved-models.md).
 5. **Start now** — can serve the model, then wait until the engine is healthy.
 
-It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`, and any catalog serve flags such as `max_model_len`) and prints how to start the client.
+It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`, and any catalog serve flags such as `max_model_len`) and prints how to start the client. It does not set `max_concurrent_inference`. vLLM measures how many requests to run at once after the client starts. See [Measuring concurrency](configuration.md#measuring-concurrency).
 
 {% hint style="warning" %}
 **Start the engine the way setup would.** Auto-start only replays what is already in `config.yaml`. The client does **not** re-read catalog serve flags at runtime or restart a process that is already bound.

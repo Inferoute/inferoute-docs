@@ -50,6 +50,54 @@ Changing commission affects **later** payouts. It does not rewrite payouts alrea
 
 Prices buyers pay are still the prices on the cluster **Models** tab. Commission does not change those prices. See [Model pricing](model-pricing.md).
 
+## Request volume and speed
+
+**Earnings** also shows how much work was served.
+
+1. Open **My Clusters**.
+2. Open the **Earnings** tab for every cluster you own. Or open one cluster and its **Earnings** tab for that cluster only.
+
+The charts have a period menu: **today**, **last week**, **last month**, and **last year**. The page opens on **last week**. These windows use Inferoute’s clock.
+
+| Menu | What it covers |
+| --- | --- |
+| **today** | The current day |
+| **last week** | The current calendar week, Monday through Sunday. This is the week you are in, not the previous seven days. |
+| **last month** | The last 30 days, including today |
+| **last year** | The last 12 months, including this month |
+
+| Card | Meaning |
+| --- | --- |
+| **Requests today** | Completed requests since the start of the current day |
+| **Requests ·** the period you picked | Completed requests in that window. For example, **Requests · last week**. |
+| **Tokens in / out** | Input tokens in that window. The line under the number is output tokens, and it ends with **out**. |
+| **Avg speed** | Average output speed in that window, in tok/s. The line under it is average latency (milliseconds, or seconds once it reaches 1s). A dash means there were no completed requests. |
+
+The **Requests** chart is that same completed-request count across the window. On a cluster, **Total earnings** is the money chart for the window.
+
+**Recent requests** lists the latest 25. It includes requests that are still in progress. An empty table says **No requests yet.**
+
+| Column | Meaning |
+| --- | --- |
+| **Time** | When the request was recorded, in your browser’s timezone |
+| **Model** | Model id. For example, `Qwen/Qwen2.5-7B-Instruct`. |
+| **In** / **Out** | Input and output tokens |
+| **Latency** | End-to-end time |
+| **Speed** | Output tokens per second |
+| **Earned** | Owner or worker amount. See the table below. |
+| **Status** | **completed**, **pending**, or **settling** |
+
+**settling** means the payout is still being paid.
+
+On a cluster, **Earnings by Model** does not follow the chart menu. **today**, **this week**, and **this month** are money. **this week** is the current calendar week. **requests**, **avg tok/s**, and **latency** cover every completed request for that model. An empty table says **No models registered for this cluster.**
+
+| Who is looking | Counts, tokens, speed, and **Earned** |
+| --- | --- |
+| You (the owner) | The cluster total, before commission and the worker split |
+| A worker | The requests that paid you. **Earned** is your share. |
+
+A worker who does not own a cluster still will not see that join income on **My Clusters** → **Earnings**. Open the cluster **Earnings** tab.
+
 ## Related
 
 - [Multi-node clusters](multi-node-clusters.md)
