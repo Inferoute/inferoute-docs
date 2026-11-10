@@ -15,6 +15,33 @@ On a multi-node cluster, setup joins this machine to a private network with **in
 
 If **auto_start** is on (the wizard turns this on when it finds the engine binary on a single-node machine), the client starts that engine when `llm_url` is down. It uses the serve flags already in `config.yaml` (including whether tool calling is on). It will not start a second copy if the port is already in use, and it will not pull fresh catalog flags at runtime. Re-run [setup](setup.md) after you change model or catalog flags.
 
+## Startup checks
+
+1. The engine starts.
+2. The performance benchmark runs (vLLM only). This is the only phase where the client does not take requests.
+3. You are online. The provider can receive ordinary inference requests.
+4. Capability checks run in the background, only when the GPU is idle. Each one is tool calling, forced tool calling, JSON output, JSON schema, or logprobs.
+
+A busy GPU can take hours to finish the checks. That is fine. Ordinary requests keep flowing.
+
+The console and the local dashboard show a **Capabilities** block. The header counts checks that have finished, including ones that came back unverified. For example, `testing - 2/5 checked (still serving requests)`. Each line is one of:
+
+| State | Meaning |
+| --- | --- |
+| `waiting` | Not started. Requests are still served. |
+| `testing` | This check is running. |
+| `supported` | The engine passed the check. |
+| `unsupported` | The engine answered, and the model cannot do this. It is not a broken install. |
+| `unverified` | The check timed out or the engine errored. It retries while the GPU is idle. |
+
+## Capability checks
+
+After the engine is ready, the client checks five features one at a time, only while no request is in flight: tools, forced tools, JSON object, JSON schema, and logprobs. Session Status stays **online** during these checks. A check that times out stays unverified and is retried while the GPU is idle.
+
+{% hint style="info" %}
+Your provider stays online and can earn from ordinary inference requests while capability checks run. These checks determine whether you can also receive requests requiring additional features.
+{% endhint %}
+
 ## Health monitoring
 
 Every **3 minutes**, the client sends a health report to Inferoute. It also sends one when an inference slot fills or frees, after a **10 second** cooldown so a burst of requests does not flood the platform. The report includes:

@@ -26,6 +26,18 @@ Prefer **`inferoute-client setup`**. It writes engine, model, and API key into t
 
 Stop the client, run `inferoute-client update`, then start it again. The console tells you when a newer release exists. If it says **Update required**, Inferoute is no longer accepting that release. See [Updating the client](updating.md).
 
+### Can I earn while capability checks run?
+
+Yes, from ordinary inference requests, if consumers send them. The checks decide whether you can also receive requests that need tools, JSON mode, or logprobs. Being online does not by itself guarantee traffic.
+
+### Why does a capability stay unverified?
+
+The check did not finish. A timeout, an engine error, or a cancelled check is unverified, not a "no". The client retries while the GPU is idle: after 1 minute, 5 minutes, 30 minutes, then hourly.
+
+### Why do capability checks run again?
+
+They run again when the deployment changes: model, engine, engine version, weights, context length, GPU, node count, tool parser, or engine arguments. A late result from the previous deployment is dropped.
+
 ### How do I change engine or model later?
 
 Stop the engine if it is already running, then re-run the [setup wizard](setup.md):

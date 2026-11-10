@@ -16,6 +16,8 @@ Browser status page with the same information as the terminal UI. It shows sessi
 
 JSON snapshot of that status page. Includes session status, a masked provider API key, models, GPU, recent inference requests, last health update, and whether the client is connected to Inferoute.
 
+`capabilities` is an array of `{name, state, detail}`. `state` is `waiting`, `testing`, `supported`, `unsupported`, or `unverified`. `capability_line` is the summary, for example `testing - 2/5 checked (still serving requests)`. Session status stays `online` while those checks run.
+
 On a multi-node machine the same object adds:
 
 | Field | Example | Meaning |
