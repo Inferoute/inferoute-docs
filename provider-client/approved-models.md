@@ -71,7 +71,7 @@ curl -s https://core.inferoute.com/api/models/approved-builds | jq .
 | `engines` | Client runtimes allowed to serve this build: `vllm`, `vllm-metal`, `llama_cpp` |
 | `gguf_file` | llama.cpp filename, for example `qwen2.5-7b-instruct-q4_k_m.gguf`. Present on `llama_cpp` rows |
 | `tool_call_parser` | (vLLM optional) Parser name for auto tool calling, for example `hermes`. **Omit** (null) when the model does not support tools — setup and auto-start then start the engine **without** `--enable-auto-tool-choice` |
-| `max_model_len` | (optional) Target context length the client must serve |
+| `max_model_len` | Set on every row. The minimum context length every provider of this model must serve. Verification fails when the live engine serves less, and Inferoute checks "request is too long" errors against it |
 | `rope_type` | (vLLM optional) RoPE scaling type when YaRN is required, for example `yarn` |
 | `rope_base_context_len` | (vLLM optional) Base context used to compute the YaRN factor |
 | `kv_cache_bytes_per_token` | (vLLM optional) The model's exact KV cache cost per token, used by the local fit check |
@@ -88,7 +88,7 @@ The public catalog (no `service_type`) returns **one row per alias**. A Windows 
 
 Windows clients fetch `?service_type=llama_cpp`. That response includes `gguf_file`, the file llama.cpp serves. For example, `qwen2.5-7b-instruct-q4_k_m.gguf`.
 
-Serve-flag fields are **nullable**. When set, setup and auto-start pass them into the engine:
+`max_model_len` is always set. The other serve-flag fields are **nullable**. When set, setup and auto-start pass them into the engine:
 
 | Engine | How `max_model_len` is applied | Tools / RoPE |
 |--------|--------------------------------|--------------|
@@ -109,7 +109,7 @@ Consumers call Inferoute with the catalog **`alias`**. For example, `Qwen/Qwen2.
 2. Client measures the local weight fingerprint.
 3. Client calls **POST** `/api/provider/verify-model` with your **provider API key**.
 4. Platform compares measurements to internal records and returns `verification_status`.
-5. If the catalog lists `max_model_len`, the client also reads the **live** engine context. If it is lower than the catalog value (or unreadable), verification is **failed** and the model is not approved for routing.
+5. The client also reads the **live** engine context. If it is lower than the catalog `max_model_len` (or unreadable), verification is **failed** and the model is not approved for routing.
 6. Health reports include the verified status; the platform re-checks on ingest.
 
 | Engine | Live context source |
