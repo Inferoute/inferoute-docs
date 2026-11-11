@@ -38,6 +38,8 @@ The console and the local dashboard show a **Capabilities** block. The header co
 
 After the engine is ready, the client checks five features one at a time, only while no request is in flight: tools, forced tools, JSON object, JSON schema, and logprobs. Session Status stays **online** during these checks. A check that times out stays unverified and is retried while the GPU is idle.
 
+Each check uses one request slot while it runs, and checks never run at the same time as the performance benchmark. On llama.cpp, which runs one request at a time, new requests go to other providers while a check runs.
+
 {% hint style="info" %}
 Your provider stays online and can earn from ordinary inference requests while capability checks run. These checks determine whether you can also receive requests requiring additional features.
 {% endhint %}
