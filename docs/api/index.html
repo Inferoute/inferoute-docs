@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API reference · Inferoute Docs</title>
+  <meta name="description" content="Inferoute API reference: inference, models and provider endpoints.">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <style>
+    @font-face { font-family: "Geist"; src: url("../assets/fonts/geist-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+    @font-face { font-family: "Geist Mono"; src: url("../assets/fonts/geist-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2") format("woff2"); font-weight: 400 900; font-display: swap; }
+
+    :root {
+      --ir-sheet: #e4e6e0; --ir-cell: #f6f7f3; --ir-ink: #141614; --ir-meta: #3a3f38;
+      --ir-lime: #d7fd52; --ir-night: #141614; --ir-night-2: #1f221e; --ir-night-line: #30342e;
+      --ir-night-text: #f3f5ee; --ir-night-meta: #a7ad9f;
+    }
+    body { margin: 0; background: var(--ir-sheet); }
+    .ir-bar {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 16px;
+      background: var(--ir-sheet); color: var(--ir-ink); border-bottom: 1px solid var(--ir-ink);
+      font: 500 14px/1 "Geist", system-ui, sans-serif;
+    }
+    .ir-bar a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+    .ir-bar a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .ir-bar a:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    .ir-bar svg { width: 26px; height: 22px; }
+    .ir-bar .ir-title { font-family: "Schibsted Grotesk", sans-serif; font-weight: 600; font-size: 17px; letter-spacing: -0.03em; }
+    .ir-bar .ir-label { font: 500 11px/1 "Geist Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ir-meta); }
+    @media (prefers-color-scheme: dark) {
+      body { background: var(--ir-night); }
+      .ir-bar { background: var(--ir-night); color: var(--ir-night-text); border-bottom-color: var(--ir-night-line); }
+      .ir-bar .ir-label { color: var(--ir-night-meta); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ir-bar">
+    <a href="../">
+      <svg viewBox="0 0 41 34" fill="currentColor" aria-hidden="true"><path d="M36.229 10.9716C37.5153 16.4009 35.7285 24.2424 28.3729 34C29.8862 29.4104 31.275 23.2206 29.1812 17.2747C31.9301 15.434 34.3409 13.3291 36.229 10.9716Z"/><path d="M2.45862 2.47127C7.52624 0.416411 23.7725 -2.7505 32.302 4.61292C32.5403 4.44137 32.7487 4.29083 32.922 4.16435C35.2879 2.43829 37.6997 2.18621 41 3.82485C39.6847 4.02078 38.6812 5.27039 37.6997 6.97615C37.4939 7.33385 37.2699 7.71202 37.0224 8.10864L37.0112 8.102C35.1127 11.22 32.2562 13.9685 28.8088 16.3072L28.8085 16.3064C28.105 16.768 27.3472 17.2306 26.5294 17.6908C18.9133 21.9765 12.3126 23.8672 1.56909 25.2101C9.64699 22.7327 14.3437 20.4639 19.548 17.3126C13.709 19.0774 7.36221 20.0858 0 20.7953C11.1937 17.1056 16.7814 14.6003 20.5845 12.4052L20.5778 12.3966C23.3698 10.7833 23.1218 8.63134 21.0301 7.00889C16.66 3.88825 10.8383 2.02843 2.45862 2.47127Z"/></svg>
+      <span class="ir-title">Inferoute Docs</span>
+    </a>
+    <span class="ir-label">API reference</span>
+  </header>
+
+  <script id="api-reference" data-url="openapi.json"></script>
+  <script>
+    document.getElementById("api-reference").dataset.configuration = JSON.stringify({
+      theme: "none",
+      layout: "modern",
+      withDefaultFonts: false,
+      hideDarkModeToggle: false,
+      hideClientButton: false,
+      defaultOpenAllTags: false,
+      showDeveloperTools: "never",
+      agent: { disabled: true },
+      telemetry: false,
+      modelsSectionLabel: "Schemas",
+      metaData: { title: "API reference · Inferoute Docs" },
+      customCss: `
+        .light-mode {
+          --scalar-background-1: #e4e6e0;
+          --scalar-background-2: #f6f7f3;
+          --scalar-background-3: #eceee8;
+          --scalar-background-accent: rgb(215 253 82 / 0.35);
+          --scalar-color-1: #141614;
+          --scalar-color-2: #3a3f38;
+          --scalar-color-3: #5b6158;
+          --scalar-color-accent: #141614;
+          --scalar-border-color: rgb(20 22 20 / 0.18);
+          --scalar-button-1: #d7fd52;
+          --scalar-button-1-color: #141614;
+          --scalar-button-1-hover: #cdf53f;
+          --scalar-color-green: #146600;
+          --scalar-color-red: #b42318;
+          --scalar-color-blue: #3f6292;
+          --scalar-color-orange: #8a5a00;
+          --scalar-color-yellow: #6b5900;
+          --scalar-color-purple: #5b4fa8;
+        }
+        .dark-mode {
+          --scalar-background-1: #141614;
+          --scalar-background-2: #1f221e;
+          --scalar-background-3: #272b26;
+          --scalar-background-accent: rgb(215 253 82 / 0.14);
+          --scalar-color-1: #f3f5ee;
+          --scalar-color-2: #a7ad9f;
+          --scalar-color-3: #8a9083;
+          --scalar-color-accent: #d7fd52;
+          --scalar-border-color: #30342e;
+          --scalar-button-1: #d7fd52;
+          --scalar-button-1-color: #141614;
+          --scalar-button-1-hover: #cdf53f;
+          --scalar-color-green: #a8d9a0;
+          --scalar-color-red: #f17f6f;
+          --scalar-color-blue: #9db8de;
+          --scalar-color-orange: #f0a58c;
+          --scalar-color-yellow: #e7d48a;
+          --scalar-color-purple: #b9a8f0;
+        }
+        :root, .light-mode, .dark-mode {
+          --scalar-font: "Geist", system-ui, sans-serif;
+          --scalar-font-code: "Geist Mono", ui-monospace, monospace;
+          --scalar-radius: 0;
+          --scalar-radius-lg: 0;
+          --scalar-radius-xl: 0;
+          --scalar-custom-header-height: 48px;
+        }
+        .section-header, h1, h2, h3 { font-family: "Schibsted Grotesk", "Geist", sans-serif; letter-spacing: -0.03em; }
+      `,
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.76.4/dist/browser/standalone.js" integrity="sha384-hwB9WroDTpZaI38gr+u9CXA6ksz5gUYgD2GxXazKl/agT1L2GWUiRFWGJYNiFu4Q" crossorigin="anonymous"></script>
+</body>
+</html>

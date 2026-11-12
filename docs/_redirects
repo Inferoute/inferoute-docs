@@ -1,0 +1,19 @@
+# Cloudflare Pages redirects. Old GitBook URLs -> current pages.
+/overview                         /                                        301
+/getting-started                  /getting-started/requirements/           301
+/getting-started/                 /getting-started/requirements/           301
+/consumer                         /consumer/using-the-api/                 301
+/consumer/                        /consumer/using-the-api/                 301
+/provider                         /provider/deleting-clusters/             301
+/provider/                        /provider/deleting-clusters/             301
+/provider-client                  /provider-client/introduction/           301
+/provider-client/                 /provider-client/introduction/           301
+/provider-client/installation     /getting-started/installation/           301
+/provider-client/installation/    /getting-started/installation/           301
+/provider-client/setup-vllm       /provider-client/setup/                  301
+/provider-client/setup-vllm/      /provider-client/setup/                  301
+/requirements/signup              /getting-started/signup/                 301
+/requirements/*                   /getting-started/:splat                  301
+/introduction/*                   /provider-client/:splat                  301
+/api-reference                    /api/                                    301
+/api-reference/*                  /api/                                    301

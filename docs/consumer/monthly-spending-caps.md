@@ -51,4 +51,4 @@ If you need a higher limit mid-month, raise the cap in Settings and click **Save
 
 - [Using the API](using-the-api.md)
 - [Email notifications](../email-notifications.md)
-- [Overview](../overview.md)
+- [Overview](../index.md)

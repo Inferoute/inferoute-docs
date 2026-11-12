@@ -6,9 +6,9 @@ A **multi-node** cluster is several machines that serve **one** model together. 
 
 Use multi-node when one GPU is not enough for the model you want to serve. For example, a large `Qwen/Qwen2.5-7B-Instruct` build can need more VRAM than one card has. The cluster page tells you how many nodes that model needs once you set the model and the VRAM on each node.
 
-{% hint style="warning" %}
-Workers run part of the same workload as your master. Only accept people you trust. A join code lets that person’s machine into the cluster.
-{% endhint %}
+!!! warning
+
+    Workers run part of the same workload as your master. Only accept people you trust. A join code lets that person’s machine into the cluster.
 
 Multi-node setup runs on **Linux** with an NVIDIA GPU. A single-node cluster can still be Linux, macOS, or Windows. See [Software and hardware requirements](../getting-started/requirements.md).
 

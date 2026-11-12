@@ -1,0 +1,436 @@
+/* Inferoute theme for Zensical (modern variant).
+ * Tokens and rules follow inferoute-web DESIGN.md: a pale sheet, 1px ink rules,
+ * square corners, lime only on the action. Headings Schibsted Grotesk, text Geist,
+ * labels Geist Mono uppercase. */
+
+/* Fonts (self-hosted, SIL OFL, see assets/fonts/*-OFL.txt) */
+@font-face {
+  font-family: "Geist";
+  src: url("../assets/fonts/geist-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("../assets/fonts/geist-mono-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Schibsted Grotesk";
+  src: url("../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Tokens */
+:root {
+  --ir-sheet: #e4e6e0;
+  --ir-cell: #f6f7f3;
+  --ir-ink: #141614;
+  --ir-meta: #3a3f38;
+  --ir-lime: #d7fd52;
+  --ir-lime-hover: #cdf53f;
+  --ir-health: #146600;
+  --ir-health-wash: #e4f3c8;
+  --ir-danger: #b42318;
+  --ir-danger-wash: #fbe3df;
+  --ir-paused: #e7e8e4;
+  --ir-sky: #577fb5;
+  --ir-sky-wash: #dde5ef;
+  --ir-night: #141614;
+  --ir-night-2: #1f221e;
+  --ir-night-line: #30342e;
+  --ir-night-text: #f3f5ee;
+  --ir-night-meta: #a7ad9f;
+  --ir-rule: var(--ir-ink);
+  --ir-rule-soft: rgb(20 22 20 / 0.16);
+  --ir-heading: "Schibsted Grotesk", "Geist", system-ui, sans-serif;
+  --ir-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --md-text-font: "Geist";
+  --md-code-font: "Geist Mono";
+}
+
+/* Light scheme */
+[data-md-color-scheme="default"] {
+  --md-hue: 90;
+  --md-default-bg-color: var(--ir-sheet);
+  --md-default-bg-color--light: rgb(228 230 224 / 0.7);
+  --md-default-bg-color--lighter: rgb(228 230 224 / 0.3);
+  --md-default-bg-color--lightest: rgb(228 230 224 / 0.12);
+  --md-default-fg-color: var(--ir-ink);
+  --md-default-fg-color--light: var(--ir-meta);
+  --md-default-fg-color--lighter: rgb(58 63 56 / 0.55);
+  --md-default-fg-color--lightest: rgb(20 22 20 / 0.12);
+
+  --md-primary-fg-color: var(--ir-ink);
+  --md-primary-fg-color--light: var(--ir-meta);
+  --md-primary-fg-color--dark: #000;
+  --md-primary-bg-color: var(--ir-cell);
+  --md-primary-bg-color--light: rgb(246 247 243 / 0.7);
+  --md-accent-fg-color: var(--ir-ink);
+  --md-accent-fg-color--transparent: rgb(215 253 82 / 0.35);
+  --md-accent-bg-color: var(--ir-lime);
+  --md-accent-bg-color--light: rgb(215 253 82 / 0.7);
+
+  --md-typeset-color: var(--ir-ink);
+  --md-typeset-a-color: var(--ir-ink);
+  --md-typeset-mark-color: rgb(215 253 82 / 0.6);
+  --md-typeset-table-color: var(--ir-rule-soft);
+  --md-typeset-table-color--light: rgb(20 22 20 / 0.04);
+
+  --ir-surface: var(--ir-cell);
+  --ir-label: var(--ir-meta);
+  --ir-active-text: var(--ir-ink);
+  --ir-link-line: var(--ir-ink);
+  --ir-info-bg: var(--ir-sky-wash);
+  --ir-info-mark: #3f6292;
+  --ir-warn-bg: #f3efd2;
+  --ir-warn-mark: #6b5900;
+  --ir-danger-bg: var(--ir-danger-wash);
+  --ir-danger-mark: var(--ir-danger);
+  --ir-ok-bg: var(--ir-health-wash);
+  --ir-ok-mark: var(--ir-health);
+}
+
+/* Dark scheme: the web's night blocks */
+[data-md-color-scheme="slate"] {
+  --md-hue: 90;
+  --md-default-bg-color: var(--ir-night);
+  --md-default-bg-color--light: rgb(20 22 20 / 0.7);
+  --md-default-bg-color--lighter: rgb(20 22 20 / 0.3);
+  --md-default-bg-color--lightest: rgb(20 22 20 / 0.12);
+  --md-default-fg-color: var(--ir-night-text);
+  --md-default-fg-color--light: var(--ir-night-meta);
+  --md-default-fg-color--lighter: rgb(167 173 159 / 0.6);
+  --md-default-fg-color--lightest: rgb(243 245 238 / 0.12);
+
+  --md-primary-fg-color: var(--ir-lime);
+  --md-primary-fg-color--light: var(--ir-lime);
+  --md-primary-fg-color--dark: var(--ir-lime-hover);
+  --md-primary-bg-color: var(--ir-night);
+  --md-primary-bg-color--light: rgb(20 22 20 / 0.7);
+  --md-accent-fg-color: var(--ir-lime);
+  --md-accent-fg-color--transparent: rgb(215 253 82 / 0.16);
+  --md-accent-bg-color: var(--ir-lime);
+  --md-accent-bg-color--light: rgb(215 253 82 / 0.7);
+
+  --md-typeset-color: var(--ir-night-text);
+  --md-typeset-a-color: var(--ir-night-text);
+  --md-typeset-mark-color: rgb(215 253 82 / 0.3);
+  --md-typeset-table-color: var(--ir-night-line);
+  --md-typeset-table-color--light: rgb(243 245 238 / 0.04);
+
+  --ir-rule: var(--ir-night-line);
+  --ir-rule-soft: var(--ir-night-line);
+  --ir-surface: var(--ir-night-2);
+  --ir-label: var(--ir-night-meta);
+  --ir-active-text: var(--ir-lime);
+  --ir-link-line: var(--ir-lime);
+  --ir-info-bg: #1b2433;
+  --ir-info-mark: #9db8de;
+  --ir-warn-bg: #2a2a12;
+  --ir-warn-mark: var(--ir-lime);
+  --ir-danger-bg: #331816;
+  --ir-danger-mark: #f17f6f;
+  --ir-ok-bg: #18280f;
+  --ir-ok-mark: #a8d9a0;
+}
+
+/* Square corners everywhere, no elevation */
+.md-header *,
+.md-container *,
+.md-search *,
+.md-dialog,
+.md-top,
+.md-tooltip,
+.md-tooltip2,
+.md-typeset :is(code, pre, kbd, .admonition, details, .tabbed-set, table, .md-button, img) {
+  border-radius: 0 !important;
+}
+.md-header,
+.md-header--shadow,
+.md-typeset .admonition,
+.md-typeset details,
+.md-top {
+  box-shadow: none !important;
+}
+
+::selection {
+  background: var(--ir-lime);
+  color: var(--ir-ink);
+}
+
+/* Focus: a 2px ink ring, as on the web */
+:focus-visible {
+  outline: 2px solid var(--md-default-fg-color) !important;
+  outline-offset: 2px;
+}
+
+/* Header: ruled, sheet-coloured */
+.md-header {
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  border-bottom: 1px solid var(--ir-rule);
+}
+.md-header__title {
+  font-family: var(--ir-heading);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.md-header__button.md-logo svg,
+.md-nav__button.md-logo svg {
+  width: 1.6rem;
+  height: 1.35rem;
+  fill: var(--ir-lime);
+}
+.md-search__button {
+  background: var(--ir-surface) !important;
+  border: 1px solid var(--ir-rule-soft) !important;
+  color: var(--md-default-fg-color--light) !important;
+}
+.md-search__button:hover {
+  border-color: var(--ir-rule) !important;
+}
+.md-source {
+  font-family: var(--ir-mono);
+}
+
+/* Sidebar navigation.
+ * One model everywhere: a group is a collapsible row (ink, medium weight, chevron);
+ * its pages are indented on a 1px rule. Pages outside a group are plain rows. */
+.md-sidebar--primary .md-nav__item--nested > .md-nav__link {
+  color: var(--md-default-fg-color);
+  font-weight: 500;
+}
+.md-sidebar--primary .md-nav__item--nested > .md-nav__link .md-nav__icon {
+  color: var(--md-default-fg-color--light);
+}
+.md-sidebar--primary .md-nav[data-md-level="1"] > .md-nav__list {
+  margin-left: 0.6rem;
+  border-left: 1px solid var(--ir-rule-soft);
+}
+.md-nav--secondary > .md-nav__title,
+.md-sidebar--secondary .md-nav__title {
+  font-family: var(--ir-mono);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ir-label) !important;
+}
+.md-nav__link {
+  color: var(--md-default-fg-color--light);
+}
+.md-nav__link:hover,
+.md-nav__link:focus-visible {
+  color: var(--md-default-fg-color) !important;
+}
+.md-nav__link--active,
+.md-nav__item .md-nav__link--active {
+  color: var(--ir-active-text) !important;
+  font-weight: 600;
+  background: var(--ir-surface) !important;
+  box-shadow: inset 2px 0 0 var(--ir-active-text);
+}
+.md-sidebar--secondary .md-nav__link--active {
+  background: none !important;
+}
+
+/* Typeset */
+.md-typeset :is(h1, h2, h3, h4) {
+  font-family: var(--ir-heading);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--md-default-fg-color);
+}
+.md-typeset h1 {
+  font-size: 2.2em;
+  line-height: 1.1;
+}
+.md-typeset h2 {
+  padding-top: 1.2em;
+  border-top: 1px solid var(--ir-rule-soft);
+}
+.md-typeset a:not(.md-button):not(.headerlink) {
+  color: var(--md-typeset-a-color);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--ir-link-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+[data-md-color-scheme="default"] .md-typeset a:not(.md-button):not(.headerlink):hover {
+  background: var(--ir-lime);
+  text-decoration-color: var(--ir-ink);
+}
+[data-md-color-scheme="slate"] .md-typeset a:not(.md-button):not(.headerlink):hover {
+  color: var(--ir-lime);
+}
+.md-typeset .headerlink {
+  color: var(--md-default-fg-color--lighter);
+}
+
+/* Inline code */
+.md-typeset :not(pre) > code {
+  background: var(--ir-surface);
+  border: 1px solid var(--ir-rule-soft);
+  color: var(--md-default-fg-color);
+  padding: 0.05em 0.35em;
+}
+
+/* Code blocks: night in both schemes */
+.md-typeset .highlight,
+.md-typeset pre {
+  --md-code-bg-color: var(--ir-night-2);
+  --md-code-bg-color--light: rgb(31 34 30 / 0.9);
+  --md-code-bg-color--lighter: rgb(31 34 30 / 0.54);
+  --md-code-fg-color: var(--ir-night-text);
+  --md-code-hl-color: var(--ir-lime);
+  --md-code-hl-color--light: rgb(215 253 82 / 0.12);
+  --md-code-hl-keyword-color: #9db8de;
+  --md-code-hl-string-color: #c9e27a;
+  --md-code-hl-function-color: #e7d48a;
+  --md-code-hl-number-color: #f0a58c;
+  --md-code-hl-constant-color: #b9a8f0;
+  --md-code-hl-special-color: #f0a58c;
+  --md-code-hl-name-color: var(--ir-night-text);
+  --md-code-hl-comment-color: #8a9083;
+  --md-code-hl-operator-color: var(--ir-night-meta);
+  --md-code-hl-punctuation-color: var(--ir-night-meta);
+  --md-code-hl-variable-color: var(--ir-night-text);
+  --md-code-hl-generic-color: var(--ir-night-meta);
+}
+.md-typeset pre > code {
+  background: var(--ir-night-2);
+  color: var(--ir-night-text);
+  border: 1px solid var(--ir-rule);
+}
+.md-typeset .md-code__button,
+.md-typeset .md-clipboard {
+  color: var(--ir-night-meta);
+}
+.md-typeset .md-code__button:hover,
+.md-typeset .md-clipboard:hover {
+  color: var(--ir-lime);
+}
+
+/* Callouts: wash fill, mono label, square */
+.md-typeset .admonition,
+.md-typeset details {
+  border: 1px solid var(--ir-rule-soft);
+  font-size: 0.75rem;
+  background: var(--ir-info-bg);
+  color: var(--md-default-fg-color);
+}
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-family: var(--ir-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent !important;
+}
+.md-typeset :is(.admonition.note, .admonition.info, .admonition.tip, details.note, details.info, details.tip) {
+  background: var(--ir-info-bg);
+  border-color: color-mix(in srgb, var(--ir-info-mark) 35%, transparent);
+}
+.md-typeset :is(.admonition.note, .admonition.info, .admonition.tip) > .admonition-title::before {
+  background-color: var(--ir-info-mark);
+}
+.md-typeset :is(.admonition.warning, .admonition.caution, details.warning) {
+  background: var(--ir-warn-bg);
+  border-color: color-mix(in srgb, var(--ir-warn-mark) 35%, transparent);
+}
+.md-typeset :is(.admonition.warning, .admonition.caution) > .admonition-title::before {
+  background-color: var(--ir-warn-mark);
+}
+.md-typeset :is(.admonition.danger, .admonition.failure, .admonition.bug, details.danger) {
+  background: var(--ir-danger-bg);
+  border-color: color-mix(in srgb, var(--ir-danger-mark) 35%, transparent);
+}
+.md-typeset :is(.admonition.danger, .admonition.failure, .admonition.bug) > .admonition-title::before {
+  background-color: var(--ir-danger-mark);
+}
+.md-typeset :is(.admonition.success, details.success) {
+  background: var(--ir-ok-bg);
+  border-color: color-mix(in srgb, var(--ir-ok-mark) 35%, transparent);
+}
+.md-typeset .admonition.success > .admonition-title::before {
+  background-color: var(--ir-ok-mark);
+}
+
+/* Tables: ruled board */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--ir-rule);
+  background: var(--ir-surface);
+  font-size: 0.72rem;
+}
+.md-typeset table:not([class]) th {
+  font-family: var(--ir-mono);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ir-label);
+  background: var(--md-default-bg-color);
+  border-bottom: 1px solid var(--ir-rule);
+}
+.md-typeset table:not([class]) td {
+  border-top: 1px solid var(--ir-rule-soft);
+}
+
+/* Breadcrumbs and footer */
+.md-path {
+  font-family: var(--ir-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.md-footer {
+  background: var(--ir-night);
+  color: var(--ir-night-text);
+  border-top: 1px solid var(--ir-rule);
+}
+.md-footer-meta {
+  background: var(--ir-night);
+  border-top: 1px solid var(--ir-night-line);
+}
+.md-footer__link:hover {
+  color: var(--ir-lime);
+}
+.md-footer__title .md-ellipsis {
+  font-family: var(--ir-heading);
+  letter-spacing: -0.02em;
+}
+.md-footer__direction {
+  font-family: var(--ir-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.md-copyright,
+.md-copyright__highlight {
+  color: var(--ir-night-meta);
+}
+.md-social__link svg {
+  fill: var(--ir-night-meta);
+}
+.md-social__link:hover svg {
+  fill: var(--ir-lime);
+}
+
+/* Back-to-top button */
+.md-top {
+  background: var(--ir-surface);
+  border: 1px solid var(--ir-rule);
+  color: var(--md-default-fg-color);
+}
+.md-top:hover {
+  background: var(--ir-lime);
+  color: var(--ir-ink);
+}

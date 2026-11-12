@@ -51,7 +51,7 @@ The terminal and the status page show status and inference requests only. When s
 
 Prefer `inferoute-client setup` to change engine, model, and API key.
 
-For non-interactive installs, set `INFEROUTE_SKIP_SETUP=1` and pass environment variables. `PROVIDER_MODEL` is required: the approved model your engine serves, under that exact name. See [Installation](../getting-started/installation.md#skip-the-wizard-scripts--ci).
+For non-interactive installs, set `INFEROUTE_SKIP_SETUP=1` and pass environment variables. `PROVIDER_MODEL` is required: the approved model your engine serves, under that exact name. See [Installation](../getting-started/installation.md#skip-the-wizard-scripts-ci).
 
 **Install script (Linux/macOS):**
 

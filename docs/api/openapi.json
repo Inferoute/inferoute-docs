@@ -1,0 +1,1317 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "description": "API for Inferoute orchestration and providers",
+        "title": "Inferoute API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/model-pricing/get-prices": {
+            "post": {
+                "description": "Average input and output price per token across providers for each requested model.",
+                "tags": [
+                    "Models"
+                ],
+                "summary": "Get average market prices for models",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/model_pricing.GetPricesRequest"
+                            }
+                        }
+                    },
+                    "description": "Model names",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/model_pricing.GetPricesResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/models/approved-builds": {
+            "get": {
+                "description": "Public allowlist of approved model aliases and HuggingFace locations. No digests, fingerprints, or manifests.",
+                "tags": [
+                    "Models"
+                ],
+                "summary": "List approved model builds (public catalog)",
+                "parameters": [
+                    {
+                        "description": "Filter by service_type (empty, vllm, or llama_cpp)",
+                        "name": "service_type",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ai_applications.ApprovedModelBuildsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/models/market": {
+            "get": {
+                "description": "Public GPU market. One card per provider that can take traffic. No api_url or usernames.",
+                "tags": [
+                    "Models"
+                ],
+                "summary": "List providers currently serving",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ai_applications.MarketProvidersResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/models/market/{provider_id}": {
+            "get": {
+                "description": "Public provider page, including benchmark levels. 404 when deleted or unknown.",
+                "tags": [
+                    "Models"
+                ],
+                "summary": "Get one GPU market provider",
+                "parameters": [
+                    {
+                        "description": "Provider UUID",
+                        "name": "provider_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ai_applications.MarketProviderDetail"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/models/providers": {
+            "get": {
+                "description": "Public marketplace listing of healthy providers offering the given model alias. No api_url or usernames.",
+                "tags": [
+                    "Models"
+                ],
+                "summary": "List providers serving a model",
+                "parameters": [
+                    {
+                        "description": "Model alias (provider_models.model_name)",
+                        "name": "model",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ai_applications.ModelProvidersResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/provider/health": {
+            "get": {
+                "description": "Get the current health status of the authenticated provider",
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Get provider health status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/provider.GetProviderHealthResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/provider/models": {
+            "get": {
+                "description": "Get all models configured for the authenticated provider",
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "List provider's models",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/provider.ListModelsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/provider/models/{model_id}/pricing": {
+            "patch": {
+                "description": "Both prices are required, in USD per 1M tokens, at most 2 decimals. The model must be verified.",
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Set prices for a verified model",
+                "parameters": [
+                    {
+                        "description": "Model ID",
+                        "name": "model_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/model_pricing.Prices"
+                            }
+                        }
+                    },
+                    "description": "Prices",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/provider.ProviderModel"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/provider/pause": {
+            "put": {
+                "description": "Update the pause status of the authenticated provider",
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Update provider pause status",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/provider.UpdatePauseRequest"
+                            }
+                        }
+                    },
+                    "description": "Pause status update",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/provider.UpdatePauseResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/chat/completions": {
+            "post": {
+                "description": "Handles the complete request flow from consumer to provider",
+                "tags": [
+                    "Inference"
+                ],
+                "summary": "Process an OpenAI-compatible API request",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/orchestrator.OpenAIRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Provider response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/completions": {
+            "post": {
+                "description": "Handles the complete request flow from consumer to provider",
+                "tags": [
+                    "Inference"
+                ],
+                "summary": "Process an OpenAI-compatible API request",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/orchestrator.OpenAIRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Provider response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/embeddings": {
+            "post": {
+                "description": "Handles the complete request flow from consumer to provider",
+                "tags": [
+                    "Inference"
+                ],
+                "summary": "Process an OpenAI-compatible API request",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/orchestrator.OpenAIRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Provider response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/models": {
+            "get": {
+                "description": "Get a list of available models in OpenAI-compatible format",
+                "tags": [
+                    "Inference"
+                ],
+                "summary": "Get available models",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ai_applications.ModelResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/common.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "https://core.inferoute.com"
+        },
+        {
+            "url": "http://core.inferoute.com"
+        }
+    ],
+    "components": {
+        "requestBodies": {
+            "orchestrator.OpenAIRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/orchestrator.OpenAIRequest"
+                        }
+                    }
+                },
+                "description": "OpenAI request",
+                "required": true
+            }
+        },
+        "schemas": {
+            "ai_applications.ApprovedModelBuildsResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/modelverify.CatalogEntry"
+                        }
+                    },
+                    "object": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ai_applications.MarketBenchmark": {
+                "type": "object",
+                "properties": {
+                    "concurrency": {
+                        "type": "integer"
+                    },
+                    "levels": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "measured_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ai_applications.MarketModel": {
+                "type": "object",
+                "properties": {
+                    "alias": {
+                        "type": "string"
+                    },
+                    "average_tps": {
+                        "type": "number"
+                    },
+                    "input_price_per_1m": {
+                        "type": "number"
+                    },
+                    "output_price_per_1m": {
+                        "type": "number"
+                    }
+                }
+            },
+            "ai_applications.MarketProvider": {
+                "type": "object",
+                "properties": {
+                    "benchmark_concurrency": {
+                        "type": "integer"
+                    },
+                    "client_os": {
+                        "type": "string"
+                    },
+                    "cluster_mode": {
+                        "type": "string"
+                    },
+                    "gpu_count": {
+                        "type": "integer"
+                    },
+                    "gpu_label": {
+                        "type": "string"
+                    },
+                    "is_serving": {
+                        "type": "boolean"
+                    },
+                    "latency_ms": {
+                        "type": "integer"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "models": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ai_applications.MarketModel"
+                        }
+                    },
+                    "node_count": {
+                        "type": "integer"
+                    },
+                    "provider_id": {
+                        "type": "string"
+                    },
+                    "provider_name": {
+                        "type": "string"
+                    },
+                    "service_status": {
+                        "type": "string"
+                    },
+                    "uptime_pct_7d": {
+                        "type": "number"
+                    }
+                }
+            },
+            "ai_applications.MarketProviderDetail": {
+                "type": "object",
+                "properties": {
+                    "benchmark": {
+                        "$ref": "#/components/schemas/ai_applications.MarketBenchmark"
+                    },
+                    "benchmark_concurrency": {
+                        "type": "integer"
+                    },
+                    "client_os": {
+                        "type": "string"
+                    },
+                    "cluster_mode": {
+                        "type": "string"
+                    },
+                    "gpu_count": {
+                        "type": "integer"
+                    },
+                    "gpu_label": {
+                        "type": "string"
+                    },
+                    "is_serving": {
+                        "type": "boolean"
+                    },
+                    "latency_ms": {
+                        "type": "integer"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "models": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ai_applications.MarketModel"
+                        }
+                    },
+                    "node_count": {
+                        "type": "integer"
+                    },
+                    "provider_id": {
+                        "type": "string"
+                    },
+                    "provider_name": {
+                        "type": "string"
+                    },
+                    "service_status": {
+                        "type": "string"
+                    },
+                    "uptime_pct_7d": {
+                        "type": "number"
+                    }
+                }
+            },
+            "ai_applications.MarketProvidersResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ai_applications.MarketProvider"
+                        }
+                    },
+                    "object": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ai_applications.ModelDetail": {
+                "type": "object",
+                "properties": {
+                    "created": {
+                        "type": "integer"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "max_model_len": {
+                        "type": "integer"
+                    },
+                    "object": {
+                        "type": "string"
+                    },
+                    "owned_by": {
+                        "type": "string"
+                    },
+                    "parent": {},
+                    "root": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ai_applications.ModelProviderCard": {
+                "type": "object",
+                "properties": {
+                    "average_tps": {
+                        "type": "number"
+                    },
+                    "gpu_count": {
+                        "type": "integer"
+                    },
+                    "gpu_label": {
+                        "type": "string"
+                    },
+                    "health_status": {
+                        "type": "string"
+                    },
+                    "input_price_per_1m": {
+                        "type": "number"
+                    },
+                    "is_serving": {
+                        "type": "boolean"
+                    },
+                    "latency_ms": {
+                        "type": "integer"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "output_price_per_1m": {
+                        "type": "number"
+                    },
+                    "provider_id": {
+                        "type": "string"
+                    },
+                    "provider_name": {
+                        "type": "string"
+                    },
+                    "service_status": {
+                        "type": "string"
+                    },
+                    "uptime_pct_7d": {
+                        "type": "number"
+                    }
+                }
+            },
+            "ai_applications.ModelProvidersResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ai_applications.ModelProviderCard"
+                        }
+                    },
+                    "model_name": {
+                        "type": "string"
+                    },
+                    "object": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ai_applications.ModelResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ai_applications.ModelDetail"
+                        }
+                    },
+                    "object": {
+                        "type": "string"
+                    }
+                }
+            },
+            "common.ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "model_pricing.GetPricesRequest": {
+                "type": "object",
+                "properties": {
+                    "models": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "model_pricing.GetPricesResponse": {
+                "type": "object",
+                "properties": {
+                    "model_prices": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/model_pricing.ModelPricing"
+                        }
+                    }
+                }
+            },
+            "model_pricing.ModelPricing": {
+                "type": "object",
+                "properties": {
+                    "avg_input_price": {
+                        "type": "number"
+                    },
+                    "avg_output_price": {
+                        "type": "number"
+                    },
+                    "model_name": {
+                        "type": "string"
+                    },
+                    "sample_size": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "model_pricing.Prices": {
+                "type": "object",
+                "required": [
+                    "input_price_per_1m",
+                    "output_price_per_1m"
+                ],
+                "properties": {
+                    "input_price_per_1m": {
+                        "type": "integer"
+                    },
+                    "output_price_per_1m": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "modelverify.CatalogEntry": {
+                "type": "object",
+                "properties": {
+                    "alias": {
+                        "type": "string"
+                    },
+                    "card_image": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "display_name": {
+                        "type": "string"
+                    },
+                    "engines": {
+                        "description": "Engines is the client-runtime allowlist (vllm, vllm-metal, llama_cpp).\nEmpty/NULL vLLM rows default to vllm + vllm-metal on the client.\nEmpty llama_cpp rows default to llama_cpp.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "from_input_price_per_1m": {
+                        "description": "FromInputPricePer1M / FromOutputPricePer1M / LatencyMs come from the cheapest serving\nprovider. Omitted when no provider is serving.",
+                        "type": "number"
+                    },
+                    "from_output_price_per_1m": {
+                        "type": "number"
+                    },
+                    "gguf_file": {
+                        "description": "GGUFFile is the HuggingFace filename llama.cpp serves. Omitted on merged public cards.",
+                        "type": "string"
+                    },
+                    "hf_ref": {
+                        "type": "string"
+                    },
+                    "hf_repo": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "input_price_per_1m": {
+                        "type": "number"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "kv_cache_bytes_per_token": {
+                        "type": "integer"
+                    },
+                    "latency_ms": {
+                        "type": "integer"
+                    },
+                    "max_model_len": {
+                        "type": "integer"
+                    },
+                    "min_size_bytes": {
+                        "type": "integer"
+                    },
+                    "output_price_per_1m": {
+                        "type": "number"
+                    },
+                    "provider_count": {
+                        "description": "ProviderCount and ServingProviderCount are distinct providers configured for this model,\nand those that can take traffic now. Filled by the public catalog list.",
+                        "type": "integer"
+                    },
+                    "recommended_concurrency": {
+                        "description": "RecommendedConcurrency is how many requests this model should handle\nat once on a typical GPU. NULL means the client uses its engine default.",
+                        "type": "integer"
+                    },
+                    "rope_base_context_len": {
+                        "type": "integer"
+                    },
+                    "rope_type": {
+                        "type": "string"
+                    },
+                    "service_type": {
+                        "type": "string"
+                    },
+                    "serving_provider_count": {
+                        "type": "integer"
+                    },
+                    "sort_order": {
+                        "type": "integer"
+                    },
+                    "task": {
+                        "description": "Task is chat or embedding. Auto model selection uses it.",
+                        "type": "string"
+                    },
+                    "tool_call_parser": {
+                        "type": "string"
+                    },
+                    "total_provider_earnings": {
+                        "type": "number"
+                    },
+                    "transaction_count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "orchestrator.InferouteOptions": {
+                "type": "object",
+                "properties": {
+                    "max_input_price_per_1m": {
+                        "type": "number"
+                    },
+                    "max_output_price_per_1m": {
+                        "type": "number"
+                    },
+                    "min_tokens_per_second": {
+                        "type": "number"
+                    },
+                    "session_id": {
+                        "description": "SessionID is an explicit conversation identifier for KV-cache sticky\nrouting. When absent, a fingerprint of the conversation is used instead.",
+                        "type": "string"
+                    },
+                    "sort": {
+                        "type": "string"
+                    }
+                }
+            },
+            "orchestrator.Message": {
+                "type": "object",
+                "required": [
+                    "content",
+                    "role"
+                ],
+                "properties": {
+                    "content": {
+                        "description": "string, array, map, or null"
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                        ]
+                    },
+                    "tool_calls": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            },
+            "orchestrator.OpenAIRequest": {
+                "type": "object",
+                "required": [
+                    "model"
+                ],
+                "properties": {
+                    "frequency_penalty": {
+                        "type": "number"
+                    },
+                    "inferoute": {
+                        "$ref": "#/components/schemas/orchestrator.InferouteOptions"
+                    },
+                    "input": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "logit_bias": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "number",
+                            "format": "float64"
+                        }
+                    },
+                    "max_tokens": {
+                        "type": "integer"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/orchestrator.Message"
+                        }
+                    },
+                    "model": {
+                        "type": "string"
+                    },
+                    "n": {
+                        "type": "integer"
+                    },
+                    "presence_penalty": {
+                        "type": "number"
+                    },
+                    "prompt": {
+                        "type": "string"
+                    },
+                    "stop": {
+                        "description": "string or array of strings",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "stream": {
+                        "type": "boolean"
+                    },
+                    "temperature": {
+                        "type": "number"
+                    },
+                    "tools": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "top_p": {
+                        "type": "number"
+                    },
+                    "user": {
+                        "type": "string"
+                    }
+                }
+            },
+            "provider.GetProviderHealthResponse": {
+                "type": "object",
+                "properties": {
+                    "health_status": {
+                        "type": "string"
+                    },
+                    "is_available": {
+                        "type": "boolean"
+                    },
+                    "last_health_check": {
+                        "type": "string"
+                    },
+                    "latency_ms": {
+                        "type": "integer"
+                    },
+                    "paused": {
+                        "type": "boolean"
+                    },
+                    "provider_id": {
+                        "type": "string"
+                    },
+                    "provider_type": {
+                        "type": "string"
+                    },
+                    "tier": {
+                        "type": "integer"
+                    },
+                    "username": {
+                        "type": "string"
+                    }
+                }
+            },
+            "provider.ListModelsResponse": {
+                "type": "object",
+                "properties": {
+                    "models": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/provider.ProviderModel"
+                        }
+                    },
+                    "username": {
+                        "type": "string"
+                    }
+                }
+            },
+            "provider.ProviderModel": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "input_price_tokens": {
+                        "type": "number"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "model_name": {
+                        "type": "string"
+                    },
+                    "output_price_tokens": {
+                        "type": "number"
+                    },
+                    "provider_id": {
+                        "type": "string"
+                    },
+                    "service_type": {
+                        "$ref": "#/components/schemas/provider.ServiceType"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    },
+                    "verification_status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "provider.ServiceType": {
+                "type": "string",
+                "enum": [
+                    "exolabs",
+                    "llama_cpp",
+                    "vllm"
+                ],
+                "x-enum-varnames": [
+                    "ServiceTypeExolabs",
+                    "ServiceTypeLlamaCPP",
+                    "ServiceTypeVLLM"
+                ]
+            },
+            "provider.UpdatePauseRequest": {
+                "type": "object",
+                "required": [
+                    "paused"
+                ],
+                "properties": {
+                    "paused": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "provider.UpdatePauseResponse": {
+                "type": "object",
+                "properties": {
+                    "paused": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,98 @@
+[project]
+site_name = "Inferoute Docs"
+site_url = "https://docs.inferoute.com/"
+site_description = "Guides for Inferoute providers and API consumers."
+docs_dir = "docs"
+site_dir = "site"
+repo_url = "https://github.com/Inferoute/inferoute-docs"
+repo_name = "inferoute-docs"
+edit_uri = "edit/main/docs/"
+copyright = "&copy; 2026 Inferoute"
+extra_css = ["stylesheets/inferoute.css"]
+
+nav = [
+  { "Overview" = "index.md" },
+  { "Getting started" = [
+    { "Software and hardware requirements" = "getting-started/requirements.md" },
+    { "Sign up and create a cluster" = "getting-started/signup.md" },
+    { "Installation" = "getting-started/installation.md" },
+  ] },
+  { "Consumer" = [
+    { "Using the API" = "consumer/using-the-api.md" },
+    { "Monthly spending caps" = "consumer/monthly-spending-caps.md" },
+    { "Max price limits" = "consumer/max-price-limits.md" },
+    { "Using your own clusters" = "consumer/own-clusters.md" },
+    { "Request routing options" = "consumer/request-routing-options.md" },
+    { "Supported parameters" = "consumer/supported-parameters.md" },
+    { "Automatic model selection" = "consumer/automatic-model-selection.md" },
+  ] },
+  { "Provider (dashboard)" = [
+    { "Deleting and managing clusters" = "provider/deleting-clusters.md" },
+    { "Cluster location" = "provider/cluster-location.md" },
+    { "Model pricing" = "provider/model-pricing.md" },
+    { "Multi-node clusters" = "provider/multi-node-clusters.md" },
+    { "Multi-node networking" = "provider/multi-node-networking.md" },
+    { "Inviting nodes" = "provider/inviting-nodes.md" },
+    { "Joining a cluster" = "provider/joining-a-cluster.md" },
+    { "Cluster earnings" = "provider/cluster-earnings.md" },
+  ] },
+  { "Provider client" = [
+    { "Introduction" = "provider-client/introduction.md" },
+    { "How it works" = "provider-client/how-it-works.md" },
+    { "Setup wizard" = "provider-client/setup.md" },
+    { "Configuration" = "provider-client/configuration.md" },
+    { "Updating the client" = "provider-client/updating.md" },
+    { "Setup: Linux" = "provider-client/setup-linux.md" },
+    { "Setup: macOS" = "provider-client/setup-mac.md" },
+    { "Setup: Windows" = "provider-client/setup-windows.md" },
+    { "Model compatibility check" = "provider-client/compatibility.md" },
+    { "FAQ" = "provider-client/faq.md" },
+    { "Approved model builds" = "provider-client/approved-models.md" },
+    { "Local REST API" = "provider-client/rest-api.md" },
+  ] },
+  { "Email notifications" = "email-notifications.md" },
+  { "API reference" = "api/" },
+]
+
+[project.theme]
+language = "en"
+custom_dir = "overrides"
+favicon = "assets/favicon.svg"
+font = false
+features = [
+  "content.code.copy",
+  "content.code.select",
+  "content.tabs.link",
+  "content.tooltips",
+  "navigation.footer",
+  "navigation.instant",
+  "navigation.instant.prefetch",
+  "navigation.path",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "toc.follow",
+]
+
+[project.theme.icon]
+logo = "inferoute/mark"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to light mode"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/Inferoute"

@@ -10,4 +10,4 @@ To call models as a buyer, create a consumer key and send a chat request — see
 
 To offer GPU inference, start with [Software and hardware requirements](getting-started/requirements.md), then [sign up and create a cluster](getting-started/signup.md), then [install the provider client](getting-started/installation.md).
 
-Endpoint-level API docs (parameters, payloads) live in the GitBook **API Reference** (OpenAPI 3). These pages are guides.
+Endpoint-level API docs (parameters, payloads) live in the [API reference](api/index.html) (OpenAPI 3). These pages are guides.

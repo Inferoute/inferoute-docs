@@ -24,14 +24,14 @@ If you have not installed the client yet, start with [Installation](../getting-s
 
 It then writes config (`engine`, `provider_type`, `llm_url`, `model`, `auto_start`, `engine_bin`, and any catalog serve flags such as `max_model_len`) and prints how to start the client.
 
-{% hint style="warning" %}
-**Start the engine the way setup would.** Auto-start only replays what is already in `config.yaml`. The client does **not** re-read catalog serve flags at runtime or restart a process that is already bound.
+!!! warning
 
-- Prefer **`inferoute-client setup`**. It writes the flags and can start the engine.
-- If you start vLLM, vLLM Metal, or llama.cpp yourself, use the command setup printed (same `max_model_len`, YaRN, and tool parser when the catalog has them). llama.cpp uses `-c` for context and `--jinja` when a parser is set.
-- If the catalog row has **no** `tool_call_parser`, do **not** pass `--enable-auto-tool-choice`. That model does not use Inferoute tool calling.
-- After you change model or catalog flags, **stop the engine** and re-run setup. A process already listening on `llm_url` is left as-is.
-{% endhint %}
+    **Start the engine the way setup would.** Auto-start only replays what is already in `config.yaml`. The client does **not** re-read catalog serve flags at runtime or restart a process that is already bound.
+
+    - Prefer **`inferoute-client setup`**. It writes the flags and can start the engine.
+    - If you start vLLM, vLLM Metal, or llama.cpp yourself, use the command setup printed (same `max_model_len`, YaRN, and tool parser when the catalog has them). llama.cpp uses `-c` for context and `--jinja` when a parser is set.
+    - If the catalog row has **no** `tool_call_parser`, do **not** pass `--enable-auto-tool-choice`. That model does not use Inferoute tool calling.
+    - After you change model or catalog flags, **stop the engine** and re-run setup. A process already listening on `llm_url` is left as-is.
 
 ## Engines by platform
 
@@ -89,7 +89,7 @@ inferoute-client setup --yes --engine vllm --model Qwen/Qwen2.5-7B-Instruct --ap
 | `--offline-catalog` | Local approved-builds JSON instead of the network catalog |
 | `--config` | Config path (default `~/.config/inferoute/config.yaml`) |
 
-With `INFEROUTE_SKIP_SETUP=1`, the install scripts run this same non-interactive setup for you, with `--llm-url` and the model from `PROVIDER_MODEL` — see [Installation](../getting-started/installation.md#skip-the-wizard-scripts--ci).
+With `INFEROUTE_SKIP_SETUP=1`, the install scripts run this same non-interactive setup for you, with `--llm-url` and the model from `PROVIDER_MODEL` — see [Installation](../getting-started/installation.md#skip-the-wizard-scripts-ci).
 
 ## Related
 

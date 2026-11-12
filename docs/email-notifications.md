@@ -71,4 +71,4 @@ See [Inviting nodes](provider/inviting-nodes.md) and [Joining a cluster](provide
 - [Deleting and managing clusters](provider/deleting-clusters.md) — pause, resume, and delete
 - [Inviting nodes](provider/inviting-nodes.md) — accept or reject a join request
 - [Monthly spending caps](consumer/monthly-spending-caps.md) — per-key spend limits
-- [Overview](overview.md)
+- [Overview](index.md)
