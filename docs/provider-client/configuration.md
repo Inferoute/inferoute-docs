@@ -51,7 +51,7 @@ The terminal and the status page show status and inference requests only. When s
 
 Prefer `inferoute-client setup` to change engine, model, and API key.
 
-For non-interactive installs, set `INFEROUTE_SKIP_SETUP=1` and pass environment variables:
+For non-interactive installs, set `INFEROUTE_SKIP_SETUP=1` and pass environment variables. `PROVIDER_MODEL` is required: the approved model your engine serves, under that exact name. See [Installation](../getting-started/installation.md#skip-the-wizard-scripts-ci).
 
 **Install script (Linux/macOS):**
 
@@ -60,6 +60,7 @@ curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scr
   INFEROUTE_SKIP_SETUP=1 \
   PROVIDER_API_KEY="your-key" \
   PROVIDER_TYPE="vllm" \
+  PROVIDER_MODEL="Qwen/Qwen2.5-7B-Instruct" \
   LLM_URL="http://127.0.0.1:8000" \
   SERVER_PORT="9090" \
   bash
@@ -71,6 +72,7 @@ curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scr
 $env:INFEROUTE_SKIP_SETUP="1"
 $env:PROVIDER_API_KEY="your-key"
 $env:PROVIDER_TYPE="llama_cpp"
+$env:PROVIDER_MODEL="Qwen/Qwen2.5-7B-Instruct"
 $env:LLM_URL="http://127.0.0.1:8081"
 $env:SERVER_PORT="9090"
 irm https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/windows-install.ps1 | iex
@@ -85,6 +87,7 @@ Use `host.docker.internal` when the LLM runs on the host. The process binds **12
 ```bash
 docker run -e PROVIDER_API_KEY="your-key" \
   -e PROVIDER_TYPE="vllm" \
+  -e PROVIDER_MODEL="Qwen/Qwen2.5-7B-Instruct" \
   -e LLM_URL="http://host.docker.internal:8000" \
   inferoute/inferoute-client:latest
 ```
