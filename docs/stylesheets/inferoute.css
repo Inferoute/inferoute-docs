@@ -182,9 +182,11 @@
   font-weight: 600;
   letter-spacing: -0.03em;
 }
-.md-header__button.md-logo svg {
+.md-header__button.md-logo svg,
+.md-nav__button.md-logo svg {
   width: 1.6rem;
   height: 1.35rem;
+  fill: var(--ir-lime);
 }
 .md-search__button {
   background: var(--ir-surface) !important;
