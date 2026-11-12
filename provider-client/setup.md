@@ -83,11 +83,13 @@ inferoute-client setup --yes --engine vllm --model Qwen/Qwen2.5-7B-Instruct --ap
 | `--yes` | No prompts; requires `--engine`, `--model`, and `--api-key` unless config already has them |
 | `--install` | Install the engine if it is missing |
 | `--no-start` | Write config only; do not start the engine |
+| `--llm-url` | URL of an engine you run yourself. Setup does not install or start an engine, and `auto_start` stays off |
+| `--port` | Port for the client's local API (default `8080`) |
 | `--url` | Inferoute API base (catalog + `provider.url`). Wins over `INFEROUTE_URL` |
 | `--offline-catalog` | Local approved-builds JSON instead of the network catalog |
 | `--config` | Config path (default `~/.config/inferoute/config.yaml`) |
 
-Install scripts that skip the wizard entirely use `INFEROUTE_SKIP_SETUP=1` — see [Installation](../getting-started/installation.md#skip-the-wizard-scripts--ci).
+With `INFEROUTE_SKIP_SETUP=1`, the install scripts run this same non-interactive setup for you, with `--llm-url` and the model from `PROVIDER_MODEL` — see [Installation](../getting-started/installation.md#skip-the-wizard-scripts--ci).
 
 ## Related
 

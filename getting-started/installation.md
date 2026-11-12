@@ -39,17 +39,24 @@ You can also download `scripts/windows-install.bat` from the [inferoute-client](
 
 ## Skip the wizard (scripts / CI)
 
-Set `INFEROUTE_SKIP_SETUP=1` and pass the old environment variables:
+For scripts, CI and Docker, where nobody is there to answer prompts. You run the inference engine yourself and tell the installer which model it serves. Set `INFEROUTE_SKIP_SETUP=1`:
 
 ```bash
 export INFEROUTE_SKIP_SETUP=1
 export PROVIDER_API_KEY="your-provider-api-key"
-export PROVIDER_TYPE="vllm"
+export PROVIDER_TYPE="vllm"                       # vllm, vllm-metal or llama_cpp
+export PROVIDER_MODEL="Qwen/Qwen2.5-7B-Instruct"  # the model your engine serves
 export LLM_URL="http://127.0.0.1:8000"
 export SERVER_PORT="8080"
 
 curl -fsSL https://raw.githubusercontent.com/inferoute/inferoute-client/main/scripts/install.sh | bash
 ```
+
+`PROVIDER_MODEL` is required. It must be an [approved model](../provider-client/approved-models.md) for your engine, and your engine must serve it under that exact name. The install stops with an error if it is not. To list the models this machine can serve, run `inferoute-client compatibility`.
+
+With a multi-node cluster key or a join code, leave `PROVIDER_MODEL` unset. The cluster's model is used.
+
+The client does not install or start the engine in this mode. The script runs the [non-interactive setup](../provider-client/setup.md#non-interactive-setup) for you.
 
 To override defaults (provider type, LLM URL, port), see [Configuration](../provider-client/configuration.md#overriding-defaults).
 
