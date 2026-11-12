@@ -1,6 +1,6 @@
 # Documentation style guide
 
-This repo is the source for [Inferoute documentation on GitBook](README.md). Pages are **user guides** — written for people using the dashboard, API, or provider client.
+This repo is the source for the [Inferoute documentation](README.md), built with Zensical and published at docs.inferoute.com. Pages are **user guides** — written for people using the dashboard, API, or provider client.
 
 ## Examples
 
@@ -31,8 +31,10 @@ Keep implementation details (database tables, microservice names) out of these g
 
 ## New pages
 
-1. Add the file under the right folder.
-2. Add an entry to `SUMMARY.md` (GitBook navigation).
+1. Add the file under the right folder in `docs/`.
+2. Add an entry to `nav` in `zensical.toml`.
+
+Callouts use admonition syntax (`!!! info`, `!!! warning`) with the body indented four spaces.
 3. Link related pages at the bottom of the article.
 
 ## Cursor agents

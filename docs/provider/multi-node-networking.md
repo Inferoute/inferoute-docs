@@ -12,15 +12,15 @@ A **multi-node** cluster is several machines serving one model. For example, **i
 
 Only members of this cluster. Other Inferoute clusters cannot see you. Buyers do not get a path onto it. Inferoute does not use it as a VPN onto your LAN.
 
-{% hint style="warning" %}
-Peers can be other people's machines. Joining or accepting a join is like plugging into a shared private network. Only create or join a multi-node cluster with people you intend to share GPUs with. Inferoute cannot make those peers fully trusted.
-{% endhint %}
+!!! warning
+
+    Peers can be other people's machines. Joining or accepting a join is like plugging into a shared private network. Only create or join a multi-node cluster with people you intend to share GPUs with. Inferoute cannot make those peers fully trusted.
 
 ## Required engine ports
 
-{% hint style="warning" %}
-On a multi-node cluster, vLLM listens on **8000** and llama.cpp listens on **8081**. Leave `--port` alone. Those two, plus a few other ports in the table below, are how the machines find each other. Pick a different port and the engine stays home on this machine.
-{% endhint %}
+!!! warning
+
+    On a multi-node cluster, vLLM listens on **8000** and llama.cpp listens on **8081**. Leave `--port` alone. Those two, plus a few other ports in the table below, are how the machines find each other. Pick a different port and the engine stays home on this machine.
 
 Setup and **Copy vLLM command** already use those ports. Change them and the other machines walk right past you. These are not the droids you are looking for. 
 
@@ -39,9 +39,9 @@ Everythong else should remain closed.
 
 ## What is still on you
 
-{% hint style="info" %}
-The high-port window is wide because the engine needs it. Bind extra services to `127.0.0.1`, not `0.0.0.0`. A debug server or database on a high port on all interfaces **is** reachable by every node in the cluster.
-{% endhint %}
+!!! info
+
+    The high-port window is wide because the engine needs it. Bind extra services to `127.0.0.1`, not `0.0.0.0`. A debug server or database on a high port on all interfaces **is** reachable by every node in the cluster.
 
 This is not a host firewall for your public network card.
 

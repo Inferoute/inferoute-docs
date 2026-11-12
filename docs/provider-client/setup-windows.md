@@ -21,9 +21,9 @@ inferoute-client setup
 
 The wizard downloads llama.cpp (CUDA) into `%LOCALAPPDATA%\inferoute\llama.cpp` and serves on `http://127.0.0.1:8081`. First-run download can take several minutes.
 
-{% hint style="info" %}
-Windows setup only lists catalog models that have a llama.cpp build. Fitting VRAM is not enough — encoder and embedding models such as `baai/bge-m3` stay off Windows. See [Approved model builds](approved-models.md).
-{% endhint %}
+!!! info
+
+    Windows setup only lists catalog models that have a llama.cpp build. Fitting VRAM is not enough — encoder and embedding models such as `baai/bge-m3` stay off Windows. See [Approved model builds](approved-models.md).
 
 3. Start the client from **Start Menu → Inferoute → Inferoute Client**, or from a **new** terminal:
 

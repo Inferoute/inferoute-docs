@@ -1,0 +1,55 @@
+# Build the docs with Zensical and deploy to Cloudflare Pages.
+# Push to main -> production (docs.inferoute.com). Pull request -> preview URL, posted on the PR.
+# inferoute-node pushes docs/api/openapi.json here when the API spec changes, which runs this too.
+name: Docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Build
+        run: uvx zensical@0.1.1 build --strict
+
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        # Fork PRs have no access to secrets; they get the build check only.
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy site
+            --project-name=inferoute-docs
+            --branch=${{ github.head_ref || github.ref_name }}
+            --commit-hash=${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Post preview URL on the PR
+        if: github.event_name == 'pull_request' && steps.deploy.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url || steps.deploy.outputs.deployment-url }}
+        run: |
+          gh pr comment "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --edit-last --create-if-none \
+            --body "Docs preview: ${PREVIEW_URL}"

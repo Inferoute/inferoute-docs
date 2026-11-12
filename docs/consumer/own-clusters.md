@@ -18,9 +18,9 @@ Inferoute ranks your clusters alongside marketplace providers, using each cluste
 
 For example, say you list `Qwen/Qwen2.5-7B-Instruct` on **inferoute-cluster1** at $2.00 per 1M output tokens, and your max price is $1.00 per 1M. **inferoute-cluster1** still qualifies for your requests, because max price doesn't apply to your own clusters. It is ranked by its $2.00 listed price, though, so a cheaper marketplace provider may be picked first.
 
-{% hint style="info" %}
-There is no setting that forces your requests onto your own clusters. To make your cluster more likely to win, list it at a lower price on the **Models** tab.
-{% endhint %}
+!!! info
+
+    There is no setting that forces your requests onto your own clusters. To make your cluster more likely to win, list it at a lower price on the **Models** tab.
 
 ## Related
 

@@ -1,12 +1,12 @@
 ---
-description: Style and conventions for Inferoute user documentation (GitBook)
+description: Style and conventions for Inferoute user documentation (Zensical)
 globs: "**/*.md"
 alwaysApply: true
 ---
 
 # Inferoute docs — user guide conventions
 
-Content in this repo is published on **GitBook** for customers and providers. Write for readers using the dashboard or provider client, not for internal engineering notes. Aim for Stripe/Vercel quality: accurate, scannable, and fast to a working result.
+Content in this repo is published at **docs.inferoute.com** (Zensical, on Cloudflare Pages) for customers and providers. Write for readers using the dashboard or provider client, not for internal engineering notes. Aim for Stripe/Vercel quality: accurate, scannable, and fast to a working result.
 
 ## Audience
 
@@ -45,7 +45,7 @@ Keep the API reference in its **own sidebar section**, not nested inside a tutor
 
 - Treat it as a **dictionary**: one endpoint (or tightly related group) per heading; searchable by error code, parameter, and method name.
 - Each entry: what it does, parameters, request/response shapes, copy-pasteable examples, example JSON.
-- GitBook is not a three-pane Stripe layout. Put description and parameters in the body; put copy-pasteable snippets and example responses in fenced blocks immediately after (multiple languages when relevant).
+- The docs site is not a three-pane Stripe layout. Put description and parameters in the body; put copy-pasteable snippets and example responses in fenced blocks immediately after (multiple languages when relevant).
 
 When documenting provider automation, state clearly when units differ from the dashboard (e.g. per-token in REST vs $/1M in UI). Give a conversion example with round numbers.
 
@@ -71,7 +71,7 @@ High-school reading level for **language complexity**. Do not talk down to the r
 
 ## When adding or changing pages
 
-1. Update `SUMMARY.md` if the page is new or moved.
+1. Update `nav` in `zensical.toml` if the page is new or moved. Pages live under `docs/`. Callouts are `!!! info` / `!!! warning` with a four-space indented body.
 2. Cross-link related pages (FAQ, REST API, sibling provider pages).
 3. Keep one topic per page; link instead of duplicating long explanations.
 4. Put the page in the right funnel layer (overview vs quickstart vs guide vs API).
