@@ -200,9 +200,20 @@
   font-family: var(--ir-mono);
 }
 
-/* Sidebar navigation */
-.md-nav__item--section > .md-nav__link,
-.md-nav__item--section > label.md-nav__link,
+/* Sidebar navigation.
+ * One model everywhere: a group is a collapsible row (ink, medium weight, chevron);
+ * its pages are indented on a 1px rule. Pages outside a group are plain rows. */
+.md-sidebar--primary .md-nav__item--nested > .md-nav__link {
+  color: var(--md-default-fg-color);
+  font-weight: 500;
+}
+.md-sidebar--primary .md-nav__item--nested > .md-nav__link .md-nav__icon {
+  color: var(--md-default-fg-color--light);
+}
+.md-sidebar--primary .md-nav[data-md-level="1"] > .md-nav__list {
+  margin-left: 0.6rem;
+  border-left: 1px solid var(--ir-rule-soft);
+}
 .md-nav--secondary > .md-nav__title,
 .md-sidebar--secondary .md-nav__title {
   font-family: var(--ir-mono);
