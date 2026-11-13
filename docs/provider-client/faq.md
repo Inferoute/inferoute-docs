@@ -82,6 +82,14 @@ A machine with the CUDA toolkit installed can compile the sampler instead, so sk
 
 On a multi-node cluster, one crashed machine leaves the others waiting. The master often logs `No available shared memory broadcast block found in 60 seconds` while a worker is still compiling, or stuck waiting for that machine. That line is the wait. The worker crash is the failure. Stop vLLM on every machine, then start the master, then the workers. See [Multi-node clusters](../provider/multi-node-clusters.md).
 
+### Why inferscale and not Tailscale?
+
+Tailscale gives every machine an address from one fixed range, `100.64.0.0/10`. That range is built into the program. If setup used Tailscale for the cluster network, it would collide with a Tailscale network you already run on the same machine: the same addresses, the same network device, the same routes.
+
+So Inferoute ships **inferscale**, its own version of Tailscale. It uses a different range, `198.18.0.0/15`, and its own network device, `inferscale0`. Your Tailscale keeps working and the two stay out of each other's way. For example, a machine can stay on your own tailnet at `100.x.x.x` and join **inferoute-cluster1** at `198.18.x.x`.
+
+You do not install it yourself. Setup downloads and starts it. See [How the machines connect](../provider/multi-node-clusters.md#how-the-machines-connect).
+
 ### Setup asks for my password (`inferscale0`)
 
 Multi-node setup joins a private network. It prints `inferscale needs root to create inferscale0` and runs `sudo`. Enter your password. If the machine has no `sudo`, setup stops with `inferscale needs root to create inferscale0, and sudo is not installed`. This step runs on Linux only. See [How the machines connect](../provider/multi-node-clusters.md#how-the-machines-connect).
