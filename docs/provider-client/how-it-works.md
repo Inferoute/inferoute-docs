@@ -50,6 +50,7 @@ Every **3 minutes**, the client sends a health report to Inferoute. It also send
 
 - GPU type, memory, and utilization (on Linux and Windows with NVIDIA).
 - Which models your local server exposes.
+- Which engine serves them (vLLM, vLLM Metal, or llama.cpp) and its version, as the running engine reports it.
 - A GPU busy flag. See **When the client is busy** below.
 
 Inferoute detects **cluster country** from the public IP of your connection. You do not send location from the client. See [Cluster location](../provider/cluster-location.md).
